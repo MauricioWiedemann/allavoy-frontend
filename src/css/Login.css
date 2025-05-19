@@ -1,0 +1,25 @@
+.login-body {
+    background-color: #F9F5F2;
+    margin: 0;
+    padding: 0;
+}
+
+.login-card {
+    background-color: #D9D9D9;
+    max-width: 580px;
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 1rem;
+}
+
+.login-logo {
+    width: 300px;
+    height: 200px;
+}
+
+body {
+    background-color: #F9F5F2 !important;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+}
