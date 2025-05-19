@@ -7,7 +7,7 @@ function Login() {
         <div className="d-flex justify-content-center align-items-center min-vh-100 login-body">
             <div className="login-card">
                 <div className="text-center mb-4">
-                    <img src="/logoLogin.png" alt="Logo" className="img-fluid login-logo" />
+                    <img src="../sources/logo.png" alt="Logo" className="img-fluid login-logo" />
                 </div>
                 <div className="mb-3">
                     <input type="email" className="form-control rounded-pill" placeholder="Correo" />

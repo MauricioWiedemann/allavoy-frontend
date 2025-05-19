@@ -42,7 +42,7 @@ export default function BuscadorPasajes() {
             </div>
             <div className="col-md-2">
               <button className="btn btn-primary w-100">
-                Pagar
+                Buscar
               </button>
             </div>
           </form>
