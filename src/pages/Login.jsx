@@ -5,7 +5,7 @@ import "../css/Login.css";
 function Login() {
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100 login-body">
-            <div className="login-card">
+            <div className="login-card card p-4 shadow-lg">
                 <div className="text-center mb-4">
                     <img src="../sources/logo.png" alt="Logo" className="img-fluid login-logo" />
                 </div>
@@ -23,7 +23,7 @@ function Login() {
                 <button className="btn btn-primary w-100 rounded-pill mb-3">Ingresar</button>
                 <div className="text-center text-dark">
                     No tiene cuenta?{" "}
-                    <Link to="/register" className="text-primary fw-bold text-decoration-none" style={{ cursor: "pointer" }}>
+                    <Link to="/registro" className="text-primary fw-bold text-decoration-none" style={{ cursor: "pointer" }}>
                         Registrar Usuario
                     </Link>
                 </div>
