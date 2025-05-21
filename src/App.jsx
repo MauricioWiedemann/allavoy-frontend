@@ -6,6 +6,7 @@ import AltaLocalidad from "./pages/AltaLocalidad";
 import AltaOmnibus from "./pages/AltaOmnibus";
 import AltaViaje from "./pages/AltaViaje";
 import CerrarSesion from "./pages/CerrarSesion";
+import HomeVendedor from "./pages/HomeVendedor";
 
 function App() {
   return (
@@ -25,11 +26,11 @@ function App() {
             <Route path="/altalocalidad" element={<AltaLocalidad />} />
             <Route path="/altaomnibus" element={<AltaOmnibus />} />
             <Route path="/altaviaje" element={<AltaViaje />} />
+            <Route path="/homev" element={<HomeVendedor />} />
+          </Routes >
+        </BrowserRouter >
 
-          </Routes>
-        </BrowserRouter>
-
-      </div>
+      </div >
     </>
   );
 }
