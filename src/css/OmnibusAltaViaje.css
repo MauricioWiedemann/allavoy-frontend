@@ -1,0 +1,21 @@
+.omnibus-alta {
+    border: 2px solid #cccccc;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px;
+    width: 48%;
+    background-color: white;
+}
+
+.omnibus-alta:hover {
+    background-color: rgb(240, 255, 255);
+    border: 2px solid #bbe4ff;
+}
+
+.omnibus-alta p {
+    cursor: pointer;
+}
+
+.omnibus-alta:active {
+    background-color: #bbe4ff;
+}

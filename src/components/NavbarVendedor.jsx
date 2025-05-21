@@ -42,7 +42,7 @@ function NavbarVendedor() {
           <Link className="nav-link" to="/">Soporte</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/">Cerrar Sesion</Link>
+          <Link className="nav-link" to="/cerrarsesion">Cerrar Sesion</Link>
         </li>
       </ul>
     </aside>
