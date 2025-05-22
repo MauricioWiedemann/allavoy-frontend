@@ -13,7 +13,7 @@ function CerrarSesion() {
             <h3>Esta seguro que quiere cerrar sesion?</h3>
         </div>
         <div class="d-grid gap-2">
-            <Link className="nav-link" to="/login">
+            <Link className="nav-link" to="/">
                 <button className="btn w50 btn-primary rounded-pill">Cerrar</button>
             </Link>
             <Link className="nav-link" to="/">

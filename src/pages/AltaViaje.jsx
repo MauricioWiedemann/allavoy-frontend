@@ -53,7 +53,7 @@ function AltaViaje() {
           </div>
           <div id="crear-cancelar-btn" class="d-grid gap-2 mb-3">
             <button id="btn-crear" className="btn w50 btn-primary rounded-pill">Crear</button>
-            <button id="btn-cancelar" className="btn w50 btn-secondary rounded-pill">Cancelar</button>
+            <button id="btn-cancelar" className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
           </div>
         </div>
       </div>

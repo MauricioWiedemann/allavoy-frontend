@@ -31,7 +31,7 @@ function AltaOmnibus() {
         </div>
         <div class="d-grid gap-2">
             <button className="btn w50 btn-primary rounded-pill">Crear Omnibus</button>
-            <button className="btn w50 btn-secondary rounded-pill">Cancelar</button>
+            <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
         </div>
       </div>
     </div>

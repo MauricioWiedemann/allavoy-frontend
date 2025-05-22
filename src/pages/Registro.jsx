@@ -75,6 +75,7 @@ function Registro() {
         .then(data => {
           console.log("Usuario registrado:", data);
           alert("Usuario registrado");
+          window.location.href = "/login";
         })
         .catch(error => {
           console.error("Error:", error);
