@@ -1,8 +1,7 @@
 import React from "react";
-import "../css/AltaViaje.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 
-function Inicio() {
+function HomeVendedor() {
     return (
         <>
             <NavbarVendedor />
@@ -10,4 +9,4 @@ function Inicio() {
     )
 };
 
-export default Inicio;
+export default HomeVendedor;
