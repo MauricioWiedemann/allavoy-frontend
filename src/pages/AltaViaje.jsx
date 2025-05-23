@@ -48,7 +48,7 @@ function AltaViaje() {
               <OmnibusAltaVaije />
             </div>
             <div className="mb-3">
-              <input type="number" className="form-control rounded-pill" placeholder="precio" />
+              <input type="number" className="form-control rounded-pill" placeholder="Precio" />
             </div>
           </div>
           <div id="crear-cancelar-btn" class="d-grid gap-2 mb-3">

@@ -24,17 +24,17 @@ function AltaLocalidad() {
       })
         .then(response => {
           if (!response.ok) {
-            throw new Error("Error al registrar el departamento");
+            throw new Error("Error al registrar la localidad");
           }
           return response.json();
         })
         .then(data => {
-          console.log("Departamento registrado:", data);
-          alert("Departamento registrado");
+          console.log("Localidad registrada:", data);
+          alert("Localidad registrada");
         })
         .catch(error => {
           console.error("Error:", error);
-          alert("Error al registrar el departamento.");
+          alert("Error al registrar la localidad.");
         });
     }
   }
