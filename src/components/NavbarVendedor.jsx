@@ -25,7 +25,7 @@ function NavbarVendedor() {
           <Link className="nav-link" to="/altaviaje">Alta Viaje</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/">Reasignacion de viaje</Link>
+          <Link className="nav-link" to="/reasignarviaje">Reasignacion de viaje</Link>
         </li>
         <h4>Pasajes</h4>
         <li className="nav-item">

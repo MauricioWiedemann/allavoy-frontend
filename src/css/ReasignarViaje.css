@@ -1,0 +1,85 @@
+.reasignarViaje-bg {
+    background: #e6f7ff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 200px;
+
+}
+
+.reasignarViaje-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    display: inline-block;
+}
+
+.reasignarViajeContenido {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.reasignarViajePasajes-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 80%;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    display: inline-block;
+}
+
+/* Modal general */
+.modal-overlay {
+  position: fixed;
+  padding: 30px;
+  inset: 0; /* top: 0, right: 0, bottom: 0, left: 0 */
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  justify-content: flex-end;
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.1);
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: 250px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.pasajesVendidosBotones {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+}
