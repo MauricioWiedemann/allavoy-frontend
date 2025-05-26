@@ -43,16 +43,16 @@ function ListadoViajes() {
             {viajes.map((viaje) => (
               <div
                 key={viaje.id}
-                className="flex justify-between items-center bg-gray-50 p-4 rounded-xl border shadow-sm"
+                className="flex justify-between items-center bg-transparent m-1 p-4 rounded border shadow-sm"
               >
-              <div className="reasignarViajeContenido">
-                    <p><strong>Salida:</strong> {viaje.salida}</p>
-                    <p><strong>Llegada:</strong> {viaje.llegada}</p>
-              </div>
-              <div className="reasignarViajeContenido">
-                    <p><strong>Precio:</strong> ${viaje.precio}</p>
-                    <p><strong>Ómnibus:</strong> {viaje.omnibus}</p>
-              </div>
+                <div className="reasignarViajeContenido">
+                  <p><strong>Salida:</strong> {viaje.salida}</p>
+                  <p><strong>Llegada:</strong> {viaje.llegada}</p>
+                </div>
+                <div className="reasignarViajeContenido">
+                  <p><strong>Precio:</strong> ${viaje.precio}</p>
+                  <p><strong>Ómnibus:</strong> {viaje.omnibus}</p>
+                </div>
                 <button
                   onClick={() => {
                     setViajeSeleccionado(viaje);
@@ -70,17 +70,22 @@ function ListadoViajes() {
           <div className="modal-container">
             <div className="modal-body">
               <div className="mx-auto my-4 w-48 text-center">
-                <h3 className="text-lg font-black text-gray-800">Pasajes Vendidos</h3>
-                <p className="text-sm text-gray-500">Ómnibus: {viajeSeleccionado.omnibus}</p>
-                <ul className="list-disc list-inside text-sm mt-2 text-gray-600">
+                <h3 className="text-lg font-black text-gray-800">Ómnibus disponibles</h3>
+                {/* <p className="text-sm text-gray-500">Ómnibus: {viajeSeleccionado.omnibus}</p> */}
+                <ul className="sin-puntos text-sm mt-2 text-gray-600">
                   {viajeSeleccionado.pasajes.map((p, i) => (
-                    <li key={i}>{p}</li>
+                    <li key={i}>
+                      <button className="btn-transparente" onClick={() => console.log(`Seleccionaste ${p}`)}>
+                        {p}
+                      </button>
+                    </li>
                   ))}
                 </ul>
+
               </div>
             </div>
             <div className="pasajesVendidosBotones">
-              <button className="btn w50 btn-primary rounded-pill" onClick={() => setOpen(false)}>Cancelar</button>
+              <button className="btn w50 btn-secondary rounded-pill" onClick={() => setOpen(false)}>Cancelar</button>
               <button className={`btn w50 btn-primary rounded-pill`}>Reasignar</button>
             </div>
           </div>
