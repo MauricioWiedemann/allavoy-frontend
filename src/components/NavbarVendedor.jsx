@@ -26,7 +26,7 @@ function NavbarVendedor() {
               <li className="nav-item"> <Link className="nav-link" to="/altalocalidad">Alta Localidad</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/altaomnibus">Alta Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/altaviaje">Alta Viaje</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/">Reasignación de viaje</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/reasignarviaje">Reasignación de viaje</Link></li>
             </>
           )}
         </li>
