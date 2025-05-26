@@ -1,36 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import logo from '../../sources/logo.png';
 import "../css/Navbar.css";
 
-function NavbarCliente() {
+function NavbarAdmin() {
+  const [setViajes, setShowViajes] = useState(false);
+  const [showUsuario, setShowUsuario] = useState(false);
+
   return (
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <img src={logo} alt="Logo"/>
-        <h2>AllaVoy</h2>
-      </div>
-      <ul class="navbar-nav ms-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/">Inicio</Link>
+    <aside className="sidebar">
+      <div className="sidebar-header"><img src={logo} alt="Logo" /><h2>AllaVoy</h2></div>
+      <ul className="navbar-nav ms-auto">
+        <li>
+          <div className="menu-title" onClick={() => setShowViajes(!setViajes)}>
+            <h4>Viajes</h4>{
+              setViajes ? <FaChevronUp /> : <FaChevronDown />}
+          </div>
         </li>
-        <h4>Viajes</h4>
-        <li className="nav-item">
-          <Link className="nav-link" to="/">Buscar</Link>
+        {setViajes && (<><li className="nav-item"><Link className="nav-link" to="/">Buscar</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/">Comprar Pasajes</Link></li></>)}
+        <li>
+          <div className="menu-title" onClick={() => setShowUsuario(!showUsuario)}>
+            <h4>Usuario</h4>
+            {showUsuario ? <FaChevronUp /> : <FaChevronDown />}
+          </div>
         </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/">Comprar</Link>
-        </li>
-        <h4>Usuario</h4>
-        <li className="nav-item">
-          <Link className="nav-link" to="/">Soporte</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/cerrarsesion">Cerrar Sesion</Link>
-        </li>
+        {showUsuario && (<><li className="nav-item"><Link className="nav-link" to="/">Soporte</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li></>)}
       </ul>
     </aside>
   )
 }
 
-export default NavbarCliente;
+export default NavbarAdmin;
