@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../css/OmnibusAltaViaje.css";
+import { useViajeContext } from "../context/ViajeContext";
 
-export default function OmnibusAltaVaije() {
+export default function OmnibusAltaVaije({omnibus}) {
+
+  const { guardarOmnibus, omnibusViaje } = useViajeContext();
+
+  useEffect(() => {
+        if (omnibus === omnibusViaje.omnibus){
+          document.getElementById(omnibus.idOmnibus).style.backgroundColor = "rgb(240, 255, 255)";
+          document.getElementById(omnibus.idOmnibus).style.border = "2px solid #bbe4ff";
+        } else {
+          document.getElementById(omnibus.idOmnibus).style.backgroundColor = "white";
+          document.getElementById(omnibus.idOmnibus).style.border = "2px solid #cccccc";
+        }
+    }, [omnibusViaje])
+
   return (
-    <div className="omnibus-alta col">
-              <p>Scania, K 410 B6X2*4</p>
-              <p>Matricula: AAA 1234</p>
-              <p>Cantidad de asiento: 24</p>
-    </div>
+    <button id={omnibus.idOmnibus} className="omnibus-alta col" onClick={() => guardarOmnibus({omnibus})}>
+              <p>{omnibus.marca}, {omnibus.modelo}</p>
+              <p>Matricula: {omnibus.matricula}</p>
+              <p>Cantidad de asiento: {omnibus.capacidad}</p>
+    </button>
   );
 }
