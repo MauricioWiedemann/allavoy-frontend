@@ -15,9 +15,21 @@ export const ViajeProvider = ({children}) => {
         setOmnibusViaje(omnibus);
     }
 
+    const [viajeCerrarVenta, setViajeCerrarVenta] = useState([]);
+
+    useEffect(() => {
+        localStorage.setItem('viajeCerrarVenta', JSON.stringify(viajeCerrarVenta));
+    }, [viajeCerrarVenta])
+
+    const guardarViajeCerraVenta = (viaje) => {
+        setViajeCerrarVenta(viaje);
+    }
+
     const value = {
         guardarOmnibus,
-        omnibusViaje
+        omnibusViaje,
+        guardarViajeCerraVenta,
+        viajeCerrarVenta
     }
 
     return <ViajeContext.Provider value={value}>
