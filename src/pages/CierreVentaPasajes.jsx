@@ -22,7 +22,7 @@ function CierreVentaPasaje() {
     }
 
     async function obtenerViajes() {
-        //obtener omnibus validos
+        //obtener viajes activos
         await fetch("http://localhost:8080/viaje/obteneractivos", {
         method: "GET",
         headers: {

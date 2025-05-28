@@ -1,38 +1,109 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/ReasignarViaje.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
 
-const viajes = [
-  {
-    id: 1,
-    salida: '17/07/2025 00:30',
-    llegada: '17/07/2025 06:30',
-    precio: 1300,
-    omnibus: '201',
-    pasajes: ['Asiento 1A', 'Asiento 2B', 'Asiento 3C', 'Asiento 4D'],
-  },
-  {
-    id: 2,
-    salida: '18/07/2025 01:00',
-    llegada: '18/07/2025 07:00',
-    precio: 1400,
-    omnibus: '303',
-    pasajes: ['Asiento 1A', 'Asiento 2B'],
-  },
-  {
-    id: 3,
-    salida: '19/07/2025 02:00',
-    llegada: '19/07/2025 08:00',
-    precio: 1500,
-    omnibus: '404E',
-    pasajes: ['Asiento 5A', 'Asiento 6C', 'Asiento 7D'],
-  },
-];
-
 function ListadoViajes() {
   const [viajeSeleccionado, setViajeSeleccionado] = useState(null);
+  const [omnibusSeleccionado, setOmnibusSeleccionado] = useState(null);
+
   const [open, setOpen] = useState(false)
+
+  const [listaViajes, setListaViajes] = useState([]);
+  const [listaOmnibus, setListaOmnibus] = useState([]);
+
+  async function obtenerViajes() {
+    //obtener viajes que no partieron
+    await fetch("http://localhost:8080/viaje/obtenernopartidos", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+    }).then(response => {
+      return response.json();
+    })
+    .then(data => {
+      setListaViajes(data);
+    })
+    ;
+  }
+
+  async function obtenerOmnibus() {
+    setOmnibusSeleccionado("");
+    //obtener viajes que no partieron
+    await fetch("http://localhost:8080/omnibus/obtenerall", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+    }).then(response => {
+      return response.json();
+    })
+    .then(data => {
+      setListaOmnibus(data);
+    })
+    ;
+  }
+
+  async function reasignarViaje() {
+    //obtener viajes que no partieron
+    await fetch("http://localhost:8080/viaje/reasignar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      idViaje: viajeSeleccionado.idViaje,
+      idOmnibus: omnibusSeleccionado.omnibus.idOmnibus
+    })
+    }).then(response => {
+    if (!response.ok) {
+        throw new Error("Error al reasignar");
+    }
+    return response;
+    })
+    .then(data => {
+    console.log("Viaje reasignado:", data);
+    alert("Viaje reasignado");
+    window.location.reload();
+    })
+    .catch(error => {
+    console.error("Error:", error);
+    alert("Error al reasignar.");
+    });
+  }
+
+  function swapCharacters(inputString) {
+    let charArray = inputString.split('');
+    charArray[10]= " ";
+    return charArray.join('');
+  }
+
+  function omnSeleccionado(){
+    var btns = document.getElementsByClassName("omnibus-dispo");
+    Array.from(btns).forEach((b) => {
+      if (omnibusSeleccionado && b.id == omnibusSeleccionado.omnibus.idOmnibus){
+        b.style.border = "2px solid #bbe4ff";
+        b.style.backgroundColor = "rgb(240, 255, 255)"
+      } else {
+        b.style.backgroundColor = "white";
+        b.style.border = "2px solid #cccccc";
+      }
+    });
+  }
+
+  useEffect(() => {
+    obtenerViajes();
+  },[]);
+
+  useEffect(() => {
+    obtenerOmnibus();
+  },[viajeSeleccionado]);
+
+  useEffect(() => {
+    omnSeleccionado();
+  },[omnibusSeleccionado]);
+
   return (
     <>
       <NavbarVendedor />
@@ -40,18 +111,18 @@ function ListadoViajes() {
         <div className="reasignarViaje-card card p-4 shadow-lg">
 
           <div className="space-y-4">
-            {viajes.map((viaje) => (
+            {listaViajes.map((viaje) => (
               <div
-                key={viaje.id}
-                className="flex justify-between items-center bg-transparent m-1 p-4 rounded border shadow-sm"
+                key={viaje.idViaje}
+                className="flex justify-between items-center bg-light m-1 p-4 rounded border shadow-sm"
               >
                 <div className="reasignarViajeContenido">
-                  <p><strong>Salida:</strong> {viaje.salida}</p>
-                  <p><strong>Llegada:</strong> {viaje.llegada}</p>
+                  <p><strong>Salida:</strong> {swapCharacters(viaje.fechaSalida)}</p>
+                  <p><strong>Llegada:</strong> {swapCharacters(viaje.fechaLlegada)}</p>
                 </div>
                 <div className="reasignarViajeContenido">
                   <p><strong>Precio:</strong> ${viaje.precio}</p>
-                  <p><strong>Ómnibus:</strong> {viaje.omnibus}</p>
+                  <p><strong>Ómnibus:</strong> {viaje.omnibus.matricula}</p>
                 </div>
                 <button
                   onClick={() => {
@@ -71,22 +142,18 @@ function ListadoViajes() {
             <div className="modal-body">
               <div className="mx-auto my-4 w-48 text-center">
                 <h3 className="text-lg font-black text-gray-800">Ómnibus disponibles</h3>
-                {/* <p className="text-sm text-gray-500">Ómnibus: {viajeSeleccionado.omnibus}</p> */}
-                <ul className="sin-puntos text-sm mt-2 text-gray-600">
-                  {viajeSeleccionado.pasajes.map((p, i) => (
-                    <li key={i}>
-                      <button className="btn-transparente" onClick={() => console.log(`Seleccionaste ${p}`)}>
-                        {p}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-
+                {listaOmnibus.map((omnibus) => (
+                <button id={omnibus.idOmnibus} className="omnibus-dispo col" onClick={() => setOmnibusSeleccionado({omnibus})}>
+                  <p>{omnibus.marca}, {omnibus.modelo}</p>
+                  <p>Matricula: {omnibus.matricula}</p>
+                  <p>Cantidad de asiento: {omnibus.capacidad}</p>
+                </button>
+                ))}
               </div>
             </div>
             <div className="pasajesVendidosBotones">
               <button className="btn w50 btn-secondary rounded-pill" onClick={() => setOpen(false)}>Cancelar</button>
-              <button className={`btn w50 btn-primary rounded-pill`}>Reasignar</button>
+              <button className="btn w50 btn-primary rounded-pill" onClick={() => reasignarViaje()}>Reasignar</button>
             </div>
           </div>
         )}

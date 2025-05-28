@@ -16,6 +16,7 @@ function AltaViaje() {
   const [precio, setPrecio] = useState("");
 
   const [listaOmnibus, setListaOmnibus] = useState([]);
+  const [clicked, setClicked] = useState(false);
 
   async function cargarLocalidades(componenteId) {
     //obtengo el componente donde va la lista de localidades
@@ -74,14 +75,12 @@ function AltaViaje() {
   }
 
   async function obtenerOmnibus() {
-    
+    setClicked(true);
     if (localidadSalida.trim() === "" || fechaSalida.trim() === "" || horaSalida.trim() === "" || localidadLlegada.trim() === "" || fechaLlegada.trim() === "" || horaLlegada.trim() === "") { 
       alert("Complete todos los campos.");
     } else if (validarLocalidades()) {
       alert("Las localidades no pueden ser iguales.");
     } else if (validarFechas()) {
-      var x = document.getElementById("finalizar-alta-id");
-      x.style.display = "block";
       //obtener omnibus validos
       let localidadAux = JSON.parse(localidadSalida).idLocalidad;
       await fetch("http://localhost:8080/omnibus/obtener", {
@@ -103,6 +102,20 @@ function AltaViaje() {
       ;
     }
   }
+
+  useEffect(() => {
+    var fin = document.getElementById("finalizar-alta-id");
+    var par = document.getElementById("p-container");
+      if(listaOmnibus.length === 0){
+        fin.style.display = "none";
+        if (clicked){
+          par.style.display = "block";
+        }
+      } else {
+        fin.style.display = "block";
+        par.style.display = "none";
+      }
+  },[listaOmnibus]);
 
   function registrarViaje() {
     if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") { 
@@ -174,6 +187,9 @@ function AltaViaje() {
           <div class="d-grid mb-3">
             <button className="btn w50 btn-primary rounded-pill" onClick={() => obtenerOmnibus()}>Buscar Omnibus</button>
           </div>
+          <div id="p-container">
+            <p>No hay omnibus disponibles.</p>
+          </div>
           <div id="finalizar-alta-id" className="omnibus-container mb-3">
             <div id="omnibus-container-id" className="row row-cols-2 mb-3">
               {listaOmnibus.map((element) => (
@@ -188,7 +204,7 @@ function AltaViaje() {
             </div>
           </div>
           <div id="cancelar-btn">
-            <button id="btn-cancelar" className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/altaviaje"} >Cancelar</button>
+            <button id="btn-cancelar" className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
           </div>
         </div>
       </div>

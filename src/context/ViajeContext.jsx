@@ -5,6 +5,8 @@ const ViajeContext = createContext();
 export const useViajeContext = () => useContext(ViajeContext);
 
 export const ViajeProvider = ({children}) => {
+    
+    //OMNIBUS PARA VIAJE
     const [omnibusViaje, setOmnibusViaje] = useState([]);
 
     useEffect(() => {
@@ -15,6 +17,7 @@ export const ViajeProvider = ({children}) => {
         setOmnibusViaje(omnibus);
     }
 
+    //VIAJE PARA CERRAR SU VENTA
     const [viajeCerrarVenta, setViajeCerrarVenta] = useState([]);
 
     useEffect(() => {
@@ -25,6 +28,7 @@ export const ViajeProvider = ({children}) => {
         setViajeCerrarVenta(viaje);
     }
 
+    //LAS FUNCIONES Y VARIABLES QUE SE PUEDEN UTLIIZAR
     const value = {
         guardarOmnibus,
         omnibusViaje,
