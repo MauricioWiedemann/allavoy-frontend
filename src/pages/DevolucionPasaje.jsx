@@ -45,7 +45,7 @@ function DevolucionPasaje() {
           <h2>Selecciona asiento(s) para devolver</h2>
           <div className="seat-map">
             {totalSeats.map(seat => (
-              <div className={`seat ${selectedSeats.includes(seat) ? "selected" : ""} ${!soldSeats.has(seat) ? "empty" : ""}`}>
+              <div className={`seat-devolucion ${selectedSeats.includes(seat) ? "selected-devolucion" : ""} ${!soldSeats.has(seat) ? "empty-devolucion" : ""}`}>
                 <FaUser onClick={() => handleSeatSelection(seat)} />
                 <span>{seat}</span>
               </div>
