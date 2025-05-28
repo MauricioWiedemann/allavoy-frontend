@@ -38,7 +38,7 @@ function NavbarVendedor() {
           {showPasajes && (
             <>
               <li className="nav-item"><Link className="nav-link" to="/">Compra</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/">Cierre de venta</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/cierreventa">Cierre de venta</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/">Listado de ventas</Link></li>
             </>
           )}

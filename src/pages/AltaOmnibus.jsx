@@ -26,7 +26,7 @@ function AltaOmnibus() {
           numeroSerie: nroMotor,
           matricula: matricula,
           capacidad: capacidad,
-          localidad: localidad
+          localidad: JSON.parse(localidad)
         })
       })
         .then(response => {
@@ -66,7 +66,7 @@ function AltaOmnibus() {
     //generar los option que se insertara en el select con los datos de las localidades
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
-      option.value=element.idLocalidad;
+      option.value=JSON.stringify(element);
       option.textContent= element.nombre.concat(", ", element.departamento);
       selectLocalidades.appendChild(option);
     });

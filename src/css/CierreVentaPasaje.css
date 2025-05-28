@@ -1,0 +1,28 @@
+.cierreVenta-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f2ef;
+}
+
+.cierreVenta-card {
+    width: 680px;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+    margin-left: 260px;
+}
+
+.btn {
+    margin-top: 1px;
+}
+
+#p-container {
+    display: none;
+}
+
+#p-container p {
+    text-align: center;
+    line-height: 100px;
+
+}
