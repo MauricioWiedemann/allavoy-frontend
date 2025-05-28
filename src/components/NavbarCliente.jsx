@@ -19,7 +19,7 @@ function NavbarCliente() {
           <Link className="nav-link" to="/">Buscar</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/">Comprar</Link>
+          <Link className="nav-link" to="/listadoviajes">Comprar</Link>
         </li>
         <h4>Usuario</h4>
         <li className="nav-item">
