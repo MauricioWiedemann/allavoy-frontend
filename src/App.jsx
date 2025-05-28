@@ -11,6 +11,7 @@ import AltaViaje from "./pages/AltaViaje";
 import CerrarSesion from "./pages/CerrarSesion";
 import AltaUsuario from "./pages/AltaUsuario";
 import ReasignarViaje from "./pages/ReasignarViaje";
+import Buscar from "./pages/ListadoViaje";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
             <Route path="/altaviaje" element={<AltaViaje />} />
             <Route path="/altausuario" element={<AltaUsuario />} />
             <Route path="/reasignarviaje" element={<ReasignarViaje />} />
-
+            <Route path="/buscar" element={<Buscar />} />
           </Routes >
         </BrowserRouter >
 

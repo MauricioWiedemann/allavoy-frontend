@@ -18,7 +18,7 @@ function NavbarAdmin() {
               setViajes ? <FaChevronUp /> : <FaChevronDown />}
           </div>
         </li>
-        {setViajes && (<><li className="nav-item"><Link className="nav-link" to="/">Buscar</Link></li>
+        {setViajes && (<><li className="nav-item"><Link className="nav-link" to="/buscar">Buscar</Link></li>
           <li className="nav-item"><Link className="nav-link" to="/">Comprar Pasajes</Link></li></>)}
         <li>
           <div className="menu-title" onClick={() => setShowUsuario(!showUsuario)}>
