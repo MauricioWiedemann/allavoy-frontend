@@ -12,9 +12,8 @@ import AltaViaje from "./pages/AltaViaje";
 import CerrarSesion from "./pages/CerrarSesion";
 import AltaUsuario from "./pages/AltaUsuario";
 import ReasignarViaje from "./pages/ReasignarViaje";
+import Buscar from "./pages/ListadoViaje";
 import CierreVentaPasaje from "./pages/CierreVentaPasajes";
-
-
 import { ViajeProvider } from "./context/ViajeContext";
 
 function App() {
@@ -42,6 +41,7 @@ function App() {
               <Route path="/altausuario" element={<AltaUsuario />} />
               <Route path="/reasignarviaje" element={<ReasignarViaje />} />
               <Route path="/cierreventa" element={<CierreVentaPasaje />} />
+              <Route path="/buscar" element={<Buscar />} />
             </Routes >
           </BrowserRouter >
         </div >
