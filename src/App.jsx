@@ -14,6 +14,8 @@ import AltaUsuario from "./pages/AltaUsuario";
 import ReasignarViaje from "./pages/ReasignarViaje";
 import Buscar from "./pages/ListadoViaje";
 import CierreVentaPasaje from "./pages/CierreVentaPasajes";
+import ListadoPasajes from "./pages/ListadoPasajes";
+
 import { ViajeProvider } from "./context/ViajeContext";
 
 function App() {
@@ -42,6 +44,7 @@ function App() {
               <Route path="/reasignarviaje" element={<ReasignarViaje />} />
               <Route path="/cierreventa" element={<CierreVentaPasaje />} />
               <Route path="/buscar" element={<Buscar />} />
+              <Route path="/listarpasajes" element={<ListadoPasajes />} />
             </Routes >
           </BrowserRouter >
         </div >

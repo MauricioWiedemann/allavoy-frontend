@@ -1,0 +1,85 @@
+.listarPasajes-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f2ef;
+}
+
+.listarPasajes-card {
+    width: 680px;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+    margin-left: 260px;
+}
+
+.btn {
+    margin-top: 1px;
+}
+
+.listarPasajesContenido {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    cursor: default;
+}
+
+.modal-overlay {
+    position: fixed;
+    padding: 30px;
+    inset: 0;
+    /* top: 0, right: 0, bottom: 0, left: 0 */
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    justify-content: flex-end;
+    overflow: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.1);
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    width: 433px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 1px;
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.pasaje-frame {
+    border-top: 1px solid #d3d3d3;
+    border-bottom: 1px solid #d3d3d3;
+    margin: 0;
+}
+
+.pasaje-frame p {
+    margin: 0;
+    cursor: default;
+}
+
+.text-lg {
+    margin-bottom: 30px;
+    cursor: default;
+}
