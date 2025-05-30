@@ -22,12 +22,12 @@ function NavbarVendedor() {
             {showGestion ? <FaChevronUp /> : <FaChevronDown />}
           </div>
           {showGestion && (
-            <ul>
+            <>
               <li className="nav-item"> <Link className="nav-link" to="/altalocalidad">Alta Localidad</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/altaomnibus">Alta Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/altaviaje">Alta Viaje</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/reasignarviaje">Reasignación de viaje</Link></li>
-            </ul>
+            </>
           )}
         </li>
         <li>
@@ -36,11 +36,11 @@ function NavbarVendedor() {
             {showPasajes ? <FaChevronUp /> : <FaChevronDown />}
           </div>
           {showPasajes && (
-            <ul>
+            <>
               <li className="nav-item"><Link className="nav-link" to="/">Compra</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cierreventa">Cierre de venta</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/">Listado de ventas</Link></li>
-            </ul>
+              <li className="nav-item"><Link className="nav-link" to="/listarpasajes">Listado de ventas</Link></li>
+            </>
           )}
         </li>
         <li>
@@ -49,10 +49,10 @@ function NavbarVendedor() {
             {showUsuario ? <FaChevronUp /> : <FaChevronDown />}
           </div>
           {showUsuario && (
-            <ul>
+            <>
               <li className="nav-item"><Link className="nav-link" to="/">Soporte</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li>
-            </ul>
+            </>
           )}
         </li>
       </ul>
