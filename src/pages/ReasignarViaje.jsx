@@ -30,13 +30,18 @@ function ListadoViajes() {
 
   async function obtenerOmnibus() {
     setOmnibusSeleccionado("");
-    //obtener viajes que no partieron
-    await fetch("http://localhost:8080/omnibus/obtenerall", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-    }).then(response => {
+    const arrayAux = viajeSeleccionado.fechaSalida.split("T", 2);
+    await fetch("http://localhost:8080/omnibus/obtener", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          localidadSalida: viajeSeleccionado.origen.idLocalidad,
+          fechaSalida: arrayAux[0],
+          horaSalida: arrayAux[1].substring(0, 5),
+        })
+      }).then(response => {
       return response.json();
     })
     .then(data => {

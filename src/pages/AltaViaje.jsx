@@ -146,6 +146,7 @@ function AltaViaje() {
         .then(data => {
           console.log("Viaje registrado:", data);
           alert("Viaje registrado");
+          window.location.reload();
         })
         .catch(error => {
           console.error("Error:", error);
