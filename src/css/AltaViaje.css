@@ -26,3 +26,13 @@
     padding-left: 1%;
     display: none
 }
+
+#p-container {
+    display: none;
+}
+
+#p-container p {
+    text-align: center;
+    line-height: 100px;
+
+}
