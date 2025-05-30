@@ -16,10 +16,13 @@ function ListadoUsuario() {
     function validar_datos() {
         console.log(tipo);
 
-
         let activo = false;
+        let tipoUsuario = tipo;
+
         if (estado === "ACTIVO")
-            activo = true;
+            activo = true
+        if (tipo === "")
+            tipoUsuario = null
 
 
         fetch("http://localhost:8080/usuario/buscar", {
@@ -29,7 +32,7 @@ function ListadoUsuario() {
             },
             body: JSON.stringify({
                 email: email,
-                tipoUsuario: tipo,
+                tipoUsuario: tipoUsuario,
                 estado: activo
             })
         })
