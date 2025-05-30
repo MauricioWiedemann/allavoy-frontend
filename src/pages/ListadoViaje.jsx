@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../css/Listado.css";
+import { useNavigate } from 'react-router-dom';
 import NavbarCliente from "../components/NavbarCliente";
 
 function ListadoViaje() {
@@ -98,6 +99,15 @@ function ListadoViaje() {
     else if (orden === "hora")
         viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
 
+    const navigate = useNavigate();
+    function comprar_pasaje(viaje) {
+      navigate("/compra", {
+        state: {
+          viaje: viaje,
+          cantidad: parseInt(cantidad, 10)
+        }
+      });
+    }
 
     return (
         <>

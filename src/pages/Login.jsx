@@ -30,6 +30,8 @@ function Login() {
                 .then(data => {
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("tipoUsuario", data.usuario.tipoUsuario);
+                    localStorage.setItem("id_usuario", data.usuario.idUsuario)
+                    localStorage.setItem("tipoDescuento", data.usuario.tipoDescuento)
 
                     if (data.usuario.tipoUsuario === "CLIENTE")
                         window.location.href = "/homec";
