@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 import "../css/Login.css";
 
 function Login() {
@@ -29,16 +30,20 @@ function Login() {
                 })
                 .then(data => {
                     localStorage.setItem("token", data.token);
-                    localStorage.setItem("tipoUsuario", data.usuario.tipoUsuario);
-                    localStorage.setItem("id_usuario", data.usuario.idUsuario)
-                    localStorage.setItem("tipoDescuento", data.usuario.tipoDescuento)
+                    const token = localStorage.getItem("token");
+                    const payload = jwtDecode(token);
+                    console.log(payload);
 
-                    if (data.usuario.tipoUsuario === "CLIENTE")
+                    if (payload.rol === "CLIENTE")
                         window.location.href = "/homec";
-                    else if (data.usuario.tipoUsuario === "VENDEDOR")
+                    else if (payload.rol === "VENDEDOR")
                         window.location.href = "/homev";
                     else
                         window.location.href = "/homea";
+
+                    console.log("Rol:", payload.rol);
+                    console.log("ID Usuario:", payload.idUsuario);
+                    console.log("Email:", payload.sub);
 
                 })
                 .catch(error => {
