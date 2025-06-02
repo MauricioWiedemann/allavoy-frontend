@@ -18,7 +18,13 @@ function NavbarAdministrador() {
             {showGestion ? <FaChevronUp /> : <FaChevronDown />}
           </div>
         </li>
-        {showGestion && (<><li className="nav-item"><Link className="nav-link" to="/altausuario">Alta Usuarios</Link></li></>)}
+        {showGestion && (
+          <>
+            <li className="nav-item"><Link className="nav-link" to="/altausuario">Alta Usuarios</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/listausuarios">Listado de Usuarios</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/bajausuario">Baja de Usuarios</Link></li>
+          </>)
+        }
         <li>
           <div className="menu-title" onClick={() => setShowUsuario(!showUsuario)}>
             <h4>Usuario</h4>

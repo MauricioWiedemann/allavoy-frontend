@@ -31,7 +31,7 @@ function ListadoViajes() {
   async function obtenerOmnibus() {
     setOmnibusSeleccionado("");
     const arrayAux = viajeSeleccionado.fechaSalida.split("T", 2);
-    await fetch("http://localhost:8080/omnibus/obtener", {
+    await fetch("http://localhost:8080/omnibus/obtenerreasignar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -40,6 +40,7 @@ function ListadoViajes() {
           localidadSalida: viajeSeleccionado.origen.idLocalidad,
           fechaSalida: arrayAux[0],
           horaSalida: arrayAux[1].substring(0, 5),
+          ocupados: viajeSeleccionado.cantidadOcupados
         })
       }).then(response => {
       return response.json();

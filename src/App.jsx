@@ -16,6 +16,7 @@ import Buscar from "./pages/ListadoViaje";
 import CierreVentaPasaje from "./pages/CierreVentaPasajes";
 import ListadoPasajes from "./pages/ListadoPasajes";
 import CompraPasaje from "./pages/CompraPasaje";
+import BajaUsuario from "./pages/BajaDeUsuario";
 
 
 import { ViajeProvider } from "./context/ViajeContext";
@@ -50,6 +51,7 @@ function App() {
               <Route path="/listausuarios" element={<ListaUsuarios />} />
               <Route path="/listarpasajes" element={<ListadoPasajes />} />
               <Route path="/compra" element={<CompraPasaje />} />
+              <Route path="/bajausuario" element={<BajaUsuario />} />
             </Routes >
           </BrowserRouter >
         </div >

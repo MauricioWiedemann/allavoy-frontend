@@ -2,25 +2,19 @@ import React, { useState, useEffect } from "react";
 import "../css/ListadoUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 
-function ListadoUsuario() {
+function BajaUsuario() {
     const [email, setEmail] = useState("");
     const [tipo, setTipo] = useState("");
-    const [estado, setEstado] = useState("ACTIVO");
     const [usuario, setUsuarios] = useState([]);
     const [orden, setOrden] = useState("");
 
     useEffect(() => {
-        listar_usuarios();
+        listar_usuarios_activos();
     }, []);
 
     function validar_datos() {
-        console.log(tipo);
 
-        let activo = false;
         let tipoUsuario = tipo;
-
-        if (estado === "ACTIVO")
-            activo = true
         if (tipo === "")
             tipoUsuario = null
 
@@ -33,13 +27,12 @@ function ListadoUsuario() {
             body: JSON.stringify({
                 email: email,
                 tipoUsuario: tipoUsuario,
-                estado: activo
+                estado: true
             })
         })
             .then(response => {
                 if (!response.ok) {
                     throw new Error("No se encontraron usuarios.");
-
                 }
                 return response.json();
             })
@@ -53,8 +46,8 @@ function ListadoUsuario() {
             });
     }
 
-    function listar_usuarios() {
-        fetch("http://localhost:8080/usuario/listar", {
+    function listar_usuarios_activos() {
+        fetch("http://localhost:8080/usuario/listaractivos", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -75,6 +68,10 @@ function ListadoUsuario() {
                 alert("No se encontraron usuarios.");
                 setUsuarios([]);
             });
+    }
+
+    function desactivar_usuario(usuario){
+        alert("deleted");
     }
 
     function capitalizar(str) {
@@ -105,11 +102,6 @@ function ListadoUsuario() {
                             <option value="VENDEDOR">Vendedor</option>
                         </select>
 
-                        <select className="form-select rounded-pill" value={estado} onChange={(e) => setEstado(e.target.value)}>
-                            <option value="ACTIVO">Activo</option>
-                            <option value="BLOQUEADO">Bloqueado</option>
-                        </select>
-
                         <button className="btn btn-primary rounded-pill" onClick={validar_datos}>Buscar</button>
                     </div>
                 </div>
@@ -133,6 +125,7 @@ function ListadoUsuario() {
                             </div>
                             <p className="mb-0">Correo: {usuario.email}</p>
                             <p className="mb-0">Descuento: {usuario.tipoDescuento}</p>
+                            <button className="btn btn-danger btn-sm rounded-pill comprar-btn" onClick={() => desactivar_usuario(usuario)}>Desactivar</button>
                         </div>
                     ))}
                 </div>}
@@ -142,4 +135,4 @@ function ListadoUsuario() {
     );
 }
 
-export default ListadoUsuario;
+export default BajaUsuario;
