@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "../css/ListadoPasajes.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
 
 function ListadoPasajes() {
-
     const [listaViajes, setListaViajes] = useState([]);
     const [listaPasajesVendidos, setListaPasajesVendidos] = useState([]);
     const [listaPasajesDevuletos, setListaPasajesDevuletos] = useState([]);
@@ -53,19 +52,19 @@ function ListadoPasajes() {
         });
     }
 
-    async function obtenerViajes(){
+    async function obtenerViajes() {
         await fetch("http://localhost:8080/viaje/obtenertodos", {
-        method: "GET",
-        headers: {
-        "Content-Type": "application/json"
-        }
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
         }).then(response => {
-        return response.json();
+            return response.json();
         })
-        .then(data => {
-        setListaViajes(data);
-        })
-        ;
+            .then(data => {
+                setListaViajes(data);
+            })
+            ;
     }
 
     function validar_datos() {
@@ -106,59 +105,59 @@ function ListadoPasajes() {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
-    async function obtenerPasajesVendidos(){
+    async function obtenerPasajesVendidos() {
         await fetch("http://localhost:8080/pasajes/obtenervendidos", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            idViaje: viajeSeleccionado.idViaje
-        })
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idViaje: viajeSeleccionado.idViaje
+            })
         }).then(response => {
-        return response.json();
+            return response.json();
         })
-        .then(data => {
-            console.log("1", data);
-        setListaPasajesVendidos(data);
-        })
-        ;
+            .then(data => {
+                console.log("1", data);
+                setListaPasajesVendidos(data);
+            })
+            ;
     }
 
-    async function obtenerPasajesDevueltos(){
+    async function obtenerPasajesDevueltos() {
         await fetch("http://localhost:8080/pasajes/obtenerdevueltos", {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            idViaje: viajeSeleccionado.idViaje
-        })
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idViaje: viajeSeleccionado.idViaje
+            })
         }).then(response => {
-        return response.json();
+            return response.json();
         })
-        .then(data => {
-            console.log("2", data);
-        setListaPasajesDevuletos(data);
-        })
-        ;
+            .then(data => {
+                console.log("2", data);
+                setListaPasajesDevuletos(data);
+            })
+            ;
     }
 
     function swapCharacters(inputString) {
         let charArray = inputString.split('');
-        charArray[10]= " ";
+        charArray[10] = " ";
         return charArray.join('');
     }
 
     useEffect(() => {
         obtenerViajes();
         cargarLocalidades();
-    },[]);
+    }, []);
 
     useEffect(() => {
         obtenerPasajesVendidos();
         obtenerPasajesDevueltos();
-    },[viajeSeleccionado]);
+    }, [viajeSeleccionado]);
 
     const viajesOrdenados = [...listaViajes];
     if (orden === "precio")
@@ -167,89 +166,54 @@ function ListadoPasajes() {
         viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
 
     return (
-    <>
-      <NavbarVendedor />
-      <div className="listadoViaje-container">
-        <div className="buscador-card card p-4 mt-3 mb-3 shadow-lg">
-            <div className="campos-flex mb-3">
-                <select className="form-select rounded-pill" id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>
-                    <option value="" disabled>Origen</option>
-                </select>
-                <select className="form-select rounded-pill" id="select-destino" value={destino} onChange={(e) => setDestino(e.target.value)}>
-                    <option value="" disabled>Destino</option>
-                </select>
-                <input type="date" className="form-control rounded-pill" value={fecha} onChange={(e) => setFecha(e.target.value)} />
-                <button className="btn btn-primary rounded-pill" onClick={validar_datos}>Buscar</button>
-            </div>
-        </div>
-        <div className="ordenar-container">
-            <select className="form-select rounded-pill ordenar-select" value={orden} onChange={(e) => setOrden(e.target.value)} >
-                <option value="" selected disabled>Ordenar por</option>
-                <option value="precio">Precio</option>
-                <option value="hora">Hora</option>
-            </select>
-        </div>
-        <div className="viajes-list">
-            {viajesOrdenados.map((viaje, index) => (
-                <div key={index} className="viaje-card card p-4 shadow-lg">
-                    <h5>{capitalizar(viaje.origen.nombre)}, {capitalizar(viaje.origen.departamento)} → {capitalizar(viaje.destino.nombre)}, {capitalizar(viaje.destino.departamento)}</h5>
-                    <p>Fecha: {viaje.fechaSalida.split("T")[0]}            Hora: {viaje.fechaSalida.split("T")[1]}</p>
-                    <p>Asientos Disponibles: {viaje.cantidad}</p>
-                    <p>Precio: {viaje.precio}</p>
-                    <button className="btn btn-primary btn-sm rounded-pill comprar-btn" onClick={() => { setViajeSeleccionado(viaje); setOpen(true); }}>Seleccionar</button>
-                </div>
-            ))}
-        </div>
-    </div>
+        <>
+            <NavbarVendedor />
+            <div className="layout">
+                <div className="filtros">
+                    <div className="buscador">
+                        <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>
+                            <option value="" disabled>Origen</option>
+                        </select>
+                        <select id="select-destino" value={destino} onChange={(e) => setDestino(e.target.value)}>
+                            <option value="" disabled>Destino</option>
+                        </select>
+                        <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
+                        <button onClick={validar_datos}>Buscar</button>
+                    </div>
 
-      <Modal open={open} onClose={() => setOpen(false)}>
-        {viajeSeleccionado && listaPasajesVendidos.length>0 &&(
-          <div className="modal-container">
-            <div className="modal-body">
-              <div className="mx-auto my-4 w-48 text-center">
-                <h3 className="text-lg font-black text-gray-800">Pasajes Vendidos</h3>
-                {listaPasajesVendidos.map((pasaje) => (
-                <div id={pasaje.idPasaje} className="pasaje-frame col">
-                    <p><strong>Cliente: </strong>{pasaje.emailCliente}</p>
-                    <p><strong>Fecha de Compra: </strong>{swapCharacters(pasaje.fechaCompra)}</p>
-                    <p><strong>Asiento: </strong>{pasaje.asiento}</p>
-                    <p><strong>Precio: </strong>${pasaje.monto}</p>
+                    <div className="ordenar">
+                        <select value={orden} onChange={(e) => setOrden(e.target.value)}>
+                            <option value="" disabled>Ordenar por</option>
+                            <option value="precio">Precio</option>
+                            <option value="hora">Hora</option>
+                        </select>
+                    </div>
                 </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-        {viajeSeleccionado && listaPasajesDevuletos.length>0 &&(
-          <div className="modal-container">
-            <div className="modal-body">
-              <div className="mx-auto w-48 text-center">
-                <h3 className="text-lg font-black text-gray-800">Pasajes Devueltos</h3>
-                {listaPasajesDevuletos.map((pasaje) => (
-                <div id={pasaje.idPasaje} className="pasaje-frame">
-                    <p><strong>Cliente: </strong>{pasaje.emailCliente}</p>
-                    <p><strong>Fecha de Compra: </strong>{swapCharacters(pasaje.fechaCompra)}</p>
-                    <p><strong>Fecha Devolucion: </strong>{swapCharacters(pasaje.fechaDevolucion)}</p>
-                    <p><strong>Asiento: </strong>{pasaje.asiento}</p>
-                    <p><strong>Precio: </strong>${pasaje.monto}</p>
-                </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-        {viajeSeleccionado && listaPasajesVendidos==0 && listaPasajesDevuletos==0 &&(
-          <div className="modal-container">
-            <div className="modal-body">
-              <div className="mx-auto my-4 w-48 text-center">
-                <h3 className="text-lg font-black text-gray-800">No hay pasajes vendidos</h3>
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
 
-    </>
+                <div className="viajes-list">
+                    {viajesOrdenados.map((v, i) => (
+                        <div key={i} className="card-viaje">
+                            <h5>{capitalizar(v.origen.nombre)}, {capitalizar(v.origen.departamento)} → {capitalizar(v.destino.nombre)}, {capitalizar(v.destino.departamento)}</h5>
+                            <p>Fecha: {v.fechaSalida.split("T")[0]} Hora: {v.fechaSalida.split("T")[1]}</p>
+                            <p>Asientos Disponibles: {v.cantidad}</p>
+                            <p>Precio: {v.precio}</p>
+                            <button onClick={() => { setViajeSeleccionado(v); setOpen(true); }}>Seleccionar</button>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <Modal open={open} onClose={() => setOpen(false)}>
+                {viajeSeleccionado && (
+                    <div style={{ padding: "1rem" }}>
+                        <h3 className="text-lg font-black text-gray-800">Viaje seleccionado</h3>
+                        <p>{viajeSeleccionado.origen.nombre} → {viajeSeleccionado.destino.nombre}</p>
+                        <p>Fecha: {viajeSeleccionado.fechaSalida}</p>
+                        <p>Precio: {viajeSeleccionado.precio}</p>
+                    </div>
+                )}
+            </Modal>
+        </>
     );
 }
 
