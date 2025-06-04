@@ -101,52 +101,50 @@ function ListadoViaje() {
 
     const navigate = useNavigate();
     function comprar_pasaje(viaje) {
-      navigate("/compra", {
-        state: {
-          viaje: viaje,
-          cantidad: parseInt(cantidad, 10)
-        }
-      });
+        navigate("/compra", {
+            state: {
+                viaje: viaje,
+                cantidad: parseInt(cantidad, 10)
+            }
+        });
     }
-
     return (
         <>
             <NavbarCliente />
-            <div className="listadoViaje-container">
-                <div className="buscador-card card p-4 mt-3 mb-3 shadow-lg">
-                    <div className="campos-flex mb-3">
-                        <select className="form-select rounded-pill" id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>
+            <div className="layout">
+                <div className="filtros">
+                    <div className="buscador">
+                        <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>
                             <option value="" disabled>Origen</option>
                         </select>
-                        <select className="form-select rounded-pill" id="select-destino" value={destino} onChange={(e) => setDestino(e.target.value)}>
+                        <select id="select-destino" value={destino} onChange={(e) => setDestino(e.target.value)}>
                             <option value="" disabled>Destino</option>
                         </select>
-                        <input type="date" className="form-control rounded-pill" value={fecha} onChange={(e) => setFecha(e.target.value)} />
-                        <input type="number" className="form-control rounded-pill" placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
-                        <button className="btn btn-primary rounded-pill" onClick={validar_datos}>Buscar</button>
+                        <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
+                        <input type="number" min="1" placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
+                        <button onClick={validar_datos}>Buscar</button>
+                    </div>
+
+                    <div className="ordenar">
+                        <select value={orden} onChange={(e) => setOrden(e.target.value)}>
+                            <option value="" disabled>Ordenar por</option>
+                            <option value="precio">Precio</option>
+                            <option value="hora">Hora</option>
+                        </select>
                     </div>
                 </div>
 
-                <div className="ordenar-container">
-                    <select className="form-select rounded-pill ordenar-select" value={orden} onChange={(e) => setOrden(e.target.value)} >
-                        <option value="" selected disabled>Ordenar por</option>
-                        <option value="precio">Precio</option>
-                        <option value="hora">Hora</option>
-                    </select>
-                </div>
-
                 <div className="viajes-list">
-                    {viajesOrdenados.map((viaje, index) => (
-                        <div key={index} className="viaje-card card p-4 shadow-lg">
-                            <h5>{capitalizar(viaje.origen.nombre)}, {capitalizar(viaje.origen.departamento)} → {capitalizar(viaje.destino.nombre)}, {capitalizar(viaje.destino.departamento)}</h5>
-                            <p>Fecha: {viaje.fechaSalida.split("T")[0]}            Hora: {viaje.fechaSalida.split("T")[1]}</p>
-                            <p>Asientos Disponibles: {viaje.cantidad}</p>
-                            <p>Precio: {viaje.precio}</p>
-                            <button className="btn btn-primary btn-sm rounded-pill comprar-btn" onClick={() => comprar_pasaje(viaje)}>Comprar</button>
+                    {viajesOrdenados.map((v, i) => (
+                        <div key={i} className="card-viaje">
+                            <h5>{capitalizar(v.origen.nombre)}, {capitalizar(v.origen.departamento)} → {capitalizar(v.destino.nombre)}, {capitalizar(v.destino.departamento)}</h5>
+                            <p>Fecha: {v.fechaSalida.split("T")[0]} Hora: {v.fechaSalida.split("T")[1]}</p>
+                            <p>Asientos Disponibles: {v.cantidad}</p>
+                            <p>Precio: {v.precio}</p>
+                            <button onClick={() => comprar_pasaje(v)}>Comprar</button>
                         </div>
                     ))}
                 </div>
-
             </div>
         </>
     );
