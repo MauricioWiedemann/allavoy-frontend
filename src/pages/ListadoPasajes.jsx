@@ -160,9 +160,9 @@ function ListadoPasajes() {
     }, [viajeSeleccionado]);
 
     const viajesOrdenados = [...listaViajes];
-    if (orden === "precio")
-        viajesOrdenados.sort((a, b) => a.precio - b.precio);
-    else if (orden === "hora")
+    if (orden === "mayor-fecha")
+        viajesOrdenados.sort((a, b) => new Date(b.fechaSalida) - new Date(a.fechaSalida));
+    else if (orden === "menor-fecha")
         viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
 
     return (
@@ -184,8 +184,8 @@ function ListadoPasajes() {
                     <div className="ordenar">
                         <select value={orden} onChange={(e) => setOrden(e.target.value)}>
                             <option value="" disabled>Ordenar por</option>
-                            <option value="precio">Precio</option>
-                            <option value="hora">Hora</option>
+                            <option value="mayor-fecha">Mayor fecha</option>
+                            <option value="menor-fecha">Menor fecha</option>
                         </select>
                     </div>
                 </div>
