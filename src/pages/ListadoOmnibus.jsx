@@ -113,12 +113,14 @@ function ListadoViaje() {
     }
 
     const omnibusOrdenados = [...omnibus];
-    if (orden === "orden_localidad")
-        omnibusOrdenados.sort((a, b) => a.localidadActual - b.localidadActual);
-    else if (orden === "mas_asientos")
-        omnibusOrdenados.sort((a, b) => a.capacidad > b.capacidad);
-    else if (orden === "menos_asientos")
-        omnibusOrdenados.sort((a, b) => a.capacidad < b.capacidad);
+    if (orden === "orden_localidad") {
+        omnibusOrdenados.sort((a, b) => a.localidadActual.nombre.localeCompare(b.localidadActual.nombre));
+    } else if (orden === "mas_asientos") {
+        omnibusOrdenados.sort((a, b) => b.capacidad - a.capacidad);
+    } else if (orden === "menos_asientos") {
+        omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
+    }
+
 
     return (
         <>
