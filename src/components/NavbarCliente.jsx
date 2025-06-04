@@ -4,7 +4,7 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import logo from '../../sources/logo.png';
 import "../css/Navbar.css";
 
-function NavbarAdmin() {
+function NavbarCliente() {
   const [setViajes, setShowViajes] = useState(false);
   const [showUsuario, setShowUsuario] = useState(false);
 
@@ -26,11 +26,17 @@ function NavbarAdmin() {
             {showUsuario ? <FaChevronUp /> : <FaChevronDown />}
           </div>
         </li>
-        {showUsuario && (<><li className="nav-item"><Link className="nav-link" to="/">Soporte</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li></>)}
+        {showUsuario && (
+          <>
+            <li className="nav-item"><Link className="nav-link" to="/editarusuario">Editar Perfil</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/cambiarpass">Cambiar contraseña</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/">Soporte</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li>
+          </>
+        )}
       </ul>
     </aside>
   )
 }
 
-export default NavbarAdmin;
+export default NavbarCliente;

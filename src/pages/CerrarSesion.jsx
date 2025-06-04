@@ -11,6 +11,16 @@ function CerrarSesion() {
     window.location.href = "/login";
   }
 
+  function cancelar() {
+    const payload = jwtDecode(localStorage.getItem("token"));
+    if (payload.rol === "CLIENTE")
+            window.location.href = "/homec";
+        else if (payload.rol === "VENDEDOR")
+            window.location.href = "/homev";
+        else
+            window.location.href = "/homea";
+  }
+
   return (
     <>
       <div className="cerrarSesion-bg">
@@ -21,7 +31,7 @@ function CerrarSesion() {
           </div>
           <div class="d-grid gap-2">
             <button className="btn w50 btn-primary rounded-pill" onClick={cerrarSesion}>Cerrar</button>
-            <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/"}>Cancelar</button>
+            <button className="btn w50 btn-secondary rounded-pill" onClick={cancelar}>Cancelar</button>
           </div>
         </div>
       </div>

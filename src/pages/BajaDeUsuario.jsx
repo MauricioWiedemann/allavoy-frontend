@@ -71,7 +71,39 @@ function BajaUsuario() {
     }
 
     function desactivar_usuario(usuario){
-        alert("deleted");
+        fetch("http://localhost:8080/usuario/baja", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+            idUsuario: usuario.idUsuario,
+            cedula: usuario.cedula,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            email: usuario.email,
+            password: password,
+            fechaNacimiento: usuario.fechaNacimiento,
+            tipoDescuento: usuario.tipoDescuento,
+            tipoUsuario: usuario.tipoUsuario
+            })
+        })
+            .then(response => {
+            if (!response.ok) {
+              throw new Error("Error al dar de baja el usuario");
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log("Usuario dado de baja:", data);
+            alert("Usuario dado de baja");
+            window.location.reload();
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            alert("Error al dar de baja el usuario.");
+          });
+      
     }
 
     function capitalizar(str) {

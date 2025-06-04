@@ -5,7 +5,9 @@ import logo from '../../sources/logo.png';
 import "../css/Navbar.css";
 
 function NavbarVendedor() {
-  const [showGestion, setShowGestion] = useState(false);
+  const [showLocalidad, setShowLocalidad] = useState(false);
+  const [showOmnibus, setShowOmnibus] = useState(false);
+  const [showViajes, setShowViajes] = useState(false);
   const [showPasajes, setShowPasajes] = useState(false);
   const [showUsuario, setShowUsuario] = useState(false);
 
@@ -17,15 +19,37 @@ function NavbarVendedor() {
       </div>
       <ul className="navbar-nav ms-auto">
         <li>
-          <div className="menu-title" onClick={() => setShowGestion(!showGestion)}>
-            <h4>Gestión</h4>
-            {showGestion ? <FaChevronUp /> : <FaChevronDown />}
+          <div className="menu-title" onClick={() => setShowLocalidad(!showLocalidad)}>
+            <h4>Localidades</h4>
+            {showLocalidad ? <FaChevronUp /> : <FaChevronDown />}
           </div>
-          {showGestion && (
+          {showLocalidad && (
             <>
               <li className="nav-item"> <Link className="nav-link" to="/altalocalidad">Alta Localidad</Link></li>
+            </>
+          )}
+        </li>
+        <li>
+          <div className="menu-title" onClick={() => setShowOmnibus(!showOmnibus)}>
+            <h4>Omnibus</h4>
+            {showOmnibus ? <FaChevronUp /> : <FaChevronDown />}
+          </div>
+          {showOmnibus && (
+            <>
               <li className="nav-item"><Link className="nav-link" to="/altaomnibus">Alta Omnibus</Link></li>
               <li className="nav-item"> <Link className="nav-link" to="/listaromnibus">Listado de Omnibus</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/deshabilitacionomnibus">Deshabilitar Omnibus</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/rehabilitacionomnibus">Rehabilitar Omnibus</Link></li>
+            </>
+          )}
+        </li>
+        <li>
+          <div className="menu-title" onClick={() => setShowViajes(!showViajes)}>
+            <h4>Viajes</h4>
+            {showViajes ? <FaChevronUp /> : <FaChevronDown />}
+          </div>
+          {showViajes && (
+            <>
               <li className="nav-item"><Link className="nav-link" to="/altaviaje">Alta Viaje</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/reasignarviaje">Reasignación de viaje</Link></li>
             </>
@@ -51,6 +75,8 @@ function NavbarVendedor() {
           </div>
           {showUsuario && (
             <>
+              <li className="nav-item"><Link className="nav-link" to="/editarusuario">Editar Perfil</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/cambiarpass">Cambiar contraseña</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/">Soporte</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li>
             </>

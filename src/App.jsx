@@ -18,8 +18,11 @@ import ListadoPasajes from "./pages/ListadoPasajes";
 import CompraPasaje from "./pages/CompraPasaje";
 import BajaUsuario from "./pages/BajaDeUsuario";
 import ListaOmnibus from "./pages/ListadoOmnibus";
-import { ViajeProvider } from "./context/ViajeContext";
 import ListaUsuarios from "./pages/ListadoUsuarios";
+import EditarPerfil from "./pages/EditarPerfil";
+import CambiarPass from "./pages/CambiarPass";
+
+import { ViajeProvider } from "./context/ViajeContext";
 
 function App() {
   return (
@@ -52,6 +55,8 @@ function App() {
               <Route path="/listaromnibus" element={<ListaOmnibus />} />
               <Route path="/compra" element={<CompraPasaje />} />
               <Route path="/bajausuario" element={<BajaUsuario />} />
+              <Route path="/editarusuario" element={<EditarPerfil />} />
+              <Route path="/cambiarpass" element={<CambiarPass />} />
             </Routes >
           </BrowserRouter >
         </div >

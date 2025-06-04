@@ -1,0 +1,19 @@
+.editarusuario-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f2ef;
+}
+
+.editarusuario-card {
+    width: 380px;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+    margin-left: 260px;
+}
+
+p {
+    margin-bottom: 3px;
+    margin-left: 7px;
+}
