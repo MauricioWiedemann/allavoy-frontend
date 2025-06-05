@@ -50,7 +50,7 @@ function ListadoOmnibus() {
                 localidad: localidad_actual,
                 estado: activo,
                 matricula: matricula.toUpperCase(),
-                capacidad: cantidad
+                asientos: cantidad
             })
         })
             .then(response => {
@@ -61,11 +61,9 @@ function ListadoOmnibus() {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 setOmnibus(data);
             })
             .catch(error => {
-                console.error("Error:", error);
                 alert("No se encontraron omnibus.");
                 setOmnibus([]);
             });
