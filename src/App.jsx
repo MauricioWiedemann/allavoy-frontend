@@ -21,8 +21,9 @@ import ListaOmnibus from "./pages/ListadoOmnibus";
 import ListaUsuarios from "./pages/ListadoUsuarios";
 import EditarPerfil from "./pages/EditarPerfil";
 import CambiarPass from "./pages/CambiarPass";
-
+import HistoricoCompra from "./pages/HitoricoPasaje";
 import { ViajeProvider } from "./context/ViajeContext";
+import { ImPriceTag } from "react-icons/im";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
               <Route path="/bajausuario" element={<BajaUsuario />} />
               <Route path="/editarusuario" element={<EditarPerfil />} />
               <Route path="/cambiarpass" element={<CambiarPass />} />
+              <Route path="/historicocompra" element={<HistoricoCompra />} />
             </Routes >
           </BrowserRouter >
         </div >
