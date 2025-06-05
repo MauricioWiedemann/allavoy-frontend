@@ -21,7 +21,7 @@ function ListadoViaje() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron omnibus.");
+                    throw new Error("No se encontraron pasajes.");
 
                 }
                 return response.json();
@@ -32,7 +32,7 @@ function ListadoViaje() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron omnibus.");
+                alert("No se encontraron pasajes.");
                 setHistorico([]);
             });
     }
