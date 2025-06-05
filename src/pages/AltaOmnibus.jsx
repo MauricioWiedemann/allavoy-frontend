@@ -11,9 +11,16 @@ function AltaOmnibus() {
   const [capacidad, setCapacidad] = useState("");
   const [localidad, setLocalidad] = useState("");
 
+  function validar_matricula(valor) {
+    const regrex = /^[A-S]TU\d{4}$/;
+    return regrex.test(valor);
+  }
+
   function registrarOmnibus() {
     if (marca.trim() === "" || modelo.trim() === "" || nroMotor.trim() === "" || matricula.trim() === "" || capacidad.trim() === "" || localidad.trim() === "") {
       alert("Complete todos los campos.");
+    } else if (!validar_matricula(matricula.toUpperCase())) {
+      alert("La matricula no es válida.");
     } else {
       fetch("http://localhost:8080/omnibus/alta", {
         method: "POST",

@@ -30,6 +30,7 @@ function NavbarCliente() {
           <>
             <li className="nav-item"><Link className="nav-link" to="/editarusuario">Editar Perfil</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/cambiarpass">Cambiar contraseña</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/historicocompra">Histórico de Pasajes</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/">Soporte</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li>
           </>
