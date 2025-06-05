@@ -2,20 +2,16 @@ import React, { useState, useEffect } from "react";
 import "../css/DeshabilitarOmnibus.css"
 import NavbarVendedor from "../components/NavbarVendedor";
 
-function DeshabilitarOmnibus() {
+function RehabilitarOmnibus() {
     const [localidad_actual, setLocalidad] = useState("");
     const [matricula, setMatricula] = useState("");
     const [cantidad, setCantidad] = useState("");
     const [omnibus, setOmnibus] = useState([]);
-    const [omnibusSeleccionado, setOmnibusSeleccionado] = useState();
     const [orden, setOrden] = useState("");
-    const [open, setOpen] = useState(false);
-    const [fecha, setFecha] = useState("");
-    const [hora, setHora] = useState("");
 
 
     function listar_omnibus() {
-        fetch("http://localhost:8080/omnibus/habilitados", {
+        fetch("http://localhost:8080/omnibus/deshabilitados", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -46,7 +42,7 @@ function DeshabilitarOmnibus() {
             },
             body: JSON.stringify({
                 localidad: localidad_actual,
-                estado: true,
+                estado: false,
                 matricula: matricula.toUpperCase(),
                 capacidad: cantidad
             })
@@ -69,12 +65,8 @@ function DeshabilitarOmnibus() {
     }
 
     async function cargarLocalidades() {
-        //obtengo el componente donde va la lista de localidades
         const select_localidad_actual = document.getElementById("localidad_actual");
-
         select_localidad_actual.innerHTML = "<option value='' disabled selected>Localidad</option>";
-
-        //get para obtener el array con las localidades
         const localidadesArray =
             await fetch("http://localhost:8080/localidad/obtener", {
                 method: "GET",
@@ -88,7 +80,6 @@ function DeshabilitarOmnibus() {
                     return data;
                 })
             ;
-        //generar los option que se insertara en el select con los datos de las localidades
         localidadesArray.forEach(element => {
             const optionLocalidad = document.createElement("option");
             optionLocalidad.value = element.idLocalidad;
@@ -97,43 +88,21 @@ function DeshabilitarOmnibus() {
         });
     }
 
-    function seleccionarOmnibus(o){
-        setOmnibusSeleccionado(o);
-        setOpen(true);
-    }
-
-    function validarFecha(){
-        if ((fecha.trim() !== "" && hora.trim() === "") || (fecha.trim() === "" && hora.trim() !== "")){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    async function deshabilitar(){
-        if (!validarFecha()){
-            alert("Complete ambos campos.");
-        } else if (fecha.trim() !== "" && new Date(fecha) < new Date()){
-            alert("La fecha debe ser actual o futura.");
-        } else {
-            await fetch("http://localhost:8080/omnibus/deshabilitar", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    idOmnibus: omnibusSeleccionado.idOmnibus,
-                    fecha: fecha,
-                    hora: hora
-                })
-                }).then(response => {
-                    return response.text();
-                }).then(data => {
-                    alert(data);
-                    window.location.reload();
-                })
-            
-        }
+    async function rehabilitar(o){
+        await fetch("http://localhost:8080/omnibus/rehabilitar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idOmnibus: o.idOmnibus
+            })
+            }).then(response => {
+                return response.text();
+            }).then(data => {
+                alert(data);
+                window.location.reload();
+            })
     }
 
     //cargar las localidades al cargar la pagina
@@ -153,13 +122,6 @@ function DeshabilitarOmnibus() {
         omnibusOrdenados.sort((a, b) => b.capacidad - a.capacidad);
     } else if (orden === "menos_asientos") {
         omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
-    }
-
-    function cancelar(){
-        setOpen(false);
-        setFecha("");
-        setHora("");
-        setOmnibusSeleccionado();
     }
 
 
@@ -198,28 +160,14 @@ function DeshabilitarOmnibus() {
                             <p>Capacidad: {o.capacidad}</p>
                             <div id="test">
                                 <p>Localidad: {capitalizar(o.localidadActual.nombre)}, {capitalizar(o.localidadActual.departamento)}</p>
-                                <button className="btn btn-danger rounded-pill" onClick={() => seleccionarOmnibus(o)}>Deshabilitar</button>
+                                <button className="btn btn-primary rounded-pill" onClick={() => rehabilitar(o)}>Rehabilitar</button>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-            {open && (
-            <div id="selectFechaHora-container">
-                    <div id="selectFechaHora">
-                        <div>
-                            <h4>Seleccione una fecha y hora</h4>
-                            <input type="date" className="form-control rounded-pill mb-1 mt-3" value={fecha} onChange={(e) => setFecha(e.target.value)}/>
-                            <input type="time" className="form-control rounded-pill mb-1" value={hora} onChange={(e) => setHora(e.target.value)}/>
-                            <p>Si deja estos campos vacios el omnibus sera dado de baja inmediatamente.</p>
-                            <button className="btn btn-danger rounded-pill mb-1 mt-3" onClick={() => deshabilitar()}>Confirmar</button>
-                            <button className="btn btn-secondary rounded-pill mb-1" onClick={() => cancelar()}>Cancelar</button>
-                        </div>
-                    </div>
-            </div>
-            )}
         </>
     );
 }
 
-export default DeshabilitarOmnibus;
+export default RehabilitarOmnibus;

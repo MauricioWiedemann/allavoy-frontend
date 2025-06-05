@@ -23,6 +23,7 @@ import EditarPerfil from "./pages/EditarPerfil";
 import CambiarPass from "./pages/CambiarPass";
 import DeshabilitarOmnibus from "./pages/DeshabilitarOmnibus";
 import HistoricoCompra from "./pages/HitoricoPasaje";
+import RehabilitarOmnibus from "./pages/RehabilitarOmnibus";
 
 import { ViajeProvider } from "./context/ViajeContext";
 import { ImPriceTag } from "react-icons/im";
@@ -61,6 +62,7 @@ function App() {
               <Route path="/editarusuario" element={<EditarPerfil />} />
               <Route path="/cambiarpass" element={<CambiarPass />} />
               <Route path="/deshabilitacionomnibus" element={<DeshabilitarOmnibus />} />
+              <Route path="/rehabilitacionomnibus" element={<RehabilitarOmnibus />} />
               <Route path="/historicocompra" element={<HistoricoCompra />} />
             </Routes >
           </BrowserRouter >
