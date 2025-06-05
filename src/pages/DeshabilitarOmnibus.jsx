@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import "../css/ListadoOmnibus.css";
-import { useNavigate } from 'react-router-dom';
+import "../css/DeshabilitarOmnibus.css"
 import NavbarVendedor from "../components/NavbarVendedor";
+import Modal from "../components/Modal";
 
-function ListadoOmnibus() {
+function DeshabilitarOmnibus() {
     const [localidad_actual, setLocalidad] = useState("");
-    const [estado, setEstado] = useState("ACTIVO");
     const [matricula, setMatricula] = useState("");
     const [cantidad, setCantidad] = useState("");
     const [omnibus, setOmnibus] = useState([]);
+    const [omnibusSeleccionado, setOmnibusSeleccionado] = useState();
     const [orden, setOrden] = useState("");
+    const [open, setOpen] = useState(false);
+    const [fecha, setFecha] = useState("");
+    const [hora, setHora] = useState("");
 
 
     function listar_omnibus() {
-        fetch("http://localhost:8080/omnibus/obtenerall", {
+        fetch("http://localhost:8080/omnibus/habilitados", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -37,10 +40,6 @@ function ListadoOmnibus() {
     }
 
     function validar_datos() {
-        let activo = false;
-        if (estado === "ACTIVO")
-            activo = true
-
         fetch("http://localhost:8080/omnibus/buscar", {
             method: "POST",
             headers: {
@@ -48,7 +47,7 @@ function ListadoOmnibus() {
             },
             body: JSON.stringify({
                 localidad: localidad_actual,
-                estado: activo,
+                estado: true,
                 matricula: matricula.toUpperCase(),
                 capacidad: cantidad
             })
@@ -61,7 +60,6 @@ function ListadoOmnibus() {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 setOmnibus(data);
             })
             .catch(error => {
@@ -100,6 +98,45 @@ function ListadoOmnibus() {
         });
     }
 
+    function seleccionarOmnibus(o){
+        setOmnibusSeleccionado(o);
+        setOpen(true);
+    }
+
+    function validarFecha(){
+        if ((fecha.trim() !== "" && hora.trim() === "") || (fecha.trim() === "" && hora.trim() !== "")){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    async function deshabilitar(){
+        if (!validarFecha()){
+            alert("Complete ambos campos.");
+        } else if (fecha.trim() !== "" && new Date(fecha) < new Date()){
+            alert("La fecha debe ser actual o futura.");
+        } else {
+            await fetch("http://localhost:8080/omnibus/deshabilitar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    idOmnibus: omnibusSeleccionado.idOmnibus,
+                    fecha: fecha,
+                    hora: hora
+                })
+                }).then(response => {
+                    return response.text();
+                }).then(data => {
+                    alert(data);
+                    window.location.reload();
+                })
+            
+        }
+    }
+
     //cargar las localidades al cargar la pagina
     useEffect(() => {
         cargarLocalidades();
@@ -119,6 +156,13 @@ function ListadoOmnibus() {
         omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
     }
 
+    function cancelar(){
+        setOpen(false);
+        setFecha("");
+        setHora("");
+        setOmnibusSeleccionado();
+    }
+
 
     return (
         <>
@@ -128,10 +172,6 @@ function ListadoOmnibus() {
                     <div className="buscador">
                         <select id="localidad_actual" value={localidad_actual} onChange={(e) => setLocalidad(e.target.value)}>
                             <option value="" disabled>Localidad</option>
-                        </select>
-                        <select value={estado} onChange={(e) => setEstado(e.target.value)}>
-                            <option value="ACTIVO">Habilitado</option>
-                            <option value="BLOQUEADO">Deshabilitado</option>
                         </select>
                         <input type="text" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
                         <input type="number" min="1" placeholder="Asientos" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
@@ -148,23 +188,39 @@ function ListadoOmnibus() {
                     </div>
                 </div>
 
-                <div className="viajes-list">
+                <div className="deshabilitar-list">
                     {omnibusOrdenados.map((o, i) => (
-                        <div key={i} className="card-viaje">
-                            <h5>Matricula: {capitalizar(o.matricula)}, Serie: {capitalizar(o.numeroSerie)}</h5>
+                        <div key={i} className="deshabilitar-card">
+                            <h5>Matricula: {o.matricula}, Serie: {o.numeroSerie}</h5>
                             <div className="linea">
                                 <p>Marca: {o.marca}</p>
                                 <p>Modelo: {o.modelo}</p>
                             </div>
                             <p>Capacidad: {o.capacidad}</p>
-                            <p>Localidad: {capitalizar(o.localidadActual.nombre)}, {capitalizar(o.localidadActual.departamento)}</p>
-                            <p>Estado: {o.estado ? "Habilitado" : "Deshabilitado"}</p>
+                            <div id="test">
+                                <p>Localidad: {capitalizar(o.localidadActual.nombre)}, {capitalizar(o.localidadActual.departamento)}</p>
+                                <button className="btn btn-danger rounded-pill" onClick={() => seleccionarOmnibus(o)}>Deshabilitar</button>
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
+            {open && (
+            <div id="selectFechaHora-container">
+                    <div id="selectFechaHora">
+                        <div>
+                            <h4>Seleccione una fecha y hora</h4>
+                            <input type="date" className="form-control rounded-pill mb-1 mt-3" value={fecha} onChange={(e) => setFecha(e.target.value)}/>
+                            <input type="time" className="form-control rounded-pill mb-1" value={hora} onChange={(e) => setHora(e.target.value)}/>
+                            <p>Si deja estos campos vacios el omnibus sera dado de baja inmediatamente.</p>
+                            <button className="btn btn-danger rounded-pill mb-1 mt-3" onClick={() => deshabilitar()}>Confirmar</button>
+                            <button className="btn btn-secondary rounded-pill mb-1" onClick={() => cancelar()}>Cancelar</button>
+                        </div>
+                    </div>
+            </div>
+            )}
         </>
     );
 }
 
-export default ListadoOmnibus;
+export default DeshabilitarOmnibus;

@@ -119,3 +119,7 @@
         width: 100%;
     }
 }
+
+#localidad_actual {
+    width: 180px;
+}

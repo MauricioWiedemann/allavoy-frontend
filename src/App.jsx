@@ -21,6 +21,7 @@ import ListaOmnibus from "./pages/ListadoOmnibus";
 import ListaUsuarios from "./pages/ListadoUsuarios";
 import EditarPerfil from "./pages/EditarPerfil";
 import CambiarPass from "./pages/CambiarPass";
+import DeshabilitarOmnibus from "./pages/DeshabilitarOmnibus";
 
 import { ViajeProvider } from "./context/ViajeContext";
 
@@ -57,6 +58,7 @@ function App() {
               <Route path="/bajausuario" element={<BajaUsuario />} />
               <Route path="/editarusuario" element={<EditarPerfil />} />
               <Route path="/cambiarpass" element={<CambiarPass />} />
+              <Route path="/deshabilitacionomnibus" element={<DeshabilitarOmnibus />} />
             </Routes >
           </BrowserRouter >
         </div >

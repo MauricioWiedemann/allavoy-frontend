@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../css/ListadoUsuario.css";
+import "../css/BajaUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 
 function BajaUsuario() {
@@ -124,7 +124,7 @@ function BajaUsuario() {
             <NavbarAdministrador />
             <div className="listadoViaje-container">
                 <div className="buscador-card card p-4 mt-3 mb-3 shadow-lg">
-                    <div className="campos-flex mb-3">
+                    <div className="campos-flex">
                         <input type="text" className="form-control rounded-pill" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
                         <select className="form-select rounded-pill" value={tipo} onChange={(e) => setTipo(e.target.value)}>

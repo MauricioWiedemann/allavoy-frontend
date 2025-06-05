@@ -1,0 +1,48 @@
+.deshabilitar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    margin-bottom: 200px;
+}
+
+.deshabilitar-card {
+    width: 80%;
+    margin-left: 10%;
+    height: 180px;
+    padding: 1rem;
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.deshabilitar-list button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 200px;
+    white-space: nowrap;
+}
+
+#selectFechaHora-container {
+    background-color: #00000044;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+#selectFechaHora {
+    width: auto;
+    height: auto;
+    padding: 1%;
+    margin: 0 auto;
+    position: absolute;
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    top: 33%;
+    left: 35%;
+}
