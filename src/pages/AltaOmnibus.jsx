@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/AltaOmnibus.css";
 import NavbarVendedor from "../components/NavbarVendedor";
+import Papa from 'papaparse';
 
 function AltaOmnibus() {
 
@@ -10,6 +11,33 @@ function AltaOmnibus() {
   const [matricula, setMatricula] = useState("");
   const [capacidad, setCapacidad] = useState("");
   const [localidad, setLocalidad] = useState("");
+  
+  const [data, setData] = useState([]);
+  const [isIndividual, setIsIndividual] = useState(true);
+
+  useEffect(() => {
+    if (isIndividual) {
+      var indi = document.getElementById("individual-select");
+      indi.style.backgroundColor = "#d9d9d9";
+      var csv = document.getElementById("csv-select");
+      csv.style.backgroundColor = "#bdbdbd";
+    } else {
+      var indi = document.getElementById("individual-select");
+      indi.style.backgroundColor = "#bdbdbd";
+      var csv = document.getElementById("csv-select");
+      csv.style.backgroundColor = "#d9d9d9";
+    }
+  }, [isIndividual]);
+
+  const manejarArchivo = (e) => {
+    const archivo = e.target.files[0];
+    Papa.parse(archivo, {
+      headerd: true,
+      complete: (resultados) => {
+        setData(resultados.data);
+      },
+    });
+  };
 
   function validar_matricula(valor) {
     const regrex = /^[A-S]TU\d{4}$/;
@@ -79,6 +107,27 @@ function AltaOmnibus() {
     });
   }
 
+  function altaOmnibusCsv(){
+    console.log(JSON.stringify(data));
+    if (data.length > 0) {
+      fetch("http://localhost:8080/omnibus/altacsv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+            return response.text();
+        }).then(data => {
+            alert(data);
+            window.location.reload();
+        })
+    } else {
+      alert("Tiene que ingresar un archivo.")
+    }
+  };
+
   //cargar las localidades al cargar la pagina
   useEffect(() => {
     cargarLocalidades();
@@ -87,35 +136,55 @@ function AltaOmnibus() {
   return (
     <>
       <NavbarVendedor />
-      <div className="altaViaje-bg">
-        <div className="altaViaje-card card p-4 shadow-lg">
-
-          <div className="mb-3">
-            <div className="mb-3">
-              <input type="text" className="form-control rounded-pill" placeholder="Marca" value={marca} onChange={(e) => setMarca(e.target.value)} />
+      <div className="altaOmnibus-bg">
+        <div className="altaOmnibus-card card p-4 shadow-lg">
+          <div class="row mb-4">
+          <button id="individual-select" class="select-tipo-alta-omnibus col-6 col-sm-3" onClick={() => setIsIndividual(true)}>Individual</button>
+          <button id="csv-select" class="select-tipo-alta-omnibus col-6 col-sm-3" onClick={() => setIsIndividual(false)}>CSV</button>
+        </div>
+          { isIndividual && (
+            <div id="alta-individual"> 
+              <div className="mb-3">
+                <div class="alta-individual"></div>
+                <div className="mb-3">
+                  <input type="text" className="form-control rounded-pill" placeholder="Marca" value={marca} onChange={(e) => setMarca(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                  <input type="text" className="form-control rounded-pill" placeholder="Modelo" value={modelo} onChange={(e) => setModelo(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                  <input type="text" className="form-control rounded-pill" placeholder="Nro de Motor" value={nroMotor} onChange={(e) => setNroMotor(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                  <input type="text" className="form-control rounded-pill" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                  <input type="number" className="form-control rounded-pill" placeholder="Capacidad" value={capacidad} onChange={(e) => setCapacidad(e.target.value)} />
+                </div>
+                <div className="mb-3">
+                  <select id="select-localidades" className="form-select rounded-pill" value={localidad} onChange={(e) => setLocalidad(e.target.value)}>
+                    <option value="" disabled selected>Localidad</option>
+                  </select>
+                </div>
+              </div>
+              <div class="d-grid gap-2">
+                <button className="btn w50 btn-primary rounded-pill" onClick={registrarOmnibus}>Crear Omnibus</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+              </div>
             </div>
+          )}
+          { !isIndividual && (
+          <div id="alta-individual"> 
             <div className="mb-3">
-              <input type="text" className="form-control rounded-pill" placeholder="Modelo" value={modelo} onChange={(e) => setModelo(e.target.value)} />
+              <p>Ingrese un archivo .CSV</p>
+              <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo}/>  
             </div>
-            <div className="mb-3">
-              <input type="text" className="form-control rounded-pill" placeholder="Nro de Motor" value={nroMotor} onChange={(e) => setNroMotor(e.target.value)} />
-            </div>
-            <div className="mb-3">
-              <input type="text" className="form-control rounded-pill" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
-            </div>
-            <div className="mb-3">
-              <input type="number" className="form-control rounded-pill" placeholder="Capacidad" value={capacidad} onChange={(e) => setCapacidad(e.target.value)} />
-            </div>
-            <div className="mb-3">
-              <select id="select-localidades" className="form-select rounded-pill" value={localidad} onChange={(e) => setLocalidad(e.target.value)}>
-                <option value="" disabled selected>Localidad</option>
-              </select>
+            <div class="d-grid gap-2">
+                <button className="btn w50 btn-primary rounded-pill" onClick={altaOmnibusCsv} >Crear Omnibus</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
             </div>
           </div>
-          <div class="d-grid gap-2">
-            <button className="btn w50 btn-primary rounded-pill" onClick={registrarOmnibus}>Crear Omnibus</button>
-            <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
-          </div>
+          )}
         </div>
       </div>
     </>

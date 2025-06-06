@@ -11,13 +11,34 @@
     border-radius: 20px;
     background-color: #d9d9d9;
     margin-left: 260px;
-}
-
-.altaOmnibus-img {
-    width: 300px;
-    height: 200px;
+    padding: 0 !important;
 }
 
 .btn {
     margin-top: 1px;
+}
+
+.select-tipo-alta-omnibus {
+    height: 40px;
+    width: 48.5%;
+    border: 1px solid #bdbdbd;
+    border-bottom: none;
+}
+
+#individual-select {
+    margin-left: 10.5px;
+    background-color: #d9d9d9;
+    border-radius: 20px 0 5px 0;
+    border-right: none;
+}
+
+#csv-select {
+    background-color: #bdbdbd;
+    border-radius: 0 20px 0 5px;
+    border-left: none;
+}
+
+#alta-individual {
+    padding: 20px;
+    padding-top: 0;
 }

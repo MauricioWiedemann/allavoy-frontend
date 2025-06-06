@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 import "../css/altausuario.css"
-
+import Papa from 'papaparse';
 
 function AltaUsuario() {
 
@@ -12,6 +12,53 @@ function AltaUsuario() {
     const [fechaNacimiento, setFechaNacimiento] = useState("");
     const [password, setPassword] = useState("");
     const [tipoUsuario, setTipoUsuario] = useState("");
+    
+    const [data, setData] = useState([]);
+    const [isIndividual, setIsIndividual] = useState(true);
+
+    const manejarArchivo = (e) => {
+      const archivo = e.target.files[0];
+      Papa.parse(archivo, {
+        headerd: true,
+        complete: (resultados) => {
+          setData(resultados.data);
+        },
+      });
+    };
+
+  function altaUsuariosCsv(){
+    if (data.length > 0) {
+      fetch("http://localhost:8080/usuario/altacsv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+            return response.text();
+        }).then(data => {
+            alert(data);
+            window.location.reload();
+        })
+    } else {
+      alert("Tiene que ingresar un archivo.")
+    }
+  };
+
+  useEffect(() => {
+      if (isIndividual) {
+        var indi = document.getElementById("individual-select");
+        indi.style.backgroundColor = "#d9d9d9";
+        var csv = document.getElementById("csv-select");
+        csv.style.backgroundColor = "#bdbdbd";
+      } else {
+        var indi = document.getElementById("individual-select");
+        indi.style.backgroundColor = "#bdbdbd";
+        var csv = document.getElementById("csv-select");
+        csv.style.backgroundColor = "#d9d9d9";
+      }
+    }, [isIndividual]);
   
     function validation_digit(ci) {
       var a = 0;
@@ -91,34 +138,54 @@ function AltaUsuario() {
       <NavbarAdministrador />
       <div className="altausuario-bg">
         <div className="altausuario-card card p-4 shadow-lg">
-          <div className="mb-3">
-            <input type="email" className="form-control rounded-pill" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)}/>
+          <div class="row mb-4">
+            <button id="individual-select" class="select-tipo-alta-usuario col-6 col-sm-3" onClick={() => setIsIndividual(true)}>Individual</button>
+            <button id="csv-select" class="select-tipo-alta-usuario col-6 col-sm-3" onClick={() => setIsIndividual(false)}>CSV</button>
           </div>
-          <div className="mb-3">
-            <input type="text" className="form-control rounded-pill" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)}/>
-          </div>
-          <div className="mb-3">
-            <input type="text" className="form-control rounded-pill" placeholder="Apellido" value={apellido} onChange={(e) => setApellido(e.target.value)}/>
-          </div>
-          <div className="mb-3">
-            <input type="text" className="form-control rounded-pill" placeholder="Cédula" value={cedula} onChange={(e) => setCedula(e.target.value)}/>
-          </div>
-          <div className="mb-3">
-            <input type="date" className="form-control rounded-pill" placeholder="Fecha de Nacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)}/>
-          </div>
-          <div className="mb-3">
-            <input type="password" className="form-control rounded-pill" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)}/>
-          </div>
+          { isIndividual && (
+          <div id="alta-individual">
+            <div className="mb-3">
+              <input type="email" className="form-control rounded-pill" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            </div>
+            <div className="mb-3">
+              <input type="text" className="form-control rounded-pill" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)}/>
+            </div>
+            <div className="mb-3">
+              <input type="text" className="form-control rounded-pill" placeholder="Apellido" value={apellido} onChange={(e) => setApellido(e.target.value)}/>
+            </div>
+            <div className="mb-3">
+              <input type="text" className="form-control rounded-pill" placeholder="Cédula" value={cedula} onChange={(e) => setCedula(e.target.value)}/>
+            </div>
+            <div className="mb-3">
+              <input type="date" className="form-control rounded-pill" placeholder="Fecha de Nacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)}/>
+            </div>
+            <div className="mb-3">
+              <input type="password" className="form-control rounded-pill" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            </div>
 
-          <select className="form-select rounded-pill mb-3" value={tipoUsuario} onChange={(e) => setTipoUsuario(e.target.value)}>
-            <option value="" disabled selected>Rol</option>
-            <option value="VENDEDOR">Vendedor</option>
-            <option value="ADMINISTRADOR">Administrador</option>
-          </select>
+            <select className="form-select rounded-pill mb-3" value={tipoUsuario} onChange={(e) => setTipoUsuario(e.target.value)}>
+              <option value="" disabled selected>Rol</option>
+              <option value="VENDEDOR">Vendedor</option>
+              <option value="ADMINISTRADOR">Administrador</option>
+            </select>
 
-          <button className="btn btn-primary w-100 rounded-pill" onClick={registrarUsuario} >Crear Usuario</button>
-          <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/homea"} >Cancelar</button> 
-        </div>
+            <button className="btn btn-primary w-100 rounded-pill" onClick={registrarUsuario} >Crear Usuario</button>
+            <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/homea"} >Cancelar</button> 
+          </div>
+        )}
+        { !isIndividual && (
+          <div id="alta-individual"> 
+            <div className="mb-3">
+              <p>Ingrese un archivo .CSV</p>
+              <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo}/>  
+            </div>
+            <div class="d-grid gap-2">
+                <button className="btn w50 btn-primary rounded-pill" onClick={altaUsuariosCsv} >Crear Usuarios</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+            </div>
+          </div>
+        )}
+          </div>
       </div>
     </>
   );
