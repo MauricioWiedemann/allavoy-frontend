@@ -1,13 +1,33 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import NavbarCliente from "../components/NavbarCliente";
+import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/CompraPasaje.css";
+
+async function obtenerTipoDescuento(idUsuario) {
+    try {
+        const response = await fetch(`http://localhost:8080/usuario/${idUsuario}/descuento`);
+        if (!response.ok) throw new Error("Error al obtener tipoDescuento");
+
+        const data = await response.json();
+        return data.tipoDescuento;
+    } catch (error) {
+        console.error("Error en la consulta:", error);
+        return null;
+    }
+}
 
 function CompraPasajes() {
   const location = useLocation();
   const cantidad = location.state?.cantidad;
   const viaje = location.state?.viaje;
+  const token = localStorage.getItem("token");
+  const payload = jwtDecode(token);
+  const navigate = useNavigate();
+
 
   if (!viaje || !cantidad || !viaje.omnibus || !viaje.omnibus.capacidad) {
     return <p style={{ color: "red", textAlign: "center" }}>Error: No hay datos disponibles o incompletos.</p>;
@@ -16,25 +36,48 @@ function CompraPasajes() {
   const totalSeats = Array.from({ length: viaje.omnibus.capacidad }, (_, i) => i + 1);
   const soldSeats = new Set(viaje.asientosOcupados || []);
   const [selectedSeats, setSelectedSeats] = useState([]);
-  console.log("Asientos ocupados:", viaje.asientosOcupados);
+  const [tipoDescuento, setTipoDescuento] = useState(null);
+  const [emailComprador, setEmailComprador] = useState("");
+  const [emailIngresado, setEmailIngresado] = useState(false);
   const paypalRef = useRef();
 
-  const handleSeatSelection = (seat) => {
-    if (!soldSeats.has(seat)) {
-      if (selectedSeats.includes(seat)) {
-        setSelectedSeats(selectedSeats.filter(s => s !== seat));
-      } else if (selectedSeats.length < cantidad) {
-        setSelectedSeats([...selectedSeats, seat]);
-      }
-    }
-  };
+    const handleEmailChange = (e) => {
+      const email = e.target.value;
+      setEmailComprador(email);
+      setEmailIngresado(email.trim() !== ""); // Verifica que el campo no esté vacío
+    };
 
+    const handleSeatSelection = (seat) => {
+        if (!soldSeats.has(seat)) {
+          if (selectedSeats.includes(seat)) {
+            setSelectedSeats(selectedSeats.filter(s => s !== seat));
+          } else if (selectedSeats.length < cantidad) {
+            setSelectedSeats([...selectedSeats, seat]);
+          }
+        }
+      };
+
+  useEffect(() => {
+    async function fetchTipoDescuento() {
+        const descuento = await obtenerTipoDescuento(payload.idUsuario);
+        setTipoDescuento(descuento);
+    }
+    fetchTipoDescuento();
+  }, [payload.idUsuario]);
 
   function calcularTotal(viaje, cantidad, tipoUsuario, tipoDescuento) {
     let precioBase = viaje.precio * cantidad;
 
-    if (tipoUsuario === "VENDEDOR") return precioBase;
+    if (tipoUsuario === "VENDEDOR") {
+        const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
 
+        //Si el cliente tiene cuenta y descuento calculamos el total sino precio completo
+        if (aplicaDescuento) {
+            return precioBase * 0.8; // 20% de descuento
+        }else {
+            return precioBase;
+        }
+    }
     if (tipoUsuario === "CLIENTE") {
       const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
       if (aplicaDescuento) {
@@ -45,67 +88,107 @@ function CompraPasajes() {
     return precioBase;
   }
 
+  async function obtenerDescuentoPorEmail(email) {
+      try {
+          const response = await fetch(`http://localhost:8080/usuario/descuento?email=${email}`);
+          if (!response.ok) throw new Error("Error al obtener descuento del comprador");
+
+          const data = await response.json();
+          return data.tipoDescuento;
+      } catch (error) {
+          console.error("Error en la consulta de descuento por email:", error);
+          return null;
+      }
+  }
+
+    const validarEmail = async (email) => {
+      if (!email) {
+        return;
+      }
+
+      try {
+        const tipoDescuento = await obtenerDescuentoPorEmail(email); // Consulta el descuento
+        if (tipoDescuento) {
+          setEmailIngresado(true);
+          setTipoDescuento(tipoDescuento); // Actualiza el descuento si existe
+        } else {
+          setTipoDescuento(null); // No muestra alerta, simplemente no aplica descuento
+        }
+      } catch (error) {
+        console.error("Error al validar email:", error);
+      }
+    };
+
+
   useEffect(() => {
-      if (selectedSeats.length < cantidad) return; // Solo renderizar cuando hay asientos suficientes
+      const condicionesCumplidas = selectedSeats.length === cantidad && (payload.rol === "CLIENTE" || (payload.rol === "VENDEDOR" && emailIngresado));
+    if (!condicionesCumplidas) {
+        if (paypalRef.current) {
+          paypalRef.current.innerHTML = "";
+        }
+        return;
+      }
+      if (paypalRef.current.hasChildNodes()) {
+          paypalRef.current.innerHTML = "";
+        }
+    window.paypal.Buttons({
+      createOrder: (data, actions) => {
+        const montoTotal = calcularTotal(viaje, cantidad, payload.rol, tipoDescuento).toFixed(2);
 
-      window.paypal.Buttons({
-        createOrder: (data, actions) => {
-             const tipoDescuento = localStorage.getItem("tipoDescuento");
-          const tipoUsuario = localStorage.getItem("tipoUsuario");
-          const montoTotal = calcularTotal(viaje, cantidad, tipoUsuario, tipoDescuento).toFixed(2);
-
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  value: montoTotal,
-                },
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: montoTotal,
               },
-            ],
-          });
-        },
-        onApprove: async (data, actions) => {
-          return actions.order.capture().then(async (details) => {
-            console.log("Pago completado por:", details.payer.name.given_name);
+            },
+          ],
+        });
+      },
+      onApprove: async (data, actions) => {
+        return actions.order.capture().then(async (details) => {
+          console.log("Pago completado por:", details.payer.name.given_name);
+          const idPasajes = [];
+          for (const numeroAsiento of selectedSeats) {
+            try {
+                console.log("Email del comprador antes de la solicitud:", emailComprador);
+              const response = await fetch("http://localhost:8080/pasajes/confirmar-compra", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  numeroAsiento,
+                  idUsuario: payload.idUsuario,
+                  idViaje: viaje.idViaje,
+                  emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null
+                }),
+              });
 
-            const idUsuario = parseInt(localStorage.getItem("id_usuario"), 10);
-            for (const numeroAsiento of selectedSeats) {
-              try {
-                const response = await fetch("http://localhost:8080/pasajes/confirmar-compra", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    numeroAsiento,
-                    idUsuario,
-                    idViaje: viaje.idViaje
-                  }),
-                });
-
-                if (!response.ok) {
-                  console.error("Error al registrar pasaje:", await response.text());
-                }
-              } catch (err) {
-                console.error("Error al conectar con backend:", err);
+              if (!response.ok) {
+                console.error("Error al registrar pasaje:", await response.text());
+              }else {
+                  const data = await response.json();
+                  idPasajes.push(data.idPasaje);
               }
+            } catch (err) {
+              console.error("Error al conectar con backend:", err);
             }
+          }
 
-            alert("Compra realizada con éxito");
-            // Podés redirigir al usuario si querés:
-            // window.location.href = "/mis-compras";
-          });
-        },
-        onError: (err) => {
-          console.error("Error en el pago con PayPal:", err);
-          alert("Hubo un error al procesar el pago.");
-        },
-      }).render(paypalRef.current);
-    }, [selectedSeats, cantidad, viaje]);
+          navigate("/confirmacion", { state: { viaje, selectedSeats, idPasajes } });
+        });
+      },
+      onError: (err) => {
+        console.error("Error en el pago con PayPal:", err);
+        alert("Hubo un error al procesar el pago.");
+      },
+    }).render(paypalRef.current);
+  }, [selectedSeats, cantidad, viaje, tipoDescuento]);
 
   return (
     <div className="compraPasaje-bg">
-      <NavbarCliente />
+      {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}
       <div className="compraPasaje-container">
         <div className="seat-container">
           <h2>Selecciona tus asientos</h2>
@@ -130,16 +213,29 @@ function CompraPasajes() {
           <p><strong>Llegada:</strong> {viaje.fechaLlegada}</p>
           <p><strong>Ómnibus:</strong> {viaje.omnibus.marca} {viaje.omnibus.modelo} ({viaje.omnibus.matricula})</p>
           <p><strong>Asiento(s):</strong> {selectedSeats.join(", ")}</p>
+          {payload.rol === "VENDEDOR" && (
+            <div className="mb-3">
+              <label><strong>Email del comprador:</strong></label>
+              <input
+                type="email"
+                className="form-control rounded-pill"
+                placeholder="Correo"
+                value={emailComprador}
+                onChange={handleEmailChange}
+              />
+              <button
+                onClick={() => validarEmail(emailComprador)}
+                className="btn btn-primary mt-2"
+                disabled={!emailIngresado}
+              >
+                Validar Email
+              </button>
+            </div>
+          )}
           <hr />
           <div className="price-payment">
-            <p><strong>Precio total:</strong> ${viaje.precio * cantidad}</p>
-            {selectedSeats.length < cantidad ? (
-              <button className="btn btn-primary rounded-pill custom-pay" disabled>
-                Selecciona {cantidad} asiento(s)
-              </button>
-            ) : (
+            <p><strong>Precio total:</strong> ${calcularTotal(viaje, cantidad, payload.rol, tipoDescuento).toFixed(2)}</p>
               <div ref={paypalRef} />
-            )}
           </div>
         </div>
       </div>

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../css/Listado.css";
 import { useNavigate } from 'react-router-dom';
 import NavbarCliente from "../components/NavbarCliente";
+import NavbarVendedor from "../components/NavbarVendedor";
+
 
 function ListadoViaje() {
     const [origen, setOrigen] = useState("");
@@ -110,8 +112,7 @@ function ListadoViaje() {
     }
     return (
         <>
-            <NavbarCliente />
-            <div className="layout">
+                {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
                         <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>
