@@ -92,6 +92,8 @@ function AltaViaje() {
           localidadSalida: localidadAux,
           fechaSalida: fechaSalida,
           horaSalida: horaSalida,
+          fechaLlegada: fechaLlegada,
+          horaLlegada: horaLlegada
         })
       }).then(response => {
         return response.json();
