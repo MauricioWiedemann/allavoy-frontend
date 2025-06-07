@@ -42,3 +42,14 @@
     padding: 20px;
     padding-top: 0;
 }
+
+#csv-ejemplo {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    padding: 1%;
+    cursor: default;
+}
+
+#csv-ejemplo p {
+    margin: 0;
+}
