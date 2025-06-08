@@ -65,6 +65,7 @@ function NavbarVendedor() {
               <li className="nav-item"><Link className="nav-link" to="/buscar">Compra</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cierreventa">Cierre de venta</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/listarpasajes">Listado de ventas</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/listadoviajeconpasaje">Devolucion de pasajes</Link></li>
             </>
           )}
         </li>

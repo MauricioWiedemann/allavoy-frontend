@@ -149,6 +149,7 @@ function CompraPasajes() {
         return actions.order.capture().then(async (details) => {
           console.log("Pago completado por:", details.payer.name.given_name);
           const idPasajes = [];
+          const idPago = details.purchase_units[0].payments.captures[0].id;
           for (const numeroAsiento of selectedSeats) {
             try {
                 console.log("Email del comprador antes de la solicitud:", emailComprador);
@@ -161,7 +162,8 @@ function CompraPasajes() {
                   numeroAsiento,
                   idUsuario: payload.idUsuario,
                   idViaje: viaje.idViaje,
-                  emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null
+                  emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null,
+                  idPago: idPago
                 }),
               });
 
