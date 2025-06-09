@@ -1,0 +1,45 @@
+.confirmacion-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f2ef;
+}
+
+.confirmacion-card {
+    width: 680px;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+    margin-left: 260px;
+    padding: 20px;
+    text-align: center;
+}
+
+.boton {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Espacio entre botones */
+}
+
+.boton button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.boton .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.boton .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.boton button:hover {
+    background-color: #0056b3;
+}
