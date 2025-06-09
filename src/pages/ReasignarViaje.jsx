@@ -39,10 +39,10 @@ function ListadoViajes() {
         },
         body: JSON.stringify({
           localidadSalida: viajeSeleccionado.origen.idLocalidad,
-          fechaSalida: arrayAux[0],
-          horaSalida: arrayAux[1].substring(0, 5),
-          fechaLlegada: arrayAux[0],
-          horaLlegada: arrayAux[1].substring(0, 5),
+          fechaSalida: arrayAuxSlida[0],
+          horaSalida: arrayAuxSlida[1].substring(0, 5),
+          fechaLlegada: arrayAuxLlegada[0],
+          horaLlegada: arrayAuxLlegada[1].substring(0, 5),
           ocupados: viajeSeleccionado.cantidadOcupados
         })
       }).then(response => {
