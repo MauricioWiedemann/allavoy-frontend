@@ -27,7 +27,7 @@ import RehabilitarOmnibus from "./pages/RehabilitarOmnibus";
 import Confirmacion from "./pages/Confirmacion";
 import DevolucionPasaje from "./pages/DevolucionPasaje";
 import ListadoViajeConPasaje from "./pages/ListadoViajeConPasaje"
-
+import CambiarLocalidad from "./pages/CambiarLocalidad";
 
 import { ViajeProvider } from "./context/ViajeContext";
 import { ImPriceTag } from "react-icons/im";
@@ -71,6 +71,7 @@ function App() {
               <Route path="/confirmacion" element={<Confirmacion />} />
               <Route path="/listadoviajeconpasaje" element={<ListadoViajeConPasaje />} />
               <Route path="/devolucionpasaje" element={<DevolucionPasaje />} />
+              <Route path="/cambiarlocalidad" element={<CambiarLocalidad />} />
             </Routes >
           </BrowserRouter >
         </div >

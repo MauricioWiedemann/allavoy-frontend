@@ -40,6 +40,7 @@ function NavbarVendedor() {
               <li className="nav-item"> <Link className="nav-link" to="/listaromnibus">Listado de Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/deshabilitacionomnibus">Deshabilitar Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/rehabilitacionomnibus">Rehabilitar Omnibus</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/cambiarlocalidad">Cambiar Localidad</Link></li>
             </>
           )}
         </li>
