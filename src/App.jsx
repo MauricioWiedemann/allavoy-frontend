@@ -28,6 +28,9 @@ import Confirmacion from "./pages/Confirmacion";
 import DevolucionPasaje from "./pages/DevolucionPasaje";
 import ListadoViajeConPasaje from "./pages/ListadoViajeConPasaje"
 import CambiarLocalidad from "./pages/CambiarLocalidad";
+import AplicarDescuento from "./pages/AplicarDescuentos";
+import SolicitarRecuperarPass from "./pages/SolicitarRecuperarPass";
+import RecuperarPass from "./pages/RecuperarPass";
 
 import { ViajeProvider } from "./context/ViajeContext";
 import { ImPriceTag } from "react-icons/im";
@@ -72,6 +75,9 @@ function App() {
               <Route path="/listadoviajeconpasaje" element={<ListadoViajeConPasaje />} />
               <Route path="/devolucionpasaje" element={<DevolucionPasaje />} />
               <Route path="/cambiarlocalidad" element={<CambiarLocalidad />} />
+              <Route path="/aplicardescuento" element={<AplicarDescuento />} />
+              <Route path="/solicitarrecuperarpass" element={<SolicitarRecuperarPass />} />
+              <Route path="/recuperarpass" element={<RecuperarPass />} />
             </Routes >
           </BrowserRouter >
         </div >

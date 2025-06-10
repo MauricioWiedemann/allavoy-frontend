@@ -1,0 +1,13 @@
+.cambiar-pass-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f2ef;
+}
+
+.cambiar-pass-card {
+    width: 680px;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+}
