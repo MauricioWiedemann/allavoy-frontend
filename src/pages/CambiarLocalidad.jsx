@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import "../css/AltaViaje.css";
+import React, {useState, useEffect} from "react";
+import "../css/AltaLocalidad.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import OmnibusAltaVaije from "../components/omnibsuAltaViaje";
 import { useViajeContext } from "../context/ViajeContext";
 
-function AltaViaje() {
+function CambiarLocalidad() {
   const { omnibusViaje } = useViajeContext();
 
   const [localidadSalida, setLocalidadSalida] = useState("");
@@ -13,7 +13,6 @@ function AltaViaje() {
   const [localidadLlegada, setLocalidadLlegada] = useState("");
   const [fechaLlegada, setFechaLlegada] = useState("");
   const [horaLlegada, setHoraLlegada] = useState("");
-  const [precio, setPrecio] = useState("");
 
   const [listaOmnibus, setListaOmnibus] = useState([]);
   const [clicked, setClicked] = useState(false);
@@ -119,42 +118,32 @@ function AltaViaje() {
       }
   },[listaOmnibus]);
 
-  function registrarViaje() {
-    if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") { 
-      alert("Complete todos los campos.");
+  function cambiarLocalidadOmnibus() {
+    if (JSON.stringify(omnibusViaje).trim() === "[]") { 
+      alert("Seleccione un omnibus.");
     } else {
-      fetch("http://localhost:8080/viaje/alta", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          localidadSalida: JSON.parse(localidadSalida),
-          fechaSalida: fechaSalida,
-          horaSalida: horaSalida,
-          localidadLlegada: JSON.parse(localidadLlegada),
-          fechaLlegada: fechaLlegada,
-          horaLlegada: horaLlegada,
-          omnibus: omnibusViaje.omnibus,
-          precio: precio
-        })
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar el Viaje");
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log("Viaje registrado:", data);
-          alert("Viaje registrado");
-          window.location.reload();
-        })
-        .catch(error => {
-          console.error("Error:", error);
-          alert("Error al registrar el viaje.");
-        });
-      
+        fetch("http://localhost:8080/omnibus/cambiarlocalidad", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+            localidadSalida: JSON.parse(localidadSalida),
+            fechaSalida: fechaSalida,
+            horaSalida: horaSalida,
+            localidadLlegada: JSON.parse(localidadLlegada),
+            fechaLlegada: fechaLlegada,
+            horaLlegada: horaLlegada,
+            omnibus: omnibusViaje.omnibus,
+            precio: null
+            })
+            }).then(response => {
+                return response.text();
+            }).then(data => {
+                alert(data);
+                window.location.reload();
+            })
+        ;
     }
   }
 
@@ -199,11 +188,8 @@ function AltaViaje() {
                 <OmnibusAltaVaije omnibus={element} />
               ))}
             </div>
-            <div className="mb-3">
-              <input type="number" className="form-control rounded-pill" placeholder="Precio" value={precio} onChange={(e) => setPrecio(e.target.value)}/>
-            </div>
             <div> 
-              <button id="btn-crear" className="btn w50 btn-primary rounded-pill" onClick={registrarViaje}>Crear</button>
+              <button id="btn-crear" className="btn w50 btn-primary rounded-pill" onClick={cambiarLocalidadOmnibus}>Confirmar</button>
             </div>
           </div>
           <div id="cancelar-btn">
@@ -215,4 +201,4 @@ function AltaViaje() {
   );
 }
 
-export default AltaViaje;
+export default CambiarLocalidad;

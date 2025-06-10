@@ -20,7 +20,7 @@
 
 .select-tipo-alta-localidad {
     height: 40px;
-    width: 48.5%;
+    width: 48.4%;
     border: 1px solid #bdbdbd;
     border-bottom: none;
 }
@@ -41,4 +41,15 @@
 #alta-individual {
     padding: 20px;
     padding-top: 0;
+}
+
+#csv-ejemplo {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    padding: 1%;
+    cursor: default;
+}
+
+#csv-ejemplo p {
+    margin: 0;
 }

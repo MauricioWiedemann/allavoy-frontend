@@ -66,7 +66,7 @@ function Login() {
                     <input type="password" className="form-control rounded-pill" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="mb-3 small">
-                    <Link to="/forgot-password" className="text-primary text-decoration-none" style={{ cursor: "pointer" }}>
+                    <Link to="/solicitarrecuperarpass" className="text-primary text-decoration-none" style={{ cursor: "pointer" }}>
                         ¿Olvidó su contraseña?
                     </Link>
                 </div>

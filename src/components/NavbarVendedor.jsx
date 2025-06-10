@@ -10,6 +10,7 @@ function NavbarVendedor() {
   const [showViajes, setShowViajes] = useState(false);
   const [showPasajes, setShowPasajes] = useState(false);
   const [showUsuario, setShowUsuario] = useState(false);
+  const [showClientes, setShowClientes] = useState(false);
 
   return (
     <aside className="sidebar">
@@ -40,6 +41,7 @@ function NavbarVendedor() {
               <li className="nav-item"> <Link className="nav-link" to="/listaromnibus">Listado de Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/deshabilitacionomnibus">Deshabilitar Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/rehabilitacionomnibus">Rehabilitar Omnibus</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/cambiarlocalidad">Cambiar Localidad</Link></li>
             </>
           )}
         </li>
@@ -63,9 +65,21 @@ function NavbarVendedor() {
           </div>
           {showPasajes && (
             <>
-              <li className="nav-item"><Link className="nav-link" to="/">Compra</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/buscar">Compra</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cierreventa">Cierre de venta</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/listarpasajes">Listado de ventas</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/listadoviajeconpasaje">Devolucion de pasajes</Link></li>
+            </>
+          )}
+        </li>
+        <li>
+          <div className="menu-title" onClick={() => setShowClientes(!showClientes)}>
+            <h4>Clientes</h4>
+            {showClientes ? <FaChevronUp /> : <FaChevronDown />}
+          </div>
+          {showClientes && (
+            <>
+              <li className="nav-item"><Link className="nav-link" to="/aplicardescuento">Aplicar Descuentos</Link></li>
             </>
           )}
         </li>

@@ -7,7 +7,7 @@
 }
 
 .altausuario-card {
-    width: 480px;
+    width: 690px;
     border-radius: 20px;
     background-color: #d9d9d9;
     margin-left: 260px;
@@ -20,7 +20,7 @@
 
 .select-tipo-alta-usuario {
     height: 40px;
-    width: 47.85%;
+    width: 48.45%;
     border: 1px solid #bdbdbd;
     border-bottom: none;
 }
@@ -41,4 +41,15 @@
 #alta-individual {
     padding: 20px;
     padding-top: 0;
+}
+
+#csv-ejemplo {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    padding: 1%;
+    cursor: default;
+}
+
+#csv-ejemplo p {
+    margin: 0;
 }

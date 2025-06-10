@@ -108,7 +108,6 @@ function AltaOmnibus() {
   }
 
   function altaOmnibusCsv(){
-    console.log(JSON.stringify(data));
     if (data.length > 0) {
       fetch("http://localhost:8080/omnibus/altacsv", {
         method: "POST",
@@ -167,7 +166,7 @@ function AltaOmnibus() {
                   </select>
                 </div>
               </div>
-              <div class="d-grid gap-2">
+              <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={registrarOmnibus}>Crear Omnibus</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
               </div>
@@ -179,7 +178,13 @@ function AltaOmnibus() {
               <p>Ingrese un archivo .CSV</p>
               <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo}/>  
             </div>
-            <div class="d-grid gap-2">
+            <p>Ejemplo del formato CSV</p>
+            <div id="csv-ejemplo" className="mb-3">
+              <p>Marca;Modelo;NroMotor;Matricula;Capacidad;Departamento;Localidad</p>
+              <p>Scania;F510;AAAA1111;STU1111;20;MONTEVIDEO;Montevideo</p>
+              <p>Volvo;V20;BBBBB2222;STU2222;20;CERRO LARGO;Melo</p>
+            </div>
+            <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaOmnibusCsv} >Crear Omnibus</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
             </div>
