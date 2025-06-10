@@ -51,6 +51,7 @@ function NavbarVendedor() {
           {showViajes && (
             <>
               <li className="nav-item"><Link className="nav-link" to="/altaviaje">Alta Viaje</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/omnibusasignados">Viajes Asignados a un Ómnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/reasignarviaje">Reasignación de viaje</Link></li>
             </>
           )}
