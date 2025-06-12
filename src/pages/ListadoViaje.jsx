@@ -14,6 +14,7 @@ function ListadoViaje() {
     const [orden, setOrden] = useState("");
     const token = localStorage.getItem("token");
     const payload = token ? JSON.parse(atob(token.split(".")[1])) : {};
+    const [idaYVuelta, setIdaYVuelta] = useState(false);
 
     function validar_datos() {
         if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "" || cantidad.trim() === "") {
@@ -23,6 +24,8 @@ function ListadoViaje() {
             alert("La cantidad no puede ser menor a 1.");
             return;
         }
+        console.log("Origen:", origen);
+        console.log("Destino:", destino);
         fetch("http://localhost:8080/viaje/buscar", {
             method: "POST",
             headers: {
@@ -105,12 +108,23 @@ function ListadoViaje() {
 
     const navigate = useNavigate();
     function comprar_pasaje(viaje) {
-        navigate("/compra", {
-            state: {
-                viaje: viaje,
-                cantidad: parseInt(cantidad, 10)
-            }
-        });
+        if(idaYVuelta == 1) {
+            navigate("/compra", {
+                state: {
+                    viaje: viaje,
+                    cantidad: parseInt(cantidad, 10),
+                    idaYVuelta
+                }
+            });
+        }else {
+            navigate("/compraida", {
+                state: {
+                    viaje: viaje,
+                    cantidad: parseInt(cantidad, 10),
+                    idaYVuelta
+                }
+            });
+        }
     }
     return (
         <>
@@ -125,6 +139,10 @@ function ListadoViaje() {
                         </select>
                         <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
                         <input type="number" min="1" placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
+                        <select id="select-ida-vuelta" value={idaYVuelta} onChange={(e) => setIdaYVuelta(e.target.value)}>
+                            <option value="1">Simple</option>
+                            <option value="2">Ida y vuelta</option>
+                        </select>
                         <button onClick={validar_datos}>Buscar</button>
                     </div>
 

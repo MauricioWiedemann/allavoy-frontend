@@ -27,6 +27,8 @@ import RehabilitarOmnibus from "./pages/RehabilitarOmnibus";
 import Confirmacion from "./pages/Confirmacion";
 import DevolucionPasaje from "./pages/DevolucionPasaje";
 import ListadoViajeConPasaje from "./pages/ListadoViajeConPasaje"
+import CompraPasajeIda from "./pages/CompraPasajeIda"
+import BuscarVuelta from "./pages/ListadoViajeVuelta"
 
 
 import { ViajeProvider } from "./context/ViajeContext";
@@ -62,6 +64,8 @@ function App() {
               <Route path="/listarpasajes" element={<ListadoPasajes />} />
               <Route path="/listaromnibus" element={<ListaOmnibus />} />
               <Route path="/compra" element={<CompraPasaje />} />
+              <Route path="/compraida" element={<CompraPasajeIda />} />
+              <Route path="/buscarvuelta" element={<BuscarVuelta />} />
               <Route path="/bajausuario" element={<BajaUsuario />} />
               <Route path="/editarusuario" element={<EditarPerfil />} />
               <Route path="/cambiarpass" element={<CambiarPass />} />
