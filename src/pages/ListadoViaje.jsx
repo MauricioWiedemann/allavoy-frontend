@@ -14,7 +14,7 @@ function ListadoViaje() {
     const [orden, setOrden] = useState("");
     const token = localStorage.getItem("token");
     const payload = token ? JSON.parse(atob(token.split(".")[1])) : {};
-    const [idaYVuelta, setIdaYVuelta] = useState(false);
+    const [idaYVuelta, setIdaYVuelta] = useState(1);
 
     function validar_datos() {
         if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "" || cantidad.trim() === "") {
