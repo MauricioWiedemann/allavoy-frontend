@@ -32,6 +32,7 @@ import CambiarLocalidad from "./pages/CambiarLocalidad";
 import AplicarDescuento from "./pages/AplicarDescuentos";
 import SolicitarRecuperarPass from "./pages/SolicitarRecuperarPass";
 import RecuperarPass from "./pages/RecuperarPass";
+import EstadisticasUsuario from "./pages/EstadisticasUsuario";
 
 import { ViajeProvider } from "./context/ViajeContext";
 import { ImPriceTag } from "react-icons/im";
@@ -80,6 +81,8 @@ function App() {
               <Route path="/aplicardescuento" element={<AplicarDescuento />} />
               <Route path="/solicitarrecuperarpass" element={<SolicitarRecuperarPass />} />
               <Route path="/recuperarpass" element={<RecuperarPass />} />
+              <Route path="/estidisticausuario" element={<EstadisticasUsuario />} />
+
             </Routes >
           </BrowserRouter >
         </div >

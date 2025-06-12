@@ -23,6 +23,7 @@ function NavbarAdministrador() {
             <li className="nav-item"><Link className="nav-link" to="/altausuario">Alta Usuarios</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/listausuarios">Listado de Usuarios</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/bajausuario">Baja de Usuarios</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/estidisticausuario">Estadisticas de Usuarios</Link></li>
           </>)
         }
         <li>
