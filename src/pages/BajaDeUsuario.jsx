@@ -71,22 +71,13 @@ function BajaUsuario() {
     }
 
     function desactivar_usuario(usuario){
-        fetch("http://localhost:8080/usuario/baja", {
+        // Se envía el ID del usuario en la URL y el token en el header.
+        // El backend dará de baja al usuario y responderá con código HTTP 204 (sin contenido).
+        fetch(`http://localhost:8080/usuario/baja/${usuario.idUsuario}`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-            idUsuario: usuario.idUsuario,
-            cedula: usuario.cedula,
-            nombre: usuario.nombre,
-            apellido: usuario.apellido,
-            email: usuario.email,
-            password: password,
-            fechaNacimiento: usuario.fechaNacimiento,
-            tipoDescuento: usuario.tipoDescuento,
-            tipoUsuario: usuario.tipoUsuario
-            })
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
         })
             .then(response => {
             if (!response.ok) {
