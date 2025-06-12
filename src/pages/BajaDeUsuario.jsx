@@ -50,7 +50,7 @@ function BajaUsuario() {
         fetch("http://localhost:8080/usuario/listaractivos", {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Authorization": "Bearer " + localStorage.getItem("token")
             },
         })
             .then(response => {
