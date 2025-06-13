@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import "../css/AltaLocalidad.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Papa from 'papaparse';
+import { jwtDecode } from 'jwt-decode';
 
 function AltaLocalidad() {
 
@@ -86,6 +87,34 @@ function AltaLocalidad() {
     }
   }, [isIndividual]);
 
+  useEffect(() => {
+    if (isIndividual) {
+      var indi = document.getElementById("individual-select");
+      indi.style.backgroundColor = "#d9d9d9";
+      var csv = document.getElementById("csv-select");
+      csv.style.backgroundColor = "#bdbdbd";
+    } else {
+      var indi = document.getElementById("individual-select");
+      indi.style.backgroundColor = "#bdbdbd";
+      var csv = document.getElementById("csv-select");
+      csv.style.backgroundColor = "#d9d9d9";
+    }
+  }, [isIndividual]);
+
+  function validarTokenUsuario(){
+    try {
+      let payload = jwtDecode(localStorage.getItem("token"));
+      if (payload.rol !== "VENDEDOR")
+        window.location.href = "/404";
+    } catch (e) {
+      window.location.href = "/404";
+    }
+  }
+
+  useEffect(() => {
+    validarTokenUsuario();
+  }, []);
+
   return (
     <>
     <NavbarVendedor/>
@@ -152,7 +181,7 @@ function AltaLocalidad() {
       </div>
     </div>
   </>
-  );
+  )
 }
 
 export default AltaLocalidad;

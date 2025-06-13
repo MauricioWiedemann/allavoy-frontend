@@ -21,7 +21,7 @@ function NavbarCliente() {
         {setViajes && (
           <>
             <li className="nav-item"><Link className="nav-link" to="/buscar">Buscar</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/buscar">Comprar Pasajes</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/buscarcomprar">Comprar Pasajes</Link></li>
           </>
         )}
         <li>

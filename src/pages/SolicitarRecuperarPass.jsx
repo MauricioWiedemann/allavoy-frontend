@@ -15,7 +15,7 @@ function SolicitarRecuperarPass() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                correo: correo
+                email: correo
             })
             }).then(response => {
                 if (!response.ok) {
@@ -27,7 +27,7 @@ function SolicitarRecuperarPass() {
                 window.location.href = "/login";
             })
             .catch(error => {
-                alert(error);
+                alert("Usuario no encontrado");
             });
         }
     }

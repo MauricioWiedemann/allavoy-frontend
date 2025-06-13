@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/DeshabilitarOmnibus.css"
 import NavbarVendedor from "../components/NavbarVendedor";
+import { jwtDecode } from 'jwt-decode';
 
 function RehabilitarOmnibus() {
     const [localidad_actual, setLocalidad] = useState("");
@@ -124,6 +125,19 @@ function RehabilitarOmnibus() {
         omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
     }
 
+    function validarTokenUsuario(){
+        try {
+          let payload = jwtDecode(localStorage.getItem("token"));
+          if (payload.rol !== "VENDEDOR")
+            window.location.href = "/404";
+        } catch (e) {
+          window.location.href = "/404";
+        }
+      }
+    
+      useEffect(() => {
+        validarTokenUsuario();
+      }, []);
 
     return (
         <>

@@ -3,6 +3,7 @@ import "../css/Listado.css";
 import { useNavigate } from 'react-router-dom';
 import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
+import { jwtDecode } from 'jwt-decode';
 
 
 function ListadoViaje() {
@@ -103,18 +104,24 @@ function ListadoViaje() {
     else if (orden === "hora")
         viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
 
-    const navigate = useNavigate();
-    function comprar_pasaje(viaje) {
-        navigate("/compra", {
-            state: {
-                viaje: viaje,
-                cantidad: parseInt(cantidad, 10)
-            }
-        });
+    function validarTokenUsuario(){
+        try {
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR" && payload.rol !== "CLIENTE")
+                window.location.href = "/404";
+        } catch (e) {
+            window.location.href = "/404";
+        }
     }
+    
+    useEffect(() => {
+        validarTokenUsuario();
+    }, []);
+    
     return (
         <>
-                {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            <div className="layout">
+            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            
+            <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
                         <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>
@@ -144,7 +151,6 @@ function ListadoViaje() {
                             <p>Fecha: {v.fechaSalida.split("T")[0]} Hora: {v.fechaSalida.split("T")[1]}</p>
                             <p>Asientos Disponibles: {v.cantidad}</p>
                             <p>Precio: {v.precio}</p>
-                            <button onClick={() => comprar_pasaje(v)}>Comprar</button>
                         </div>
                     ))}
                 </div>

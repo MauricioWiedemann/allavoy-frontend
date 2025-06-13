@@ -33,6 +33,8 @@ import AplicarDescuento from "./pages/AplicarDescuentos";
 import SolicitarRecuperarPass from "./pages/SolicitarRecuperarPass";
 import RecuperarPass from "./pages/RecuperarPass";
 import EstadisticasUsuario from "./pages/EstadisticasUsuario";
+import BuscarCompra from "./pages/ListadoViajeCompra";
+import NotFound from "./pages/NotFound";
 
 import { ViajeProvider } from "./context/ViajeContext";
 import { ImPriceTag } from "react-icons/im";
@@ -50,7 +52,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/homec" element={<HomeCliente />} />
+              <Route path="/homec" element={<HomeCliente />} /> 
               <Route path="/homev" element={<HomeVendedor />} />
               <Route path="/homea" element={<HomeAdministrador />} />
               <Route path="/login" element={<Login />} />
@@ -63,6 +65,7 @@ function App() {
               <Route path="/reasignarviaje" element={<ReasignarViaje />} />
               <Route path="/cierreventa" element={<CierreVentaPasaje />} />
               <Route path="/buscar" element={<Buscar />} />
+              <Route path="/buscarcomprar" element={<BuscarCompra />} />
               <Route path="/listausuarios" element={<ListaUsuarios />} />
               <Route path="/listarpasajes" element={<ListadoPasajes />} />
               <Route path="/listaromnibus" element={<ListaOmnibus />} />
@@ -82,7 +85,7 @@ function App() {
               <Route path="/solicitarrecuperarpass" element={<SolicitarRecuperarPass />} />
               <Route path="/recuperarpass" element={<RecuperarPass />} />
               <Route path="/estidisticausuario" element={<EstadisticasUsuario />} />
-
+              <Route path="/404" element={<NotFound />} />
             </Routes >
           </BrowserRouter >
         </div >

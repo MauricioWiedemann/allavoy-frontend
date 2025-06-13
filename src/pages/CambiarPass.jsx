@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "../css/CambiarPass.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import NavbarAdministrador from "../components/NavbarAdministrador";
@@ -7,11 +7,10 @@ import { jwtDecode } from 'jwt-decode';
 
 function CambiarPass() {
 
-    const payload = jwtDecode(localStorage.getItem("token"));
-
     const [passActual, setPassActual] = useState("");
     const [passNuevo, setPassNuevo] = useState("");
     const [passNuevoCheck, setPassNuevoCheck] = useState("");
+    const [payload, setPayload] = useState("");
 
     function salir() {
     if (payload.rol === "CLIENTE")
@@ -59,7 +58,17 @@ function CambiarPass() {
         }
     }
 
-
+    function validarTokenUsuario(){
+        try {
+          setPayload(jwtDecode(localStorage.getItem("token")));
+        } catch (e) {
+          window.location.href = "/404";
+        }
+    }
+    
+    useEffect(() => {
+        validarTokenUsuario();
+    }, []);
 
   return (
     <>

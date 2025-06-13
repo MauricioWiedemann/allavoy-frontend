@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/ListadoOmnibus.css";
 import { useNavigate } from 'react-router-dom';
 import NavbarVendedor from "../components/NavbarVendedor";
+import { jwtDecode } from 'jwt-decode';
 
 function ListadoOmnibusAsignados() {
     const [origen, setOrigen] = useState("");
@@ -68,11 +69,11 @@ function ListadoOmnibusAsignados() {
                 return response.json();
             })
             .then(data => {
-                setOmnibus(data);
+                setViajes(data);
             })
             .catch(error => {
                 alert("No se encontraron omnibus.");
-                setOmnibus([]);
+                setViajes([]);
             });
     }
 
@@ -132,6 +133,19 @@ function ListadoOmnibusAsignados() {
         viajesOrdenados.sort((a, b) => (a.ventaCerrada === b.ventaCerrada) ? 0 : a.ventaCerrada ? 1 : -1);
     }
 
+    function validarTokenUsuario(){
+        try {
+          let payload = jwtDecode(localStorage.getItem("token"));
+          if (payload.rol !== "VENDEDOR")
+            window.location.href = "/404";
+        } catch (e) {
+          window.location.href = "/404";
+        }
+      }
+    
+      useEffect(() => {
+        validarTokenUsuario();
+      }, []);
 
     return (
         <>
@@ -172,7 +186,7 @@ function ListadoOmnibusAsignados() {
                             <p>Fecha: {v.fechaSalida.split("T")[0]} Hora: {v.fechaSalida.split("T")[1]}</p>
                             <p>Asientos Disponibles: {v.cantidad}</p>
                             <p>Precio: {v.precio}</p>
-                            <button onClick={() => comprar_pasaje(v)}>Comprar</button>
+                            <p>Omnibus: {v.omnibus.matricula}</p>
                         </div>
                     ))}
                 </div>
