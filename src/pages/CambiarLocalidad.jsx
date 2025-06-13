@@ -3,6 +3,7 @@ import "../css/AltaLocalidad.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import OmnibusAltaVaije from "../components/omnibsuAltaViaje";
 import { useViajeContext } from "../context/ViajeContext";
+import { jwtDecode } from 'jwt-decode';
 
 function CambiarLocalidad() {
   const { omnibusViaje } = useViajeContext();
@@ -146,6 +147,20 @@ function CambiarLocalidad() {
         ;
     }
   }
+
+  function validarTokenUsuario(){
+      try {
+        let payload = jwtDecode(localStorage.getItem("token"));
+        if (payload.rol !== "VENDEDOR")
+          window.location.href = "/404";
+      } catch (e) {
+        window.location.href = "/404";
+      }
+    }
+  
+    useEffect(() => {
+      validarTokenUsuario();
+    }, []);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/BajaUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
+import { jwtDecode } from 'jwt-decode';
 
 function BajaUsuario() {
     const [email, setEmail] = useState("");
@@ -50,7 +51,7 @@ function BajaUsuario() {
         fetch("http://localhost:8080/usuario/listaractivos", {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Authorization": "Bearer " + localStorage.getItem("token")
             },
         })
             .then(response => {
@@ -109,6 +110,19 @@ function BajaUsuario() {
     else if (orden === "estado")
         usuariosOrdenados.sort((a, b) => (b.activo === a.activo) ? 0 : a.activo ? -1 : 1);
 
+    function validarTokenUsuario(){
+        try {
+        let payload = jwtDecode(localStorage.getItem("token"));
+        if (payload.rol !== "ADMINISTRADOR")
+            window.location.href = "/404";
+        } catch (e) {
+            window.location.href = "/404";
+        }
+    }
+    
+    useEffect(() => {
+        validarTokenUsuario();
+    }, []);
 
     return (
         <>

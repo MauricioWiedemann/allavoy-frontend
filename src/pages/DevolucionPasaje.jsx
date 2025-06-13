@@ -4,6 +4,7 @@ import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/DevolucionPasaje.css";
+import { jwtDecode } from 'jwt-decode';
 
 function DevolucionPasaje() {
   const { id } = useParams();
@@ -91,7 +92,19 @@ function DevolucionPasaje() {
     }
   };
 
-
+  function validarTokenUsuario(){
+      try {
+        let payload = jwtDecode(localStorage.getItem("token"));
+        if (payload.rol !== "VENDEDOR")
+          window.location.href = "/404";
+      } catch (e) {
+        window.location.href = "/404";
+      }
+    }
+  
+    useEffect(() => {
+      validarTokenUsuario();
+    }, []);
 
   return (
     <div className="devolucionPasaje-bg">

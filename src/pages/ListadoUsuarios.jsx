@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/ListadoUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
+import { jwtDecode } from 'jwt-decode';
 
 function ListadoUsuario() {
     const [email, setEmail] = useState("");
@@ -88,6 +89,20 @@ function ListadoUsuario() {
         usuariosOrdenados.sort((a, b) => a.tipoUsuario.localeCompare(b.tipoUsuario));
     else if (orden === "estado")
         usuariosOrdenados.sort((a, b) => (b.activo === a.activo) ? 0 : a.activo ? -1 : 1);
+
+    function validarTokenUsuario(){
+        try {
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "ADMINISTRADOR")
+                window.location.href = "/404";
+        } catch (e) {
+            window.location.href = "/404";
+        }
+    }
+    
+    useEffect(() => {
+        validarTokenUsuario();
+    }, []);
 
     return (
         <>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../css/ListadoPasajes.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
+import { jwtDecode } from 'jwt-decode';
 
 function ListadoPasajes() {
     const [listaViajes, setListaViajes] = useState([]);
@@ -164,6 +165,20 @@ function ListadoPasajes() {
         viajesOrdenados.sort((a, b) => new Date(b.fechaSalida) - new Date(a.fechaSalida));
     else if (orden === "menor-fecha")
         viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
+
+    function validarTokenUsuario(){
+        try {
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR")
+                window.location.href = "/404";
+        } catch (e) {
+            window.location.href = "/404";
+        }
+    }
+    
+      useEffect(() => {
+        validarTokenUsuario();
+      }, []);
 
     return (
         <>

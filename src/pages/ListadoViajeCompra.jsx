@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from "react";
 import "../css/Listado.css";
 import { useNavigate } from 'react-router-dom';
+import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
-import DevolucionPasaje from "./DevolucionPasaje.jsx";
 import { jwtDecode } from 'jwt-decode';
 
-
-function ListadoViaje() {
+function ListadoViajeCompra() {
     const [origen, setOrigen] = useState("");
     const [destino, setDestino] = useState("");
     const [fecha, setFecha] = useState("");
+    const [cantidad, setCantidad] = useState("");
     const [viajes, setViajes] = useState([]);
     const [orden, setOrden] = useState("");
     const token = localStorage.getItem("token");
     const payload = token ? JSON.parse(atob(token.split(".")[1])) : {};
 
     function validar_datos() {
-        if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "") {
+        if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "" || cantidad.trim() === "") {
             alert("Complete todos los campos.");
             return;
+        } else if (cantidad.trim() < 1) {
+            alert("La cantidad no puede ser menor a 1.");
+            return;
         }
-
         fetch("http://localhost:8080/viaje/buscar", {
             method: "POST",
             headers: {
@@ -30,7 +32,7 @@ function ListadoViaje() {
                 origen: origen,
                 destino: destino,
                 fecha: fecha + "T00:00:00",
-                cantidad: 0
+                cantidad: cantidad
             })
         })
             .then(response => {
@@ -102,32 +104,33 @@ function ListadoViaje() {
         viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
 
     const navigate = useNavigate();
-    function devolver_pasaje(viaje) {
-        navigate("/devolucionpasaje", {
+    function comprar_pasaje(viaje) {
+        navigate("/compra", {
             state: {
-                viaje: viaje
+                viaje: viaje,
+                cantidad: parseInt(cantidad, 10)
             }
         });
     }
 
     function validarTokenUsuario(){
         try {
-          let payload = jwtDecode(localStorage.getItem("token"));
-          if (payload.rol !== "VENDEDOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR" && payload.rol !== "CLIENTE")
+                window.location.href = "/404";
         } catch (e) {
-          window.location.href = "/404";
+            window.location.href = "/404";
         }
-      }
+    }
     
-      useEffect(() => {
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
-           <NavbarVendedor />
-              <div className="layout">
+            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            
+            <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
                         <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>
@@ -137,6 +140,7 @@ function ListadoViaje() {
                             <option value="" disabled>Destino</option>
                         </select>
                         <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
+                        <input type="number" min="1" placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
                         <button onClick={validar_datos}>Buscar</button>
                     </div>
 
@@ -154,7 +158,9 @@ function ListadoViaje() {
                         <div key={i} className="card-viaje">
                             <h5>{capitalizar(v.origen.nombre)}, {capitalizar(v.origen.departamento)} → {capitalizar(v.destino.nombre)}, {capitalizar(v.destino.departamento)}</h5>
                             <p>Fecha: {v.fechaSalida.split("T")[0]} Hora: {v.fechaSalida.split("T")[1]}</p>
-                            <button onClick={() => devolver_pasaje(v)}>Devolver</button>
+                            <p>Asientos Disponibles: {v.cantidad}</p>
+                            <p>Precio: {v.precio}</p>
+                            <button onClick={() => comprar_pasaje(v)}>Comprar</button>
                         </div>
                     ))}
                 </div>
@@ -163,4 +169,4 @@ function ListadoViaje() {
     );
 }
 
-export default ListadoViaje;
+export default ListadoViajeCompra;

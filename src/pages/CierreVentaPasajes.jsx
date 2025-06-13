@@ -3,6 +3,7 @@ import "../css/CierreVentaPasaje.css"
 import NavbarVendedor from "../components/NavbarVendedor";
 import ViajeCerrarVenta from "../components/ViajeCerrarVenta";
 import { useViajeContext } from "../context/ViajeContext";
+import { jwtDecode } from 'jwt-decode';
 
 function CierreVentaPasaje() {
 
@@ -59,22 +60,28 @@ function CierreVentaPasaje() {
                 })
             })
                 .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error al cerrar la venta");
-                }
-                return response;
+                return response.text();
                 })
                 .then(data => {
-                console.log("Venta cerrada:", data);
-                alert("Venta cerrada");
+                alert(data);
                 window.location.reload();
-                })
-                .catch(error => {
-                console.error("Error:", error);
-                alert("Error al cerrar la venta.");
-            });
+                });
         }
     }
+
+    function validarTokenUsuario(){
+        try {
+          let payload = jwtDecode(localStorage.getItem("token"));
+          if (payload.rol !== "VENDEDOR")
+            window.location.href = "/404";
+        } catch (e) {
+          window.location.href = "/404";
+        }
+      }
+    
+      useEffect(() => {
+        validarTokenUsuario();
+      }, []);
 
     return (
         <>
