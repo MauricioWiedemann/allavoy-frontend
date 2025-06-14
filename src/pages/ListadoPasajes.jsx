@@ -164,7 +164,7 @@ function ListadoPasajes() {
     else if (orden === "menor-fecha")
         viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
             let payload = jwtDecode(localStorage.getItem("token"));
             if (payload.rol !== "VENDEDOR")
@@ -173,10 +173,10 @@ function ListadoPasajes() {
             window.location.href = "/404";
         }
     }
-    
-      useEffect(() => {
+
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
@@ -218,8 +218,8 @@ function ListadoPasajes() {
 
             <Modal open={open} onClose={() => setOpen(false)}>
                 {viajeSeleccionado && (
-                    <div style={{ padding: "1rem", overflowY: "scroll", height: "100%"}}>
-                        <div className="mb-4">
+                    <div style={{ padding: "1rem" }}>
+                        <div className="mb-2">
                             <h2>Vendidos</h2>
                             {listaPasajesVendidos.map((p, i) => (
                                 <div key={i} className="card-pasaje">
@@ -227,7 +227,7 @@ function ListadoPasajes() {
                                     <p>Asiento: {p.asiento.numero}</p>
                                     <p>Monto: {p.monto}</p>
                                     <p>Descuento: {p.porcentajeDescuento}%</p>
-                                    <p>Fecha compra: {p.fechaCompra.replace(/T/g,' ')}</p>
+                                    <p>Fecha compra: {p.fechaCompra.replace(/T/g, ' ')}</p>
                                 </div>
                             ))}
                         </div>
@@ -238,8 +238,8 @@ function ListadoPasajes() {
                                     <p>Usuario: {p.emailCliente}</p>
                                     <p>Monto: {p.monto}</p>
                                     <p>Descuento: {p.porcentajeDescuento}%</p>
-                                    <p>Fecha compra: {p.fechaCompra.replace(/T/g,' ')}</p>
-                                    <p>Fecha Devolucion: {p.fechaDevolucion.replace(/T/g,' ')}</p>
+                                    <p>Fecha compra: {p.fechaCompra.replace(/T/g, ' ')}</p>
+                                    <p>Fecha Devolucion: {p.fechaDevolucion.replace(/T/g, ' ')}</p>
                                 </div>
                             ))}
                         </div>
