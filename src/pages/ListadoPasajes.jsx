@@ -225,6 +225,30 @@ function ListadoPasajes() {
                         <p>{viajeSeleccionado.origen.nombre} → {viajeSeleccionado.destino.nombre}</p>
                         <p>Fecha: {viajeSeleccionado.fechaSalida}</p>
                         <p>Precio: {viajeSeleccionado.precio}</p>
+                        <div className="mb-2">
+                            <h2>Vendidos</h2>
+                            {listaPasajesVendidos.map((p, i) => (
+                                <div key={i} className="card-viaje">
+                                    <p>Usuario: {p.emailCliente}</p>
+                                    <p>Asiento: {p.asiento.numero}</p>
+                                    <p>Monto: {p.monto}</p>
+                                    <p>Descuento: {p.porcentajeDescuento}%</p>
+                                    <p>Fecha compra: {p.fechaCompra}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="mb-2">
+                            <h2>Devueltos</h2>
+                            {listaPasajesDevuletos.map((p, i) => (
+                                <div key={i} className="card-viaje">
+                                    <p>Usuario: {p.emailCliente}</p>
+                                    <p>Monto: {p.monto}</p>
+                                    <p>Descuento: {p.porcentajeDescuento}%</p>
+                                    <p>Fecha compra: {p.fechaCompra}</p>
+                                    <p>Fecha Devolucion: {p.fechaDevolucion}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </Modal>
