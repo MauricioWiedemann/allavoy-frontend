@@ -127,7 +127,6 @@ function ListadoViaje() {
             });
         }
     }
-
     function validarTokenUsuario() {
         try {
             let payload = jwtDecode(localStorage.getItem("token"));
