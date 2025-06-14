@@ -7,6 +7,33 @@ import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/CompraPasaje.css";
 
+function Timer({ onExpire }) {
+  const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 minutos en segundos
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onExpire();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  return <p><strong>Tiempo restante:</strong> {formatTime(timeLeft)}</p>;
+}
+
 async function obtenerTipoDescuento(idUsuario) {
     try {
         const response = await fetch(`http://localhost:8080/usuario/${idUsuario}/descuento`);
@@ -24,6 +51,7 @@ function CompraPasajes() {
   const location = useLocation();
   const cantidad = location.state?.cantidad;
   const viaje = location.state?.viaje;
+  const idaYVuelta = location.state?.idaYVuelta;
   const token = localStorage.getItem("token");
   const payload = jwtDecode(token);
   const navigate = useNavigate();
@@ -44,18 +72,39 @@ function CompraPasajes() {
     const handleEmailChange = (e) => {
       const email = e.target.value;
       setEmailComprador(email);
-      setEmailIngresado(email.trim() !== ""); // Verifica que el campo no esté vacío
+      setEmailIngresado(email.trim() !== "");
+    };
+
+    const bloquearAsiento = async (seat) => {
+      try {
+        const response = await fetch(`http://localhost:8080/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, {method: "POST" });
+        if (!response.ok) throw new Error("Error al bloquear el asiento");
+        console.log("Asiento bloqueado:", seat);
+      } catch (error) {
+        console.error("Error al bloquear asiento:", error);
+      }
     };
 
     const handleSeatSelection = (seat) => {
-        if (!soldSeats.has(seat)) {
-          if (selectedSeats.includes(seat)) {
-            setSelectedSeats(selectedSeats.filter(s => s !== seat));
-          } else if (selectedSeats.length < cantidad) {
-            setSelectedSeats([...selectedSeats, seat]);
-          }
+      if (!soldSeats.has(seat)) {
+        if (selectedSeats.includes(seat)) {
+          setSelectedSeats(selectedSeats.filter(s => s !== seat));
+        } else if (selectedSeats.length < cantidad) {
+          bloquearAsiento(seat);
+          setSelectedSeats([...selectedSeats, seat]);
         }
-      };
+      }
+    };
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        alert("Tiempo de compra expirado. Los asientos han sido liberados.");
+        navigate(payload.rol === "VENDEDOR" ? "/homev" : "/homec");
+      }, 10 * 60 * 1000);
+
+      return () => clearTimeout(timer);
+    }, []);
+
 
   useEffect(() => {
     async function fetchTipoDescuento() {
@@ -66,7 +115,12 @@ function CompraPasajes() {
   }, [payload.idUsuario]);
 
   function calcularTotal(viaje, cantidad, tipoUsuario, tipoDescuento) {
-    let precioBase = viaje.precio * cantidad;
+      let precioBase = viaje.precio * cantidad;
+      //Si es ida y vuelta, le sumo el costo del viaje de ida
+      if(idaYVuelta == 2) {
+            const viajeIda = location.state?.viajeIda;
+            precioBase = precioBase + viajeIda.precio * cantidad;
+      }
 
     if (tipoUsuario === "VENDEDOR") {
         const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
@@ -119,7 +173,6 @@ function CompraPasajes() {
       }
     };
 
-
   useEffect(() => {
       const condicionesCumplidas = selectedSeats.length === cantidad && (payload.rol === "CLIENTE" || (payload.rol === "VENDEDOR" && emailIngresado));
     if (!condicionesCumplidas) {
@@ -147,7 +200,6 @@ function CompraPasajes() {
       },
       onApprove: async (data, actions) => {
         return actions.order.capture().then(async (details) => {
-          console.log("Pago completado por:", details.payer.name.given_name);
           const idPasajes = [];
           const idPago = details.purchase_units[0].payments.captures[0].id;
           for (const numeroAsiento of selectedSeats) {
@@ -177,6 +229,38 @@ function CompraPasajes() {
               console.error("Error al conectar con backend:", err);
             }
           }
+        if (idaYVuelta == 2){
+            const viajeIda = location.state?.viajeIda;
+            const asientoIda = location.state?.asientoIda;
+            for (const numeroAsientoIda of asientoIda) {
+                        try {
+
+                            console.log("Email del comprador antes de la solicitud:", numeroAsientoIda);
+                          const response = await fetch("http://localhost:8080/pasajes/confirmar-compra", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                              numeroAsiento: numeroAsientoIda,
+                              idUsuario: payload.idUsuario,
+                              idViaje: viajeIda.idViaje,
+                              emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null,
+                              idPago: idPago
+                            }),
+                          });
+
+                          if (!response.ok) {
+                            console.error("Error al registrar pasaje:", await response.text());
+                          }else {
+                              const data = await response.json();
+                              idPasajes.push(data.idPasaje);
+                          }
+                        } catch (err) {
+                          console.error("Error al conectar con backend:", err);
+                        }
+                      }
+            }
 
           navigate("/confirmacion", { state: { viaje, selectedSeats, idPasajes } });
         });
@@ -188,12 +272,27 @@ function CompraPasajes() {
     }).render(paypalRef.current);
   }, [selectedSeats, cantidad, viaje, tipoDescuento]);
 
+    const vueltaContinuar = () => {
+        navigate("/listado", {
+            state: {
+                ida: viaje,
+                numeroAsientoIda: numeroAsiento,
+                cantidad,
+                idaYVuelta: idaYVuelta
+            }
+        });
+    };
+
   return (
     <div className="compraPasaje-bg">
       {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}
       <div className="compraPasaje-container">
         <div className="seat-container">
           <h2>Selecciona tus asientos</h2>
+          <Timer onExpire={() => {
+            alert("Tiempo de compra expirado. Redirigiendo...");
+            navigate(payload.rol === "VENDEDOR" ? "/homev" : "/homec");
+          }} />
           <div className="seat-map">
             {totalSeats.map(seat => (
               <div
