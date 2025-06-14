@@ -82,6 +82,21 @@
     overflow: hidden;
 }
 
+.card-pasaje {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    overflow: hidden;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.card-pasaje p {
+    margin: 0;
+}
+
 .card-viaje button {
     align-self: flex-end;
     padding: 6px 16px;
