@@ -109,7 +109,7 @@ function ListadoViaje() {
 
     const navigate = useNavigate();
     function comprar_pasaje(viaje) {
-        if(idaYVuelta == 1) {
+        if (idaYVuelta == 1) {
             navigate("/compra", {
                 state: {
                     viaje: viaje,
@@ -117,7 +117,7 @@ function ListadoViaje() {
                     idaYVuelta
                 }
             });
-        }else {
+        } else {
             navigate("/compraida", {
                 state: {
                     viaje: viaje,
@@ -125,8 +125,9 @@ function ListadoViaje() {
                     idaYVuelta
                 }
             });
-     }
-    function validarTokenUsuario(){
+        }
+    }
+    function validarTokenUsuario() {
         try {
             let payload = jwtDecode(localStorage.getItem("token"));
             if (payload.rol !== "VENDEDOR" && payload.rol !== "CLIENTE")
@@ -135,14 +136,14 @@ function ListadoViaje() {
             window.location.href = "/404";
         }
     }
-    
+
     useEffect(() => {
         validarTokenUsuario();
     }, []);
-    
+
     return (
         <>
-            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            
+            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}
             <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
