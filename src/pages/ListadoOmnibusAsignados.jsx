@@ -54,8 +54,8 @@ function ListadoOmnibusAsignados() {
             body: JSON.stringify({
                 "origen": origen,
                 "destino": destino,
-                "fechaInicio": fechaInicio,
-                "fechaFin": fechaDestino,
+                "fechaInicio": fechaInicio ? fechaInicio + "T00:00:00" : null,
+                "fechaFin": fechaDestino ? fechaDestino + "T00:00:00" : null,
                 "estado": activo,
                 "matricula": matricula,
                 "capacidad": cantidad
@@ -69,6 +69,7 @@ function ListadoOmnibusAsignados() {
                 return response.json();
             })
             .then(data => {
+                console.log(data);
                 setViajes(data);
             })
             .catch(error => {
@@ -133,19 +134,19 @@ function ListadoOmnibusAsignados() {
         viajesOrdenados.sort((a, b) => (a.ventaCerrada === b.ventaCerrada) ? 0 : a.ventaCerrada ? 1 : -1);
     }
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
-          let payload = jwtDecode(localStorage.getItem("token"));
-          if (payload.rol !== "VENDEDOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR")
+                window.location.href = "/404";
         } catch (e) {
-          window.location.href = "/404";
+            window.location.href = "/404";
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
