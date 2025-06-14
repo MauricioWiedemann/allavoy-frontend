@@ -14,7 +14,7 @@ function EditarPerfil() {
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [fechaNacimiento, setFechaNacimiento] = useState("");
-    const [payload, setPayload] = useState(jwtDecode(localStorage.getItem("token")));
+    const [payload, setPayload] = useState("");
 
     function redireccionar() {
         if (payload.rol === "CLIENTE")
@@ -26,6 +26,7 @@ function EditarPerfil() {
     }
 
     function obtenerDatosUsuario() {
+      if (payload !== ""){
         fetch("http://localhost:8080/usuario/buscarporid", {
             method: "POST",
             headers: {
@@ -51,7 +52,8 @@ function EditarPerfil() {
                 console.error("Error:", error);
                 alert("Error al obtener los datos del perfil.");
             });
-    }
+        }
+      }
   
     function editarUsuario() {
       if (nombre.trim() === "" || apellido.trim() === "" || fechaNacimiento.trim() === "") {
@@ -88,9 +90,21 @@ function EditarPerfil() {
       }
     }
 
+    function validarTokenUsuario(){
+      try {
+        setPayload(jwtDecode(localStorage.getItem("token")));
+      } catch (e) {
+        window.location.href = "/404";
+      }
+    }
+
+    useEffect(() => {
+        validarTokenUsuario();
+    }, []);
+    
     useEffect(() => {
         obtenerDatosUsuario();
-    }, []);
+    }, [payload]);
 
   return (
     <>

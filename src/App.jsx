@@ -24,11 +24,19 @@ import CambiarPass from "./pages/CambiarPass";
 import DeshabilitarOmnibus from "./pages/DeshabilitarOmnibus";
 import HistoricoCompra from "./pages/HitoricoPasaje";
 import RehabilitarOmnibus from "./pages/RehabilitarOmnibus";
+import ListadoOmnibusAsignados from "./pages/ListadoOmnibusAsignados";
 import Confirmacion from "./pages/Confirmacion";
 import DevolucionPasaje from "./pages/DevolucionPasaje";
-import ListadoViajeConPasaje from "./pages/ListadoViajeConPasaje"
-import CompraPasajeIda from "./pages/CompraPasajeIda"
-import BuscarVuelta from "./pages/ListadoViajeVuelta"
+import ListadoViajeConPasaje from "./pages/ListadoViajeConPasaje";
+import CompraPasajeIda from "./pages/CompraPasajeIda";
+import BuscarVuelta from "./pages/ListadoViajeVuelta";
+import CambiarLocalidad from "./pages/CambiarLocalidad";
+import AplicarDescuento from "./pages/AplicarDescuentos";
+import SolicitarRecuperarPass from "./pages/SolicitarRecuperarPass";
+import RecuperarPass from "./pages/RecuperarPass";
+import EstadisticasUsuario from "./pages/EstadisticasUsuario";
+import BuscarCompra from "./pages/ListadoViajeCompra";
+import NotFound from "./pages/NotFound";
 
 
 import { ViajeProvider } from "./context/ViajeContext";
@@ -47,7 +55,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/homec" element={<HomeCliente />} />
+              <Route path="/homec" element={<HomeCliente />} /> 
               <Route path="/homev" element={<HomeVendedor />} />
               <Route path="/homea" element={<HomeAdministrador />} />
               <Route path="/login" element={<Login />} />
@@ -60,6 +68,7 @@ function App() {
               <Route path="/reasignarviaje" element={<ReasignarViaje />} />
               <Route path="/cierreventa" element={<CierreVentaPasaje />} />
               <Route path="/buscar" element={<Buscar />} />
+              <Route path="/buscarcomprar" element={<BuscarCompra />} />
               <Route path="/listausuarios" element={<ListaUsuarios />} />
               <Route path="/listarpasajes" element={<ListadoPasajes />} />
               <Route path="/listaromnibus" element={<ListaOmnibus />} />
@@ -72,9 +81,16 @@ function App() {
               <Route path="/deshabilitacionomnibus" element={<DeshabilitarOmnibus />} />
               <Route path="/rehabilitacionomnibus" element={<RehabilitarOmnibus />} />
               <Route path="/historicocompra" element={<HistoricoCompra />} />
+              <Route path="/omnibusasignados" element={<ListadoOmnibusAsignados />} />
               <Route path="/confirmacion" element={<Confirmacion />} />
               <Route path="/listadoviajeconpasaje" element={<ListadoViajeConPasaje />} />
               <Route path="/devolucionpasaje" element={<DevolucionPasaje />} />
+              <Route path="/cambiarlocalidad" element={<CambiarLocalidad />} />
+              <Route path="/aplicardescuento" element={<AplicarDescuento />} />
+              <Route path="/solicitarrecuperarpass" element={<SolicitarRecuperarPass />} />
+              <Route path="/recuperarpass" element={<RecuperarPass />} />
+              <Route path="/estidisticausuario" element={<EstadisticasUsuario />} />
+              <Route path="/404" element={<NotFound />} />
             </Routes >
           </BrowserRouter >
         </div >

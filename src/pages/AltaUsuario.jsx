@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 import "../css/altausuario.css"
 import Papa from 'papaparse';
+import { jwtDecode } from 'jwt-decode';
 
 function AltaUsuario() {
 
@@ -133,6 +134,21 @@ function AltaUsuario() {
       }
     }
 
+    function validarTokenUsuario(){
+      try {
+        let payload = jwtDecode(localStorage.getItem("token"));
+        if (payload.rol !== "ADMINISTRADOR")
+          window.location.href = "/404";
+      } catch (e) {
+        window.location.href = "/404";
+      }
+    }
+    
+    useEffect(() => {
+      validarTokenUsuario();
+    }, []);
+    
+
   return (
     <>
       <NavbarAdministrador />
@@ -168,9 +184,10 @@ function AltaUsuario() {
               <option value="VENDEDOR">Vendedor</option>
               <option value="ADMINISTRADOR">Administrador</option>
             </select>
-
-            <button className="btn btn-primary w-100 rounded-pill" onClick={registrarUsuario} >Crear Usuario</button>
-            <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/homea"} >Cancelar</button> 
+            <div class="d-grid gap-1">
+              <button className="btn btn-primary w-100 rounded-pill" onClick={registrarUsuario} >Crear Usuario</button>
+              <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/homea"} >Cancelar</button>
+            </div>
           </div>
         )}
         { !isIndividual && (
@@ -179,7 +196,13 @@ function AltaUsuario() {
               <p>Ingrese un archivo .CSV</p>
               <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo}/>  
             </div>
-            <div class="d-grid gap-2">
+            <p>Ejemplo del formato CSV</p>
+            <div id="csv-ejemplo" className="mb-3">
+              <p>CorreoElectronico;Nombre;Apellido;Cedula;FechaNacimiento;Contraseña;TipoDeUsuaurio</p>
+              <p>cliente@allavoy.com;Cliente;Cliente;00000000;2000-01-21;abcd1234;CLIENTE</p>
+              <p>vendedor@allavoy.com;Vendedor;Vendedor;00000000;2000-01-21;abcd1234;VENDEDOR</p>
+            </div>
+            <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaUsuariosCsv} >Crear Usuarios</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
             </div>

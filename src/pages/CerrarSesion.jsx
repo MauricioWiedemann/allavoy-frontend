@@ -1,24 +1,38 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/CerrarSesion.css";
+import { jwtDecode } from 'jwt-decode';
 
 function CerrarSesion() {
 
-  function cerrarSesion() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("tipoUsuario");
-    window.location.href = "/login";
+  
+  async function cerrarSesion() {
+  await fetch("http://localhost:8080/auth/logout", {
+    method: "DELETE",
+    headers: {
+      "Authorization": "Bearer " + localStorage.getItem("token")
+    }
+  }).then(response => {
+    return response;
+  })
+  localStorage.removeItem("token");
+  localStorage.removeItem("tipoUsuario");
+  window.location.href = "/login";
   }
 
   function cancelar() {
-    const payload = jwtDecode(localStorage.getItem("token"));
-    if (payload.rol === "CLIENTE")
-            window.location.href = "/homec";
+    try {
+      const payload = jwtDecode(localStorage.getItem("token"));
+      if (payload.rol === "CLIENTE")
+          window.location.href = "/homec";
         else if (payload.rol === "VENDEDOR")
-            window.location.href = "/homev";
+          window.location.href = "/homev";
         else
-            window.location.href = "/homea";
+          window.location.href = "/homea";
+    } catch(e) {
+      alert("No se encuantra una sesion iniciada.");
+      window.location.href = "/login";
+    }
   }
 
   return (

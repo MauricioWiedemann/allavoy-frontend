@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import "../css/AltaLocalidad.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Papa from 'papaparse';
+import { jwtDecode } from 'jwt-decode';
 
 function AltaLocalidad() {
 
@@ -86,6 +87,34 @@ function AltaLocalidad() {
     }
   }, [isIndividual]);
 
+  useEffect(() => {
+    if (isIndividual) {
+      var indi = document.getElementById("individual-select");
+      indi.style.backgroundColor = "#d9d9d9";
+      var csv = document.getElementById("csv-select");
+      csv.style.backgroundColor = "#bdbdbd";
+    } else {
+      var indi = document.getElementById("individual-select");
+      indi.style.backgroundColor = "#bdbdbd";
+      var csv = document.getElementById("csv-select");
+      csv.style.backgroundColor = "#d9d9d9";
+    }
+  }, [isIndividual]);
+
+  function validarTokenUsuario(){
+    try {
+      let payload = jwtDecode(localStorage.getItem("token"));
+      if (payload.rol !== "VENDEDOR")
+        window.location.href = "/404";
+    } catch (e) {
+      window.location.href = "/404";
+    }
+  }
+
+  useEffect(() => {
+    validarTokenUsuario();
+  }, []);
+
   return (
     <>
     <NavbarVendedor/>
@@ -125,7 +154,7 @@ function AltaLocalidad() {
             <div className="mb-3">
               <input type="text" className="form-control rounded-pill" placeholder="Localidad" value={nombre} onChange={(e) => setNombre(e.target.value)}/>
             </div>
-            <div class="d-grid gap-2">
+            <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={registrarLocalidad} >Crear Localidad</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
             </div>
@@ -134,10 +163,16 @@ function AltaLocalidad() {
         { !isIndividual && (
           <div id="alta-individual"> 
             <div className="mb-3">
-              <p>Ingrese un archivo .CSV</p>
+              <p>Ingrese un archivo CSV</p>
               <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo}/>  
             </div>
-            <div class="d-grid gap-2">
+            <p>Ejemplo del formato CSV</p>
+            <div id="csv-ejemplo" className="mb-3">
+              <p>DEPARTAMENTO;Localidad</p>
+              <p>MONTEVIDEO;Montevideo</p>
+              <p>CERRO LARGO;Melo</p>
+            </div>
+            <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaLocalidadesCsv} >Crear Localidades</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
             </div>
@@ -146,7 +181,7 @@ function AltaLocalidad() {
       </div>
     </div>
   </>
-  );
+  )
 }
 
 export default AltaLocalidad;

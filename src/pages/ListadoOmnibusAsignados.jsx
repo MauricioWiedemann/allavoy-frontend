@@ -1,43 +1,28 @@
 import React, { useState, useEffect } from "react";
-import "../css/Listado.css";
+import "../css/ListadoOmnibus.css";
 import { useNavigate } from 'react-router-dom';
-import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
 
-
-function ListadoViaje() {
+function ListadoOmnibusAsignados() {
     const [origen, setOrigen] = useState("");
     const [destino, setDestino] = useState("");
-    const [fecha, setFecha] = useState("");
-    const [cantidad, setCantidad] = useState("");
-    const [viajes, setViajes] = useState([]);
     const [orden, setOrden] = useState("");
-    const token = localStorage.getItem("token");
-    const payload = token ? JSON.parse(atob(token.split(".")[1])) : {};
-    const [idaYVuelta, setIdaYVuelta] = useState(1);
+    const [fechaInicio, setfechaInicio] = useState("");
+    const [fechaDestino, setfechaDestino] = useState("");
+    const [estado, setEstadoViaje] = useState("ACTIVO");
+    const [matricula, setMatricula] = useState("");
+    const [cantidad, setCantidad] = useState("");
+    const [viaje, setViajes] = useState([]);
 
-    function validar_datos() {
-        if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "" || cantidad.trim() === "") {
-            alert("Complete todos los campos.");
-            return;
-        } else if (cantidad.trim() < 1) {
-            alert("La cantidad no puede ser menor a 1.");
-            return;
-        }
-        console.log("Origen:", origen);
-        console.log("Destino:", destino);
-        fetch("http://localhost:8080/viaje/buscar", {
-            method: "POST",
+
+
+    function listar_viajes() {
+        fetch("http://localhost:8080/viaje/obtenertodos", {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                origen: origen,
-                destino: destino,
-                fecha: fecha + "T00:00:00",
-                cantidad: cantidad
-            })
         })
             .then(response => {
                 if (!response.ok) {
@@ -55,6 +40,44 @@ function ListadoViaje() {
                 setViajes([]);
             });
     }
+
+    function listar_asignados() {
+        let activo = true;
+        if (estado === "ACTIVO")
+            activo = false
+
+        fetch("http://localhost:8080/viaje/listaasignados", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "origen": origen,
+                "destino": destino,
+                "fechaInicio": fechaInicio ? fechaInicio + "T00:00:00" : null,
+                "fechaFin": fechaDestino ? fechaDestino + "T00:00:00" : null,
+                "estado": activo,
+                "matricula": matricula,
+                "capacidad": cantidad
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("No se encontraron omnibus.");
+
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                setViajes(data);
+            })
+            .catch(error => {
+                alert("No se encontraron omnibus.");
+                setViajes([]);
+            });
+    }
+
 
     async function cargarLocalidades() {
         //obtengo el componente donde va la lista de localidades
@@ -94,6 +117,7 @@ function ListadoViaje() {
 
     //cargar las localidades al cargar la pagina
     useEffect(() => {
+        listar_viajes()
         cargarLocalidades();
     }, []);
 
@@ -101,48 +125,32 @@ function ListadoViaje() {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
-    const viajesOrdenados = [...viajes];
-    if (orden === "precio")
-        viajesOrdenados.sort((a, b) => a.precio - b.precio);
-    else if (orden === "hora")
-        viajesOrdenados.sort((a, b) => new Date(a.fechaSalida) - new Date(b.fechaSalida));
+    const viajesOrdenados = [...viaje];
+    if (orden === "orden_destino") {
+        viajesOrdenados.sort((a, b) => a.destino.nombre.localeCompare(b.destino.nombre));
+    } else if (orden === "orden_origen") {
+        viajesOrdenados.sort((a, b) => a.origen.nombre.localeCompare(b.origen.nombre));
+    } else if (orden === "orden_cerrado") {
+        viajesOrdenados.sort((a, b) => (a.ventaCerrada === b.ventaCerrada) ? 0 : a.ventaCerrada ? 1 : -1);
+    }
 
-    const navigate = useNavigate();
-    function comprar_pasaje(viaje) {
-        if(idaYVuelta == 1) {
-            navigate("/compra", {
-                state: {
-                    viaje: viaje,
-                    cantidad: parseInt(cantidad, 10),
-                    idaYVuelta
-                }
-            });
-        }else {
-            navigate("/compraida", {
-                state: {
-                    viaje: viaje,
-                    cantidad: parseInt(cantidad, 10),
-                    idaYVuelta
-                }
-            });
-     }
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
             let payload = jwtDecode(localStorage.getItem("token"));
-            if (payload.rol !== "VENDEDOR" && payload.rol !== "CLIENTE")
+            if (payload.rol !== "VENDEDOR")
                 window.location.href = "/404";
         } catch (e) {
             window.location.href = "/404";
         }
     }
-    
+
     useEffect(() => {
         validarTokenUsuario();
     }, []);
-    
+
     return (
         <>
-            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            
+            <NavbarVendedor />
             <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
@@ -152,20 +160,22 @@ function ListadoViaje() {
                         <select id="select-destino" value={destino} onChange={(e) => setDestino(e.target.value)}>
                             <option value="" disabled>Destino</option>
                         </select>
-                        <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
-                        <input type="number" min="1" placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
-                        <select id="select-ida-vuelta" value={idaYVuelta} onChange={(e) => setIdaYVuelta(e.target.value)}>
-                            <option value="1">Simple</option>
-                            <option value="2">Ida y vuelta</option>
+                        <input type="date" value={fechaInicio} onChange={(e) => setfechaInicio(e.target.value)} />
+                        <input type="date" value={fechaDestino} onChange={(e) => setfechaDestino(e.target.value)} />
+                        <input type="text" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
+                        <select value={estado} onChange={(e) => setEstadoViaje(e.target.value)}>
+                            <option value="ACTIVO">Habilitado</option>
+                            <option value="BLOQUEADO">Deshabilitado</option>
                         </select>
-                        <button onClick={validar_datos}>Buscar</button>
+                        <input type="number" min="1" placeholder="Asientos" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
+                        <button onClick={listar_asignados}>Buscar</button>
                     </div>
-
                     <div className="ordenar">
                         <select value={orden} onChange={(e) => setOrden(e.target.value)}>
                             <option value="" disabled>Ordenar por</option>
-                            <option value="precio">Precio</option>
-                            <option value="hora">Hora</option>
+                            <option value="orden_origen">Origen</option>
+                            <option value="orden_destino">Destino</option>
+                            <option value="orden_cerrado">Venta cerrado</option>
                         </select>
                     </div>
                 </div>
@@ -177,6 +187,7 @@ function ListadoViaje() {
                             <p>Fecha: {v.fechaSalida.split("T")[0]} Hora: {v.fechaSalida.split("T")[1]}</p>
                             <p>Asientos Disponibles: {v.cantidad}</p>
                             <p>Precio: {v.precio}</p>
+                            <p>Omnibus: {v.omnibus.matricula}</p>
                         </div>
                     ))}
                 </div>
@@ -185,4 +196,4 @@ function ListadoViaje() {
     );
 }
 
-export default ListadoViaje;
+export default ListadoOmnibusAsignados;

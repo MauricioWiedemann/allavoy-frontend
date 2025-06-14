@@ -211,7 +211,7 @@ function CompraPasajes() {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  numeroAsiento,
+                  numeroAsiento: numeroAsiento,
                   idUsuario: payload.idUsuario,
                   idViaje: viaje.idViaje,
                   emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null,

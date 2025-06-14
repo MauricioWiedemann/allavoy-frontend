@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../css/ReasignarViaje.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
+import { jwtDecode } from 'jwt-decode';
 
 function ListadoViajes() {
   const [viajeSeleccionado, setViajeSeleccionado] = useState(null);
@@ -30,7 +31,8 @@ function ListadoViajes() {
 
   async function obtenerOmnibus() {
     setOmnibusSeleccionado("");
-    const arrayAux = viajeSeleccionado.fechaSalida.split("T", 2);
+    const arrayAuxSlida = viajeSeleccionado.fechaSalida.split("T", 2);
+    const arrayAuxLlegada = viajeSeleccionado.fechaLlegada.split("T", 2);
     await fetch("http://localhost:8080/omnibus/obtenerreasignar", {
         method: "POST",
         headers: {
@@ -38,8 +40,10 @@ function ListadoViajes() {
         },
         body: JSON.stringify({
           localidadSalida: viajeSeleccionado.origen.idLocalidad,
-          fechaSalida: arrayAux[0],
-          horaSalida: arrayAux[1].substring(0, 5),
+          fechaSalida: arrayAuxSlida[0],
+          horaSalida: arrayAuxSlida[1].substring(0, 5),
+          fechaLlegada: arrayAuxLlegada[0],
+          horaLlegada: arrayAuxLlegada[1].substring(0, 5),
           ocupados: viajeSeleccionado.cantidadOcupados
         })
       }).then(response => {
@@ -109,6 +113,20 @@ function ListadoViajes() {
   useEffect(() => {
     omnSeleccionado();
   },[omnibusSeleccionado]);
+
+  function validarTokenUsuario(){
+      try {
+        let payload = jwtDecode(localStorage.getItem("token"));
+        if (payload.rol !== "VENDEDOR")
+          window.location.href = "/404";
+      } catch (e) {
+        window.location.href = "/404";
+      }
+    }
+  
+    useEffect(() => {
+      validarTokenUsuario();
+    }, []);
 
   return (
     <>

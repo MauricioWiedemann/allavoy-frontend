@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/ListadoOmnibus.css";
 import { useNavigate } from 'react-router-dom';
 import NavbarVendedor from "../components/NavbarVendedor";
+import { jwtDecode } from 'jwt-decode';
 
 function ListadoOmnibus() {
     const [localidad_actual, setLocalidad] = useState("");
@@ -117,6 +118,19 @@ function ListadoOmnibus() {
         omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
     }
 
+    function validarTokenUsuario(){
+        try {
+          let payload = jwtDecode(localStorage.getItem("token"));
+          if (payload.rol !== "VENDEDOR")
+            window.location.href = "/404";
+        } catch (e) {
+          window.location.href = "/404";
+        }
+      }
+    
+      useEffect(() => {
+        validarTokenUsuario();
+      }, []);
 
     return (
         <>
@@ -149,7 +163,7 @@ function ListadoOmnibus() {
                 <div className="viajes-list">
                     {omnibusOrdenados.map((o, i) => (
                         <div key={i} className="card-viaje">
-                            <h5>Matricula: {capitalizar(o.matricula)}, Serie: {capitalizar(o.numeroSerie)}</h5>
+                            <h5>Matricula: {o.matricula}, Serie: {capitalizar(o.numeroSerie)}</h5>
                             <div className="linea">
                                 <p>Marca: {o.marca}</p>
                                 <p>Modelo: {o.modelo}</p>

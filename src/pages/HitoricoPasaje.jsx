@@ -5,11 +5,9 @@ import NavbarCliente from "../components/NavbarCliente";
 
 function ListadoViaje() {
     const [historico, setHistorico] = useState([]);
-
+    const [payload, setPayload] = useState("");
 
     function validar_datos() {
-        const token = localStorage.getItem("token");
-        const payload = jwtDecode(token);
         fetch("http://localhost:8080/pasajes/historicocompra", {
             method: "POST",
             headers: {
@@ -36,11 +34,22 @@ function ListadoViaje() {
                 setHistorico([]);
             });
     }
+    
+    function validarTokenUsuario(){
+        try {
+            setPayload(jwtDecode(localStorage.getItem("token")));
+        } catch (e) {
+            window.location.href = "/404";
+        }
+    }
+
     useEffect(() => {
-        validar_datos()
+        validarTokenUsuario();
     }, []);
-
-
+    
+    useEffect(() => {
+        validar_datos();
+    }, [payload]);
 
     return (
         <>
