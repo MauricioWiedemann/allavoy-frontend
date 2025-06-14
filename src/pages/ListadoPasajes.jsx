@@ -221,31 +221,27 @@ function ListadoPasajes() {
             <Modal open={open} onClose={() => setOpen(false)}>
                 {viajeSeleccionado && (
                     <div style={{ padding: "1rem" }}>
-                        <h3 className="text-lg font-black text-gray-800">Viaje seleccionado</h3>
-                        <p>{viajeSeleccionado.origen.nombre} → {viajeSeleccionado.destino.nombre}</p>
-                        <p>Fecha: {viajeSeleccionado.fechaSalida}</p>
-                        <p>Precio: {viajeSeleccionado.precio}</p>
                         <div className="mb-2">
                             <h2>Vendidos</h2>
                             {listaPasajesVendidos.map((p, i) => (
-                                <div key={i} className="card-viaje">
+                                <div key={i} className="card-pasaje">
                                     <p>Usuario: {p.emailCliente}</p>
                                     <p>Asiento: {p.asiento.numero}</p>
                                     <p>Monto: {p.monto}</p>
                                     <p>Descuento: {p.porcentajeDescuento}%</p>
-                                    <p>Fecha compra: {p.fechaCompra}</p>
+                                    <p>Fecha compra: {p.fechaCompra.replace(/T/g,' ')}</p>
                                 </div>
                             ))}
                         </div>
                         <div className="mb-2">
                             <h2>Devueltos</h2>
                             {listaPasajesDevuletos.map((p, i) => (
-                                <div key={i} className="card-viaje">
+                                <div key={i} className="card-pasaje">
                                     <p>Usuario: {p.emailCliente}</p>
                                     <p>Monto: {p.monto}</p>
                                     <p>Descuento: {p.porcentajeDescuento}%</p>
-                                    <p>Fecha compra: {p.fechaCompra}</p>
-                                    <p>Fecha Devolucion: {p.fechaDevolucion}</p>
+                                    <p>Fecha compra: {p.fechaCompra.replace(/T/g,' ')}</p>
+                                    <p>Fecha Devolucion: {p.fechaDevolucion.replace(/T/g,' ')}</p>
                                 </div>
                             ))}
                         </div>
