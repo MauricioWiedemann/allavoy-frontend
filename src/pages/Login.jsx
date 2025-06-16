@@ -34,16 +34,7 @@ function Login() {
                     const payload = jwtDecode(token);
                     console.log(payload);
 
-                    if (payload.rol === "CLIENTE")
-                        window.location.href = "/homec";
-                    else if (payload.rol === "VENDEDOR")
-                        window.location.href = "/homev";
-                    else
-                        window.location.href = "/homea";
-
-                    console.log("Rol:", payload.rol);
-                    console.log("ID Usuario:", payload.idUsuario);
-                    console.log("Email:", payload.sub);
+                    window.location.href = "/home";
 
                 })
                 .catch(error => {

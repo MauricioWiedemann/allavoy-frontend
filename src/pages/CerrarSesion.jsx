@@ -13,6 +13,7 @@ function CerrarSesion() {
       "Authorization": "Bearer " + localStorage.getItem("token")
     }
   }).then(response => {
+    console.log(response);
     return response;
   })
   localStorage.removeItem("token");
@@ -23,12 +24,7 @@ function CerrarSesion() {
   function cancelar() {
     try {
       const payload = jwtDecode(localStorage.getItem("token"));
-      if (payload.rol === "CLIENTE")
-          window.location.href = "/homec";
-        else if (payload.rol === "VENDEDOR")
-          window.location.href = "/homev";
-        else
-          window.location.href = "/homea";
+      window.location.href = "/home";
     } catch(e) {
       alert("No se encuantra una sesion iniciada.");
       window.location.href = "/login";

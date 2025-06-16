@@ -156,7 +156,7 @@ function AltaLocalidad() {
             </div>
             <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={registrarLocalidad} >Crear Localidad</button>
-                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
             </div>
           </div>
         )}
@@ -174,7 +174,7 @@ function AltaLocalidad() {
             </div>
             <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaLocalidadesCsv} >Crear Localidades</button>
-                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
             </div>
           </div>
         )}

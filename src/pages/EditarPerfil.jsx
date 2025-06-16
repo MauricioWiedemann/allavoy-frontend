@@ -16,15 +16,6 @@ function EditarPerfil() {
     const [fechaNacimiento, setFechaNacimiento] = useState("");
     const [payload, setPayload] = useState("");
 
-    function redireccionar() {
-        if (payload.rol === "CLIENTE")
-            window.location.href = "/homec";
-        else if (payload.rol === "VENDEDOR")
-            window.location.href = "/homev";
-        else
-            window.location.href = "/homea";
-    }
-
     function obtenerDatosUsuario() {
       if (payload !== ""){
         fetch("http://localhost:8080/usuario/buscarporid", {
@@ -131,7 +122,7 @@ function EditarPerfil() {
           </div>
 
           <button className="btn btn-primary w-100 rounded-pill mb-1" onClick={editarUsuario} >Editar Usuario</button>
-          <button className="btn btn-secondary w-100 rounded-pill" onClick={redireccionar} >Cancelar</button> 
+          <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button> 
         </div>
       </div>
     </>

@@ -85,7 +85,7 @@ function DevolucionPasaje() {
       const data = await backendResponse.json();
       console.log("Devolución exitosa con PayPal:", data);
       alert("Devolución realizada correctamente.");
-      navigate("/homev");
+      navigate("/home");
     } catch (error) {
       console.error("Error en la devolución:", error);
       alert("Hubo un problema al procesar la devolución.");

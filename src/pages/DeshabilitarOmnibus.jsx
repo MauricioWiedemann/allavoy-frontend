@@ -114,7 +114,7 @@ function DeshabilitarOmnibus() {
     async function deshabilitar(){
         if (!validarFecha()){
             alert("Complete ambos campos.");
-        } else if (fecha.trim() !== "" && new Date(fecha) < new Date()){
+        } else if (fecha.trim() !== "" && new Date(fecha.concat("T".concat(hora))) < new Date()){
             alert("La fecha debe ser actual o futura.");
         } else {
             await fetch("http://localhost:8080/omnibus/deshabilitar", {

@@ -12,15 +12,6 @@ function CambiarPass() {
     const [passNuevoCheck, setPassNuevoCheck] = useState("");
     const [payload, setPayload] = useState("");
 
-    function salir() {
-    if (payload.rol === "CLIENTE")
-            window.location.href = "/homec";
-        else if (payload.rol === "VENDEDOR")
-            window.location.href = "/homev";
-        else
-            window.location.href = "/homea";
-    } 
-
     function cambiar(){
         if (passActual.trim() === "" || passNuevo.trim() === "" || passNuevoCheck.trim() === ""){
             alert("Complete todos los campos.");
@@ -91,7 +82,7 @@ function CambiarPass() {
         </div>
         <div class="d-grid gap-2">
             <button className="btn w50 btn-primary rounded-pill" onClick={cambiar} >Cambiar contraseña</button>
-            <button className="btn w50 btn-secondary rounded-pill" onClick={salir} >Cancelar</button>
+            <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
         </div>
       </div>
     </div>

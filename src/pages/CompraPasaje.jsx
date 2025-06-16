@@ -81,7 +81,7 @@ function CompraPasajes() {
         if (!response.ok) throw new Error("Error al bloquear el asiento");
         console.log("Asiento bloqueado:", seat);
       } catch (error) {
-        console.error("Error al bloquear asiento:", error);
+        console.error(error);
       }
     };
 
@@ -99,7 +99,7 @@ function CompraPasajes() {
     useEffect(() => {
       const timer = setTimeout(() => {
         alert("Tiempo de compra expirado. Los asientos han sido liberados.");
-        navigate(payload.rol === "VENDEDOR" ? "/homev" : "/homec");
+        window.location.href = "/home";
       }, 10 * 60 * 1000);
 
       return () => clearTimeout(timer);
@@ -291,7 +291,7 @@ function CompraPasajes() {
           <h2>Selecciona tus asientos</h2>
           <Timer onExpire={() => {
             alert("Tiempo de compra expirado. Redirigiendo...");
-            navigate(payload.rol === "VENDEDOR" ? "/homev" : "/homec");
+            window.location.href = "/home";
           }} />
           <div className="seat-map">
             {totalSeats.map(seat => (

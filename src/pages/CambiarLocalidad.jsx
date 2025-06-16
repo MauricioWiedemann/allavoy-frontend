@@ -208,7 +208,7 @@ function CambiarLocalidad() {
             </div>
           </div>
           <div id="cancelar-btn">
-            <button id="btn-cancelar" className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+            <button id="btn-cancelar" className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
           </div>
         </div>
       </div>

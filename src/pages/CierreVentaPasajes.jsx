@@ -96,7 +96,7 @@ function CierreVentaPasaje() {
                     </div>
                     <div class="d-grid gap-2">
                         <button id="btn-cerrar" className="btn w50 btn-primary rounded-pill" onClick={cerrarVenta}>Cerrar Venta</button>
-                        <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+                        <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
                     </div>
                 </div>
             </div>
