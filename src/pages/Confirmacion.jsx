@@ -46,7 +46,7 @@ async function descargarPDF() {
       <div className="confirmacion-card">
         <h2>Compra realizada con éxito</h2>
         <div className="boton">
-          <button onClick={() => navigate(payload.rol === "VENDEDOR" ? "/homev" : "/homec")} className="btn btn-primary">
+          <button onClick={() => window.location.href = "/home"} className="btn btn-primary">
             Ir a Inicio
           </button>
           <button onClick={descargarPDF} className="btn btn-secondary">

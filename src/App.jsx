@@ -1,10 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Raiz from "./pages/Raiz";
 import Login from './pages/Login';
 import Home from "./pages/Home";
-import HomeCliente from "./pages/HomeCliente";
-import HomeVendedor from "./pages/HomeVendedor";
-import HomeAdministrador from "./pages/HomeAdministrador";
 import Registro from './pages/Registro';
 import AltaLocalidad from "./pages/AltaLocalidad";
 import AltaOmnibus from "./pages/AltaOmnibus";
@@ -54,10 +52,8 @@ function App() {
         <div className="Fondo">
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/homec" element={<HomeCliente />} /> 
-              <Route path="/homev" element={<HomeVendedor />} />
-              <Route path="/homea" element={<HomeAdministrador />} />
+              <Route path="/" element={<Raiz />} />
+              <Route path="/home" element={<Home />} /> 
               <Route path="/login" element={<Login />} />
               <Route path="/cerrarsesion" element={<CerrarSesion />} />
               <Route path="/registro" element={<Registro />} />

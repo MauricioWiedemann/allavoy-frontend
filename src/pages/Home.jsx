@@ -1,29 +1,33 @@
-import React from "react";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-import BuscadorPasajes from "../components/BuscadorPasajes";
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { jwtDecode } from 'jwt-decode';
+import NavbarAdministrador from "../components/NavbarAdministrador";
+import NavbarVendedor from "../components/NavbarVendedor";
+import NavbarCliente from "../components/NavbarCliente";
 
 export default function Home() {
+
+  const [payload, setPayload] = useState("");
+
+  function validarTokenUsuario(){
+    try {
+      setPayload(jwtDecode(localStorage.getItem("token")));
+      let payloadAux = jwtDecode(localStorage.getItem("token"));
+      if (payloadAux.rol !== "ADMINISTRADOR" && payloadAux.rol !== "VENDEDOR" && payloadAux.rol !== "CLIENTE")
+        window.location.href = "/404";
+    } catch (e) {
+      window.location.href = "/404";
+    }
+  }
+
+  useEffect(() => {
+    validarTokenUsuario();
+  }, []);
+
   return (
-    <div>
-      <Navbar />
-      <BuscadorPasajes />
-
-    <ul>
-      <p>Temporal:</p>
-      <li className="nav-item">
-          <Link className="nav-link" to="/homec">Cliente</Link>
-      </li>
-      <li className="nav-item">
-          <Link className="nav-link" to="/homev">Vendedor</Link>
-      </li>
-      <li className="nav-item">
-          <Link className="nav-link" to="/homea">Administrador</Link>
-      </li>
-    </ul>
-
-      <Footer />
-    </div>
+    <>
+      {payload.rol === "CLIENTE" && (<NavbarCliente />)}
+      {payload.rol === "VENDEDOR" && (<NavbarVendedor />)}
+      {payload.rol === "ADMINISTRADOR" && (<NavbarAdministrador />)}
+    </>
   );
 }

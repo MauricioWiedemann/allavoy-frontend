@@ -186,7 +186,7 @@ function AltaUsuario() {
             </select>
             <div class="d-grid gap-1">
               <button className="btn btn-primary w-100 rounded-pill" onClick={registrarUsuario} >Crear Usuario</button>
-              <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/homea"} >Cancelar</button>
+              <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
             </div>
           </div>
         )}
@@ -204,7 +204,7 @@ function AltaUsuario() {
             </div>
             <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaUsuariosCsv} >Crear Usuarios</button>
-                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
             </div>
           </div>
         )}

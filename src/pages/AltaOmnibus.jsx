@@ -50,6 +50,8 @@ function AltaOmnibus() {
       alert("Complete todos los campos.");
     } else if (!validar_matricula(matricula.toUpperCase())) {
       alert("La matricula no es válida.");
+    } else if (capacidad > 40) {
+      alert("La capacidad no puede ser mayor a 40.");
     } else {
       fetch("http://localhost:8080/omnibus/alta", {
         method: "POST",
@@ -173,7 +175,7 @@ function AltaOmnibus() {
                   <input type="text" className="form-control rounded-pill" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
                 </div>
                 <div className="mb-3">
-                  <input type="number" className="form-control rounded-pill" placeholder="Capacidad" value={capacidad} onChange={(e) => setCapacidad(e.target.value)} />
+                  <input type="number" className="form-control rounded-pill" placeholder="Capacidad" max="40" value={capacidad} onChange={(e) => setCapacidad(e.target.value)} />
                 </div>
                 <div className="mb-3">
                   <select id="select-localidades" className="form-select rounded-pill" value={localidad} onChange={(e) => setLocalidad(e.target.value)}>
@@ -183,7 +185,7 @@ function AltaOmnibus() {
               </div>
               <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={registrarOmnibus}>Crear Omnibus</button>
-                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
               </div>
             </div>
           )}
@@ -201,7 +203,7 @@ function AltaOmnibus() {
             </div>
             <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaOmnibusCsv} >Crear Omnibus</button>
-                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/homev"} >Cancelar</button>
+                <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
             </div>
           </div>
           )}

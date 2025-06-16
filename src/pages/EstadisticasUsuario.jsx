@@ -5,6 +5,7 @@ import { Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement } from 'chart.js';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { jwtDecode } from 'jwt-decode';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement);
 
@@ -111,6 +112,20 @@ function EstadisticasUsuario() {
             backgroundColor: ["#f7dc6f", "#af7ac5"]
         }]
     };
+
+    function validarTokenUsuario(){
+        try {
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "ADMINISTRADOR")
+                window.location.href = "/404";
+        } catch (e) {
+            window.location.href = "/404";
+        }
+    }
+
+    useEffect(() => {
+        validarTokenUsuario();
+    }, []);
 
     return (
         <>
