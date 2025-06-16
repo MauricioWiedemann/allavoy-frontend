@@ -7,18 +7,21 @@ function CerrarSesion() {
 
   
   async function cerrarSesion() {
-  await fetch("http://localhost:8080/auth/logout", {
-    method: "DELETE",
-    headers: {
-      "Authorization": "Bearer " + localStorage.getItem("token")
+    try {
+      await fetch("http://localhost:8080/auth/logout", {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+      }).then(response => {
+        return response;
+      })
+    } catch (e) {
+      console.log(e);
     }
-  }).then(response => {
-    console.log(response);
-    return response;
-  })
-  localStorage.removeItem("token");
-  localStorage.removeItem("tipoUsuario");
-  window.location.href = "/login";
+    localStorage.removeItem("token");
+    localStorage.removeItem("tipoUsuario");
+    window.location.href = "/login";
   }
 
   function cancelar() {

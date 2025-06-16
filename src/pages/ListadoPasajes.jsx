@@ -119,7 +119,6 @@ function ListadoPasajes() {
             return response.json();
         })
             .then(data => {
-                console.log("1", data);
                 setListaPasajesVendidos(data);
             })
             ;
@@ -138,7 +137,6 @@ function ListadoPasajes() {
             return response.json();
         })
             .then(data => {
-                console.log("2", data);
                 setListaPasajesDevuletos(data);
             })
             ;
@@ -220,8 +218,8 @@ function ListadoPasajes() {
 
             <Modal open={open} onClose={() => setOpen(false)}>
                 {viajeSeleccionado && (
-                    <div style={{ padding: "1rem" }}>
-                        <div className="mb-2">
+                    <div style={{ padding: "1rem", overflowY: "scroll", height: "100%"}}>
+                        <div className="mb-4">
                             <h2>Vendidos</h2>
                             {listaPasajesVendidos.map((p, i) => (
                                 <div key={i} className="card-pasaje">
@@ -233,7 +231,7 @@ function ListadoPasajes() {
                                 </div>
                             ))}
                         </div>
-                        <div className="mb-2">
+                        <div className="mt-4">
                             <h2>Devueltos</h2>
                             {listaPasajesDevuletos.map((p, i) => (
                                 <div key={i} className="card-pasaje">
