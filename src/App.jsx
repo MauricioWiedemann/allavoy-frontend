@@ -33,6 +33,7 @@ import AplicarDescuento from "./pages/AplicarDescuentos";
 import SolicitarRecuperarPass from "./pages/SolicitarRecuperarPass";
 import RecuperarPass from "./pages/RecuperarPass";
 import EstadisticasUsuario from "./pages/EstadisticasUsuario";
+import EstadisticasGenerales from "./pages/EstadisticasGenerales";
 import BuscarCompra from "./pages/ListadoViajeCompra";
 import NotFound from "./pages/NotFound";
 
@@ -53,7 +54,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Raiz />} />
-              <Route path="/home" element={<Home />} /> 
+              <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/cerrarsesion" element={<CerrarSesion />} />
               <Route path="/registro" element={<Registro />} />
@@ -87,6 +88,7 @@ function App() {
               <Route path="/recuperarpass" element={<RecuperarPass />} />
               <Route path="/estidisticausuario" element={<EstadisticasUsuario />} />
               <Route path="/404" element={<NotFound />} />
+              <Route path="/estidisticasgenerales" element={<EstadisticasGenerales />} />
             </Routes >
           </BrowserRouter >
         </div >
