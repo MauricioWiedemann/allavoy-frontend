@@ -15,7 +15,11 @@ function EstadisticasGenerales() {
     const [pasajesFecha, setPasajesFecha] = useState([]);
     const [pasajesDestino, setPasajesDestino] = useState([]);
     const [ocupacionOmnibus, setOcupacionOmnibus] = useState([]);
-    const [fechaDeshabilitado, setFechaDeshabilitado] = useState();
+    const [fechaDeshabilitado, setFechaDeshabilitado] = useState([]);
+
+    const anio = new Date();
+    anio.setFullYear(anio.getFullYear() - 1);
+    const labelFecha = anio.toLocaleDateString("es-UY")
 
     useEffect(() => {
         fetch("http://localhost:8080/viaje/viajesdestino")
@@ -38,20 +42,17 @@ function EstadisticasGenerales() {
             .then(res => res.json())
             .then(data => setOcupacionOmnibus(data));
 
-        fetch("http://localhost:8080/pasajes/fechadeshabilitado")
+        fetch("http://localhost:8080/omnibus/fechadeshabilitado")
             .then(res => res.json())
             .then(data => setFechaDeshabilitado(data));
-
-        console.log(fechaDeshabilitado)
-
     }, []);
 
-    /* const exportarPDF = () => {
+    const exportarPDF = () => {
         const input = document.getElementById("graficasParaExportar");
         html2canvas(input, { scale: 2 }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF({
-                orientation: "portrait",
+                orientation: "landscape",
                 unit: "mm",
                 format: "a4",
             });
@@ -61,33 +62,63 @@ function EstadisticasGenerales() {
             const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
             pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-            pdf.save("estadisticas_usuarios.pdf");
+            pdf.save("estadisticas_generales.pdf");
         });
     };
- */
-    /*     const exportarCSV = () => {
-            let csvContent = "data:text/csv;charset=utf-8,";
-    
-            csvContent += "Total Usuarios\n";
-            csvContent += `Usuarios Registrados,${totalUsuarios}\n\n`;
-    
-            csvContent += "Estado,Total\n";
-            csvContent += `Activos,${activos}\n`;
-            csvContent += `Inactivos,${inactivos}\n\n`;
-    
-            csvContent += "Tipo de Pasaje,Pasajes Vendidos\n";
-            Object.entries(pasajesPorTipo).forEach(([tipo, cantidad]) => {
-                csvContent += `${tipo},${cantidad}\n`;
-            });
-    
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "estadisticas_usuarios.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }; */
+
+    const exportarCSV = () => {
+        let csvContent = "data:text/csv;charset=utf-8,";
+
+        // Viajes por Destino
+        csvContent += "Destino,Cantidad de Viajes\n";
+        viajesDestino.forEach(([destino, cantidad]) => {
+            csvContent += `${destino}, ${cantidad}\n`;
+        });
+        csvContent += "\n";
+
+        // Viajes por Origen
+        csvContent += "Origen,Cantidad de Viajes\n";
+        viajesOrigen.forEach(([origen, cantidad]) => {
+            csvContent += `${origen}, ${cantidad}\n`;
+        });
+        csvContent += "\n";
+
+        // Ventas por Fecha
+        csvContent += "Fecha,Cantidad de Ventas\n";
+        pasajesFecha.forEach(([fecha, cantidad]) => {
+            csvContent += `${fecha}, ${cantidad}\n`;
+        });
+        csvContent += "\n";
+
+        // Ventas por Destino
+        csvContent += "Destino,Cantidad de Ventas\n";
+        pasajesDestino.forEach(([destino, cantidad]) => {
+            csvContent += `${destino}, ${cantidad}\n`;
+        });
+        csvContent += "\n";
+
+        // Ocupación de Omnibus
+        csvContent += "Omnibus,Cantidad de Pasajes\n";
+        ocupacionOmnibus.forEach(([omnibus, cantidad]) => {
+            csvContent += `${omnibus}, ${cantidad}\n`;
+        });
+        csvContent += "\n";
+
+        // Deshabilitados por Fecha
+        csvContent += "Fecha de Deshabilitación,Cantidad de Omnibus\n";
+        csvContent += labelFecha + "-" + new Date().toLocaleDateString("es-UY") + ", " + fechaDeshabilitado + `\n`;
+        csvContent += "\n";
+
+        // Descargar CSV
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "estadisticas_generales.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
 
     const labels_destino = viajesDestino.map(item => item[0]);
     const valores_destino = viajesDestino.map(item => item[1]);
@@ -165,12 +196,12 @@ function EstadisticasGenerales() {
         ]
     };
 
-
     const fecha_deshabilitada = {
+        labels: [labelFecha + " - " + new Date().toLocaleDateString("es-UY")],
         datasets: [
             {
                 label: 'Deshabilitados',
-                data: fechaDeshabilitado,
+                data: [fechaDeshabilitado],
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
@@ -198,8 +229,8 @@ function EstadisticasGenerales() {
             <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
-                        <button >Exportar PDF</button>
-                        <button >Exportar CSV</button>
+                        <button onClick={exportarPDF}>Exportar PDF</button>
+                        <button onClick={exportarCSV}>Exportar CSV</button>
                     </div>
                 </div>
                 <div id="graficasParaExportar" className="graficas-contenedor">
