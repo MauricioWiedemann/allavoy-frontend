@@ -14,6 +14,8 @@ function ListadoViajeCompra() {
     const [orden, setOrden] = useState("");
     const token = localStorage.getItem("token");
     const payload = token ? JSON.parse(atob(token.split(".")[1])) : {};
+    const [idaYVuelta, setIdaYVuelta] = useState(1);
+
 
     function validar_datos() {
         if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "" || cantidad.trim() === "") {
@@ -105,15 +107,26 @@ function ListadoViajeCompra() {
 
     const navigate = useNavigate();
     function comprar_pasaje(viaje) {
-        navigate("/compra", {
-            state: {
-                viaje: viaje,
-                cantidad: parseInt(cantidad, 10)
-            }
-        });
+        if (idaYVuelta == 1) {
+            navigate("/compra", {
+                state: {
+                    viaje: viaje,
+                    cantidad: parseInt(cantidad, 10),
+                    idaYVuelta
+                }
+            });
+        } else {
+            navigate("/compraida", {
+                state: {
+                    viaje: viaje,
+                    cantidad: parseInt(cantidad, 10),
+                    idaYVuelta
+                }
+            });
+        }
     }
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
             let payload = jwtDecode(localStorage.getItem("token"));
             if (payload.rol !== "VENDEDOR" && payload.rol !== "CLIENTE")
@@ -122,14 +135,14 @@ function ListadoViajeCompra() {
             window.location.href = "/404";
         }
     }
-    
+
     useEffect(() => {
         validarTokenUsuario();
     }, []);
 
     return (
         <>
-            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            
+            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}
             <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
@@ -141,6 +154,10 @@ function ListadoViajeCompra() {
                         </select>
                         <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} />
                         <input type="number" min="1" placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
+                        <select id="select-ida-vuelta" value={idaYVuelta} onChange={(e) => setIdaYVuelta(e.target.value)}>
+                            <option value="1">Simple</option>
+                            <option value="2">Ida y vuelta</option>
+                        </select>
                         <button onClick={validar_datos}>Buscar</button>
                     </div>
 
