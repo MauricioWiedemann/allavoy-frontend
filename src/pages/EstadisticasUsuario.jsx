@@ -39,7 +39,7 @@ function EstadisticasUsuario() {
         html2canvas(input, { scale: 2 }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF({
-                orientation: "portrait",
+                orientation: "landscape",
                 unit: "mm",
                 format: "a4",
             });
@@ -113,7 +113,7 @@ function EstadisticasUsuario() {
         }]
     };
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
             let payload = jwtDecode(localStorage.getItem("token"));
             if (payload.rol !== "ADMINISTRADOR")
