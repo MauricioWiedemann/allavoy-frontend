@@ -40,7 +40,7 @@ function Registro() {
   }
 
   function registrarUsuario() {
-
+    let statusOk = false;
     if (email.trim() === "" || nombre.trim() === "" || apellido.trim() === "" || cedula.trim() === "" || fechaNacimiento.trim() === "" || password.trim() === "") {
       alert("Complete todos los campos.");
     } else if (!validate_ci(cedula)) {
@@ -67,19 +67,17 @@ function Registro() {
         })
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar usuario");
-          }
-          return response.json();
+          statusOk = response.ok;
+          return response.text();
         })
         .then(data => {
-          console.log("Usuario registrado:", data);
-          alert("Usuario registrado");
-          window.location.href = "/login";
+          alert(data);
+          if (statusOk){
+            window.location.reload();
+          }
         })
-        .catch(error => {
-          console.error("Error:", error);
-          alert("Error al registrar el usuario.");
+        .catch(e => {
+          alert("Error el registrar la localidad.");
         });
     }
   }

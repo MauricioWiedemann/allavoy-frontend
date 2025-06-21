@@ -12,7 +12,7 @@ function AltaLocalidad() {
   const [isIndividual, setIsIndividual] = useState(true);
 
   function registrarLocalidad() {
-
+    let statusOk = false;
     if (departamento.trim() === "" || nombre.trim() === "") {
       alert("Complete todos los campos.");
     } else {
@@ -27,18 +27,17 @@ function AltaLocalidad() {
         })
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar la localidad");
-          }
-          return response.json();
+          statusOk = response.ok;
+          return response.text();
         })
         .then(data => {
-          console.log("Localidad registrada:", data);
-          alert("Localidad registrada");
+          alert(data);
+          if (statusOk){
+            window.location.reload();
+          }
         })
-        .catch(error => {
-          console.error("Error:", error);
-          alert("Error al registrar la localidad.");
+        .catch(e => {
+          alert("Error el registrar la localidad.");
         });
     }
   }
@@ -132,7 +131,7 @@ function AltaLocalidad() {
                     <option value="" disabled selected>Departamento</option>
                     <option value="ARTIGAS">Artigas</option>
                     <option value="CANELONES">Canelones</option>
-                    <option value="CERRO LARGO">Cerro Largo</option>
+                    <option value="CERRO_LARGO">Cerro Largo</option>
                     <option value="COLONIA">Colonia</option>
                     <option value="DURAZNO">Durazno</option>
                     <option value="FLORES">Flores</option>
@@ -141,14 +140,14 @@ function AltaLocalidad() {
                     <option value="MALDONADO">Maldonado</option>
                     <option value="MONTEVIDEO">Montevideo</option>
                     <option value="PAYSANDU">Paysandú</option>
-                    <option value="RIO NEGRO">Río Negro</option>
+                    <option value="RIO_NEGRO">Río Negro</option>
                     <option value="RIVERA">Rivera</option>
-                    <option value="RROCHA">Rocha</option>
+                    <option value="ROCHA">Rocha</option>
                     <option value="SALTO">Salto</option>
-                    <option value="SAN JOSE">San José</option>
+                    <option value="SAN_JOSE">San José</option>
                     <option value="SORIANO">Soriano</option>
                     <option value="TACUAREMBO">Tacuarembó</option>
-                    <option value="TREINTA Y TRES">Treinta y Tres</option>
+                    <option value="TREINTA_Y_TRES">Treinta y Tres</option>
                 </select>
             </div>
             <div className="mb-3">

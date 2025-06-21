@@ -40,7 +40,7 @@ function AltaViaje() {
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
       option.value=JSON.stringify(element);
-      option.textContent= element.nombre.concat(", ", element.departamento);
+      option.textContent= element.nombre.concat(", ", element.departamento.replace("_", " "));
       selectLocalidades.appendChild(option); 
     });
   }
@@ -121,6 +121,7 @@ function AltaViaje() {
   },[listaOmnibus]);
 
   function registrarViaje() {
+    let statusOk = false;
     if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") { 
       alert("Complete todos los campos.");
     } else {
@@ -141,21 +142,18 @@ function AltaViaje() {
         })
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar el Viaje");
-          }
-          return response.json();
+          statusOk = response.ok;
+          return response.text();
         })
         .then(data => {
-          console.log("Viaje registrado:", data);
-          alert("Viaje registrado");
-          window.location.reload();
+          alert(data);
+          if (statusOk){
+            window.location.reload();
+          }
         })
-        .catch(error => {
-          console.error("Error:", error);
-          alert("Error al registrar el viaje.");
+        .catch(e => {
+          alert("Error el registrar la localidad.");
         });
-      
     }
   }
 

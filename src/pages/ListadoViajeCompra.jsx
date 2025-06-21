@@ -80,12 +80,12 @@ function ListadoViajeCompra() {
         localidadesArray.forEach(element => {
             const optionOrigen = document.createElement("option");
             optionOrigen.value = element.idLocalidad;
-            optionOrigen.textContent = element.nombre.concat(", ", element.departamento);
+            optionOrigen.textContent = element.nombre.concat(", ", element.departamento.replace("_", " "));
             selectOrigen.appendChild(optionOrigen);
 
             const optionDestino = document.createElement("option");
             optionDestino.value = element.idLocalidad;
-            optionDestino.textContent = element.nombre.concat(", ", element.departamento);
+            optionDestino.textContent = element.nombre.concat(", ", element.departamento.replace("_", " "));
             selectDestino.appendChild(optionDestino);
         });
     }

@@ -39,7 +39,7 @@ function CambiarLocalidad() {
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
       option.value=JSON.stringify(element);
-      option.textContent= element.nombre.concat(", ", element.departamento);
+      option.textContent= element.nombre.concat(", ", element.departamento.replace("_", " "));
       selectLocalidades.appendChild(option); 
     });
   }

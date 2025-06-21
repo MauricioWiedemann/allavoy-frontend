@@ -46,6 +46,7 @@ function AltaOmnibus() {
   }
 
   function registrarOmnibus() {
+    let statusOk = false;
     if (marca.trim() === "" || modelo.trim() === "" || nroMotor.trim() === "" || matricula.trim() === "" || capacidad.trim() === "" || localidad.trim() === "") {
       alert("Complete todos los campos.");
     } else if (!validar_matricula(matricula.toUpperCase())) {
@@ -68,18 +69,17 @@ function AltaOmnibus() {
         })
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar omnibus");
-          }
-          return response.json();
+          statusOk = response.ok;
+          return response.text();
         })
         .then(data => {
-          console.log("Omnibus registrado:", data);
-          alert("omnibus registrado");
+          alert(data);
+          if (statusOk){
+            window.location.reload();
+          }
         })
-        .catch(error => {
-          console.error("Error:", error);
-          alert("Error al registrar el omnibus.");
+        .catch(e => {
+          alert("Error el registrar la localidad.");
         });
     }
   }
@@ -105,7 +105,7 @@ function AltaOmnibus() {
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
       option.value = JSON.stringify(element);
-      option.textContent = element.nombre.concat(", ", element.departamento);
+      option.textContent = element.nombre.concat(", ", element.departamento.replace("_", " "));
       selectLocalidades.appendChild(option);
     });
   }

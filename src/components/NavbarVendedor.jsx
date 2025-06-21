@@ -18,7 +18,8 @@ function NavbarVendedor() {
         <img src={logo} alt="Logo" />
         <h2>AllaVoy</h2>
       </div>
-      <ul className="navbar-nav ms-auto">
+      <div className='navbar-scroll'>
+        <ul className="navbar-nav ms-auto">
         <li>
           <div className="menu-title" onClick={() => setShowLocalidad(!showLocalidad)}>
             <h4>Localidades</h4>
@@ -97,6 +98,7 @@ function NavbarVendedor() {
           )}
         </li>
       </ul>
+      </div>
     </aside>
   )
 }
