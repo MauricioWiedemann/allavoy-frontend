@@ -39,7 +39,7 @@ function NavbarVendedor() {
           {showOmnibus && (
             <>
               <li className="nav-item"><Link className="nav-link" to="/altaomnibus">Alta Omnibus</Link></li>
-              <li className="nav-item"> <Link className="nav-link" to="/listaromnibus">Listado de Omnibus</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/listaromnibus">Listado de Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/deshabilitacionomnibus">Deshabilitar Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/rehabilitacionomnibus">Rehabilitar Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cambiarlocalidad">Cambiar Localidad</Link></li>
@@ -91,6 +91,7 @@ function NavbarVendedor() {
           </div>
           {showUsuario && (
             <>
+              <li className="nav-item"><Link className="nav-link" to="/estidisticasgenerales">Estidisticas</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/editarusuario">Editar Perfil</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cambiarpass">Cambiar contraseña</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li>
