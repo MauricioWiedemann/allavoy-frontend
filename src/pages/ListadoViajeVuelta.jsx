@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../css/Listado.css";
 import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
+import Notificaion from "../components/Notificacion";
 
 
 
@@ -19,10 +20,20 @@ function ListadoViaje() {
     const origen = viajeIda.origen;
     const destino = viajeIda.destino;
     const idaYVuelta = location.state?.idaYVuelta
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
+
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
 
     function validar_datos() {
         if (fecha.trim() === "") {
-            alert("Complete todos los campos.");
+            mostrarAlertaError("Complete todos los campos.");
             return;
         }
         console.log("Origen:", origen.idLocalidad);
@@ -41,7 +52,7 @@ function ListadoViaje() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron viajes.");
+                    throw new mostrarAlertaError("No se encontraron viajes.");
 
                 }
                 return response.json();
@@ -51,7 +62,7 @@ function ListadoViaje() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron viajes.");
+                mostrarAlertaError("No se encontraron viajes.");
                 setViajes([]);
             });
     }
@@ -80,7 +91,9 @@ function ListadoViaje() {
     }
     return (
         <>
-                {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            <div className="layout">
+            {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}            <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
+
                 <div className="filtros">
                     <div className="buscador">
                         <label>Origen</label>

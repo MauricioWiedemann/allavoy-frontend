@@ -3,6 +3,8 @@ import "../css/ListadoOmnibus.css";
 import { useNavigate } from 'react-router-dom';
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function ListadoOmnibus() {
     const [localidad_actual, setLocalidad] = useState("");
@@ -11,6 +13,22 @@ function ListadoOmnibus() {
     const [cantidad, setCantidad] = useState("");
     const [omnibus, setOmnibus] = useState([]);
     const [orden, setOrden] = useState("");
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
+
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
+
+    function mostrarAlerta(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("mensaje")
+    };
 
 
     function listar_omnibus() {
@@ -28,11 +46,13 @@ function ListadoOmnibus() {
                 return response.json();
             })
             .then(data => {
+                if (data.length < 1)
+                    mostrarAlertaError("No se encontraron omnibus.");
                 setOmnibus(data);
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron omnibus.");
                 setOmnibus([]);
             });
     }
@@ -65,7 +85,7 @@ function ListadoOmnibus() {
                 setOmnibus(data);
             })
             .catch(error => {
-                alert("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron omnibus.");
                 setOmnibus([]);
             });
     }
@@ -118,24 +138,25 @@ function ListadoOmnibus() {
         omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
     }
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
-          let payload = jwtDecode(localStorage.getItem("token"));
-          if (payload.rol !== "VENDEDOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR")
+                window.location.href = "/404";
         } catch (e) {
-          window.location.href = "/404";
+            window.location.href = "/404";
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
             <NavbarVendedor />
             <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="filtros">
                     <div className="buscador">
                         <select id="localidad_actual" value={localidad_actual} onChange={(e) => setLocalidad(e.target.value)}>

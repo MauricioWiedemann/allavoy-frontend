@@ -3,6 +3,8 @@ import "../css/ListadoOmnibus.css";
 import { useNavigate } from 'react-router-dom';
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function ListadoOmnibusAsignados() {
     const [origen, setOrigen] = useState("");
@@ -14,8 +16,16 @@ function ListadoOmnibusAsignados() {
     const [matricula, setMatricula] = useState("");
     const [cantidad, setCantidad] = useState("");
     const [viaje, setViajes] = useState([]);
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
 
 
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
 
     function listar_viajes() {
         fetch("http://localhost:8080/viaje/obtenertodos", {
@@ -33,10 +43,12 @@ function ListadoOmnibusAsignados() {
             })
             .then(data => {
                 setViajes(data);
+                if (data.length() < 1)
+                    mostrarAlertaError("No se encontraron viajes.")
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron viajes.");
+                mostrarAlertaError("No se encontraron viajes.");
                 setViajes([]);
             });
     }
@@ -69,11 +81,12 @@ function ListadoOmnibusAsignados() {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                if (data.length < 1)
+                    mostrarAlertaError("No se encontraron viajes.");
                 setViajes(data);
             })
             .catch(error => {
-                alert("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron omnibus.");
                 setViajes([]);
             });
     }
@@ -152,6 +165,7 @@ function ListadoOmnibusAsignados() {
         <>
             <NavbarVendedor />
             <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="filtros">
                     <div className="buscador">
                         <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>

@@ -2,9 +2,21 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import "../css/CerrarSesion.css";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function CerrarSesion() {
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+  const [tipo, setTipo] = useState("");
+
+
+  function mostrarAlertaError(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("error")
+  };
 
   async function cerrarSesion() {
     try {
@@ -29,14 +41,17 @@ function CerrarSesion() {
       const payload = jwtDecode(localStorage.getItem("token"));
       window.location.href = "/home";
     } catch (e) {
-      alert("No se encuantra una sesion iniciada.");
-      window.location.href = "/login";
+      mostrarAlertaError("No se encuantra una sesion iniciada.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
     }
   }
 
   return (
     <>
       <div className="cerrarSesion-bg">
+        <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
         <div className="cerrarSesion-card card p-4 shadow-lg">
 
           <div className="mb-3">

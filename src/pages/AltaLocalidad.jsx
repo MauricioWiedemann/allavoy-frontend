@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "../css/AltaLocalidad.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Papa from 'papaparse';
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function AltaLocalidad() {
 
@@ -10,6 +12,27 @@ function AltaLocalidad() {
   const [nombre, setNombre] = useState("");
   const [data, setData] = useState([]);
   const [isIndividual, setIsIndividual] = useState(true);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+  const [tipo, setTipo] = useState("");
+
+  function mostrarAlerta(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("mensaje")
+  };
+
+  function mostrarAlertaError(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("error")
+  };
+
+  function mostrarAlertaAdvertencia(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("alert")
+  };
 
   function registrarLocalidad() {
 
@@ -34,11 +57,14 @@ function AltaLocalidad() {
         })
         .then(data => {
           console.log("Localidad registrada:", data);
-          alert("Localidad registrada");
+          mostrarAlerta("Localidad registrada");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         })
         .catch(error => {
           console.error("Error:", error);
-          alert("Error al registrar la localidad.");
+          mostrarAlertaError("Error al registrar la localidad.");
         });
     }
   }
@@ -53,7 +79,7 @@ function AltaLocalidad() {
     });
   };
 
-  function altaLocalidadesCsv(){
+  function altaLocalidadesCsv() {
     if (data.length > 0) {
       fetch("http://localhost:8080/localidad/altacsv", {
         method: "POST",
@@ -63,13 +89,34 @@ function AltaLocalidad() {
         body: JSON.stringify(data)
       })
         .then(response => {
-            return response.text();
-        }).then(data => {
-            alert(data);
-            window.location.reload();
+          return response.text();
         })
+        .then(data => {
+
+          const resultado = data.match(/Se completaron (\d+)\/(\d+)/);
+          const lineas = data.split("\n");
+          const errores = lineas.filter(lineas => lineas.startsWith("Error"));
+
+          if (resultado) {
+            const completadas = parseInt(resultado[1]);
+            const totales = parseInt(resultado[2]);
+
+            if (completadas === totales)
+              mostrarAlerta("Todas las localidades se cargaron correctamente.");
+            else if (completadas > 0) {
+              let mesnaje = `Se cargaron ${completadas} de ${totales}.\n`;
+              mesnaje += "\nErrores:\n" + errores.join("\n");
+              mostrarAlertaAdvertencia(mesnaje);
+            } else
+              mostrarAlertaError("No se pudo cargar ninguna localidad.");
+          }
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+          //window.location.reload();
+        });
     } else {
-      alert("Tiene que ingresar un archivo.")
+      mostrarAlertaError("Tiene que ingresar un archivo.");
     }
   };
 
@@ -101,7 +148,7 @@ function AltaLocalidad() {
     }
   }, [isIndividual]);
 
-  function validarTokenUsuario(){
+  function validarTokenUsuario() {
     try {
       let payload = jwtDecode(localStorage.getItem("token"));
       if (payload.rol !== "VENDEDOR")
@@ -117,70 +164,71 @@ function AltaLocalidad() {
 
   return (
     <>
-    <NavbarVendedor/>
-    <div className="altaLocalidad-bg">
-      <div className="altaLocalidad-card card p-4 shadow-lg">
-        <div class="row mb-4">
-          <button id="individual-select" class="select-tipo-alta-localidad col-6 col-sm-3" onClick={() => setIsIndividual(true)}>Individual</button>
-          <button id="csv-select" class="select-tipo-alta-localidad col-6 col-sm-3" onClick={() => setIsIndividual(false)}>CSV</button>
-        </div>
-        { isIndividual && (
-          <div id="alta-individual"> 
-            <div className="mb-3">
+      <NavbarVendedor />
+      <div className="altaLocalidad-bg">
+        <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
+        <div className="altaLocalidad-card card p-4 shadow-lg">
+          <div class="row mb-4">
+            <button id="individual-select" class="select-tipo-alta-localidad col-6 col-sm-3" onClick={() => setIsIndividual(true)}>Individual</button>
+            <button id="csv-select" class="select-tipo-alta-localidad col-6 col-sm-3" onClick={() => setIsIndividual(false)}>CSV</button>
+          </div>
+          {isIndividual && (
+            <div id="alta-individual">
+              <div className="mb-3">
                 <div class="alta-individual"></div>
                 <select className="form-select rounded-pill" value={departamento} onChange={(e) => setDepartamento(e.target.value)}>
-                    <option value="" disabled selected>Departamento</option>
-                    <option value="ARTIGAS">Artigas</option>
-                    <option value="CANELONES">Canelones</option>
-                    <option value="CERRO LARGO">Cerro Largo</option>
-                    <option value="COLONIA">Colonia</option>
-                    <option value="DURAZNO">Durazno</option>
-                    <option value="FLORES">Flores</option>
-                    <option value="FLORIDA">Florida</option>
-                    <option value="LAVALLEJA">Lavalleja</option>
-                    <option value="MALDONADO">Maldonado</option>
-                    <option value="MONTEVIDEO">Montevideo</option>
-                    <option value="PAYSANDU">Paysandú</option>
-                    <option value="RIO NEGRO">Río Negro</option>
-                    <option value="RIVERA">Rivera</option>
-                    <option value="RROCHA">Rocha</option>
-                    <option value="SALTO">Salto</option>
-                    <option value="SAN JOSE">San José</option>
-                    <option value="SORIANO">Soriano</option>
-                    <option value="TACUAREMBO">Tacuarembó</option>
-                    <option value="TREINTA Y TRES">Treinta y Tres</option>
+                  <option value="" disabled selected>Departamento</option>
+                  <option value="ARTIGAS">Artigas</option>
+                  <option value="CANELONES">Canelones</option>
+                  <option value="CERRO LARGO">Cerro Largo</option>
+                  <option value="COLONIA">Colonia</option>
+                  <option value="DURAZNO">Durazno</option>
+                  <option value="FLORES">Flores</option>
+                  <option value="FLORIDA">Florida</option>
+                  <option value="LAVALLEJA">Lavalleja</option>
+                  <option value="MALDONADO">Maldonado</option>
+                  <option value="MONTEVIDEO">Montevideo</option>
+                  <option value="PAYSANDU">Paysandú</option>
+                  <option value="RIO NEGRO">Río Negro</option>
+                  <option value="RIVERA">Rivera</option>
+                  <option value="RROCHA">Rocha</option>
+                  <option value="SALTO">Salto</option>
+                  <option value="SAN JOSE">San José</option>
+                  <option value="SORIANO">Soriano</option>
+                  <option value="TACUAREMBO">Tacuarembó</option>
+                  <option value="TREINTA Y TRES">Treinta y Tres</option>
                 </select>
-            </div>
-            <div className="mb-3">
-              <input type="text" className="form-control rounded-pill" placeholder="Localidad" value={nombre} onChange={(e) => setNombre(e.target.value)}/>
-            </div>
-            <div class="d-grid gap-1">
+              </div>
+              <div className="mb-3">
+                <input type="text" className="form-control rounded-pill" placeholder="Localidad" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+              </div>
+              <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={registrarLocalidad} >Crear Localidad</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
+              </div>
             </div>
-          </div>
-        )}
-        { !isIndividual && (
-          <div id="alta-individual"> 
-            <div className="mb-3">
-              <p>Ingrese un archivo CSV</p>
-              <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo}/>  
-            </div>
-            <p>Ejemplo del formato CSV</p>
-            <div id="csv-ejemplo" className="mb-3">
-              <p>DEPARTAMENTO;Localidad</p>
-              <p>MONTEVIDEO;Montevideo</p>
-              <p>CERRO LARGO;Melo</p>
-            </div>
-            <div class="d-grid gap-1">
+          )}
+          {!isIndividual && (
+            <div id="alta-individual">
+              <div className="mb-3">
+                <p>Ingrese un archivo CSV</p>
+                <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo} />
+              </div>
+              <p>Ejemplo del formato CSV</p>
+              <div id="csv-ejemplo" className="mb-3">
+                <p>DEPARTAMENTO;Localidad</p>
+                <p>MONTEVIDEO;Montevideo</p>
+                <p>CERRO LARGO;Melo</p>
+              </div>
+              <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaLocalidadesCsv} >Crear Localidades</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  </>
+    </>
   )
 }
 

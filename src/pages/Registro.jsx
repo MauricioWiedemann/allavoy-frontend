@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../css/Registro.css";
+import Notificaion from "../components/Notificacion";
+
 
 function Registro() {
 
@@ -9,6 +11,22 @@ function Registro() {
   const [cedula, setCedula] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [password, setPassword] = useState("");
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+  const [tipo, setTipo] = useState("");
+
+
+  function mostrarAlertaError(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("error")
+  };
+
+  function mostrarAlerta(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("mensaje")
+  };
 
   function validation_digit(ci) {
     var a = 0;
@@ -42,13 +60,13 @@ function Registro() {
   function registrarUsuario() {
 
     if (email.trim() === "" || nombre.trim() === "" || apellido.trim() === "" || cedula.trim() === "" || fechaNacimiento.trim() === "" || password.trim() === "") {
-      alert("Complete todos los campos.");
+      mostrarAlertaError("Complete todos los campos.");
     } else if (!validate_ci(cedula)) {
-      alert("La cedula no es valida.");
+      mostrarAlertaError("La cedula no es valida.");
     } else if (password.length < 8 || !/\d/.test(password)) {
-      alert("La contraseña debe tener al menos 8 caracteres e incluir al menos un numero.");
+      mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un numero.");
     } else if (new Date(fechaNacimiento) >= new Date()) {
-      alert("La fecha de nacimiento no puede ser mayor a hoy.");
+      mostrarAlertaError("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
       fetch("http://localhost:8080/usuario/alta", {
         method: "POST",
@@ -74,17 +92,23 @@ function Registro() {
         })
         .then(data => {
           console.log("Usuario registrado:", data);
-          alert("Usuario registrado");
-          window.location.href = "/login";
+          mostrarAlerta("Usuario registrado");
+
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 2000);
         })
         .catch(error => {
           console.error("Error:", error);
-          alert("Error al registrar el usuario.");
+          mostrarAlertaError("Error al registrar el usuario.");
         });
     }
   }
   return (
+
     <div className="registro-bg">
+      <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
+
       <div className="registro-card card p-4 shadow-lg">
         <div className="text-center mb-4">
           <img src="../sources/logo.png" alt="Registro Illustration" className="registro-img img-fluid" />

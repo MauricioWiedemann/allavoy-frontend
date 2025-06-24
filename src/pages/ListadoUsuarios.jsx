@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../css/ListadoUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function ListadoUsuario() {
     const [email, setEmail] = useState("");
@@ -9,6 +11,16 @@ function ListadoUsuario() {
     const [estado, setEstado] = useState("ACTIVO");
     const [usuario, setUsuarios] = useState([]);
     const [orden, setOrden] = useState("");
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipoNoti, setTipoNoti] = useState("");
+
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipoNoti("error")
+    };
 
     useEffect(() => {
         listar_usuarios();
@@ -45,11 +57,15 @@ function ListadoUsuario() {
                 return response.json();
             })
             .then(data => {
+                if (data.length < 1) {
+                    mostrarAlertaError("No se encontraron usuarios.");
+                }
+                console.log(data)
                 setUsuarios(data);
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron usuarios.");
+                mostrarAlertaError("No se encontraron usuarios.");
                 setUsuarios([]);
             });
     }
@@ -73,7 +89,7 @@ function ListadoUsuario() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron usuarios.");
+                mostrarAlertaError("No se encontraron usuarios.");
                 setUsuarios([]);
             });
     }
@@ -90,7 +106,7 @@ function ListadoUsuario() {
     else if (orden === "estado")
         usuariosOrdenados.sort((a, b) => (b.activo === a.activo) ? 0 : a.activo ? -1 : 1);
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
             let payload = jwtDecode(localStorage.getItem("token"));
             if (payload.rol !== "ADMINISTRADOR")
@@ -99,7 +115,7 @@ function ListadoUsuario() {
             window.location.href = "/404";
         }
     }
-    
+
     useEffect(() => {
         validarTokenUsuario();
     }, []);
@@ -108,6 +124,7 @@ function ListadoUsuario() {
         <>
             <NavbarAdministrador />
             <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipoNoti} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="filtros">
                     <div className="buscador">
                         <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />

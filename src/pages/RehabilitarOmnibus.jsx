@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../css/DeshabilitarOmnibus.css"
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function RehabilitarOmnibus() {
     const [localidad_actual, setLocalidad] = useState("");
@@ -9,7 +11,22 @@ function RehabilitarOmnibus() {
     const [cantidad, setCantidad] = useState("");
     const [omnibus, setOmnibus] = useState([]);
     const [orden, setOrden] = useState("");
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
 
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
+
+    function mostrarAlerta(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("mensaje")
+    };
 
     function listar_omnibus() {
         fetch("http://localhost:8080/omnibus/deshabilitados", {
@@ -30,7 +47,7 @@ function RehabilitarOmnibus() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron omnibus.");
                 setOmnibus([]);
             });
     }
@@ -60,7 +77,7 @@ function RehabilitarOmnibus() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron omnibus.");
                 setOmnibus([]);
             });
     }
@@ -89,7 +106,7 @@ function RehabilitarOmnibus() {
         });
     }
 
-    async function rehabilitar(o){
+    async function rehabilitar(o) {
         await fetch("http://localhost:8080/omnibus/rehabilitar", {
             method: "POST",
             headers: {
@@ -98,12 +115,15 @@ function RehabilitarOmnibus() {
             body: JSON.stringify({
                 idOmnibus: o.idOmnibus
             })
-            }).then(response => {
-                return response.text();
-            }).then(data => {
-                alert(data);
+        }).then(response => {
+            return response.text();
+        }).then(data => {
+            mostrarAlerta(data);
+
+            setTimeout(() => {
                 window.location.reload();
-            })
+            }, 2000);
+        })
     }
 
     //cargar las localidades al cargar la pagina
@@ -125,24 +145,25 @@ function RehabilitarOmnibus() {
         omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
     }
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
-          let payload = jwtDecode(localStorage.getItem("token"));
-          if (payload.rol !== "VENDEDOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR")
+                window.location.href = "/404";
         } catch (e) {
-          window.location.href = "/404";
+            window.location.href = "/404";
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
             <NavbarVendedor />
             <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="filtros">
                     <div className="buscador">
                         <select id="localidad_actual" value={localidad_actual} onChange={(e) => setLocalidad(e.target.value)}>
