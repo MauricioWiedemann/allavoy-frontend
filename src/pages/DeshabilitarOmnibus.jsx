@@ -110,7 +110,7 @@ function DeshabilitarOmnibus() {
         localidadesArray.forEach(element => {
             const optionLocalidad = document.createElement("option");
             optionLocalidad.value = element.idLocalidad;
-            optionLocalidad.textContent = element.nombre.concat(", ", element.departamento);
+            optionLocalidad.textContent = element.nombre.concat(", ", element.departamento.replace("_", " "));
             select_localidad_actual.appendChild(optionLocalidad);
         });
     }

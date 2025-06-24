@@ -176,6 +176,7 @@ function AltaUsuario() {
           console.error("Error:", error);
           mostrarAlertaError("Error al registrar el usuario.");
         });
+
     }
   }
 

@@ -57,9 +57,9 @@ function CambiarLocalidad() {
     //generar los option que se insertara en el select con los datos de las localidades
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
-      option.value = JSON.stringify(element);
-      option.textContent = element.nombre.concat(", ", element.departamento);
-      selectLocalidades.appendChild(option);
+      option.value=JSON.stringify(element);
+      option.textContent= element.nombre.concat(", ", element.departamento.replace("_", " "));
+      selectLocalidades.appendChild(option); 
     });
   }
 

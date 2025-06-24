@@ -58,7 +58,7 @@ function Registro() {
   }
 
   function registrarUsuario() {
-
+    let statusOk = false;
     if (email.trim() === "" || nombre.trim() === "" || apellido.trim() === "" || cedula.trim() === "" || fechaNacimiento.trim() === "" || password.trim() === "") {
       mostrarAlertaError("Complete todos los campos.");
     } else if (!validate_ci(cedula)) {
@@ -85,10 +85,8 @@ function Registro() {
         })
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar usuario");
-          }
-          return response.json();
+          statusOk = response.ok;
+          return response.text();
         })
         .then(data => {
           console.log("Usuario registrado:", data);

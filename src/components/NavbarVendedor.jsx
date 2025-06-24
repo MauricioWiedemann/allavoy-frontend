@@ -18,7 +18,8 @@ function NavbarVendedor() {
         <img src={logo} alt="Logo" />
         <h2>AllaVoy</h2>
       </div>
-      <ul className="navbar-nav ms-auto">
+      <div className='navbar-scroll'>
+        <ul className="navbar-nav ms-auto">
         <li>
           <div className="menu-title" onClick={() => setShowLocalidad(!showLocalidad)}>
             <h4>Localidades</h4>
@@ -38,7 +39,7 @@ function NavbarVendedor() {
           {showOmnibus && (
             <>
               <li className="nav-item"><Link className="nav-link" to="/altaomnibus">Alta Omnibus</Link></li>
-              <li className="nav-item"> <Link className="nav-link" to="/listaromnibus">Listado de Omnibus</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/listaromnibus">Listado de Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/deshabilitacionomnibus">Deshabilitar Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/rehabilitacionomnibus">Rehabilitar Omnibus</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cambiarlocalidad">Cambiar Localidad</Link></li>
@@ -90,6 +91,7 @@ function NavbarVendedor() {
           </div>
           {showUsuario && (
             <>
+              <li className="nav-item"><Link className="nav-link" to="/estidisticasgenerales">Estidisticas</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/editarusuario">Editar Perfil</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cambiarpass">Cambiar contraseña</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li>
@@ -97,6 +99,7 @@ function NavbarVendedor() {
           )}
         </li>
       </ul>
+      </div>
     </aside>
   )
 }

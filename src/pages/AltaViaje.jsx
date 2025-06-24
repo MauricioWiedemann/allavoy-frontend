@@ -63,9 +63,9 @@ function AltaViaje() {
     //generar los option que se insertara en el select con los datos de las localidades
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
-      option.value = JSON.stringify(element);
-      option.textContent = element.nombre.concat(", ", element.departamento);
-      selectLocalidades.appendChild(option);
+      option.value=JSON.stringify(element);
+      option.textContent= element.nombre.concat(", ", element.departamento.replace("_", " "));
+      selectLocalidades.appendChild(option); 
     });
   }
 
@@ -147,8 +147,9 @@ function AltaViaje() {
   }, [listaOmnibus]);
 
   function registrarViaje() {
-    if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") {
-      alert("Complete todos los campos.");
+    let statusOk = false;
+    if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") { 
+      mostrarAlertaError("Complete todos los campos.");
     } else {
       fetch("http://localhost:8080/viaje/alta", {
         method: "POST",
@@ -167,10 +168,8 @@ function AltaViaje() {
         })
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar el Viaje");
-          }
-          return response.json();
+          statusOk = response.ok;
+          return response.text();
         })
         .then(data => {
           console.log("Viaje registrado:", data);

@@ -9,6 +9,15 @@ body {
     min-height: 100hv;
 }
 
+.navbar-scroll {
+    overflow-y: scroll;
+    height: 95%;
+}
+
+.navbar-scroll::-webkit-scrollbar {
+    display: none;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
