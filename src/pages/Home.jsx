@@ -3,6 +3,8 @@ import { jwtDecode } from 'jwt-decode';
 import NavbarAdministrador from "../components/NavbarAdministrador";
 import NavbarVendedor from "../components/NavbarVendedor";
 import NavbarCliente from "../components/NavbarCliente";
+import logo from '../../sources/logo.png';
+import "../css/Home.css";
 
 export default function Home() {
 
@@ -28,6 +30,9 @@ export default function Home() {
       {payload.rol === "CLIENTE" && (<NavbarCliente />)}
       {payload.rol === "VENDEDOR" && (<NavbarVendedor />)}
       {payload.rol === "ADMINISTRADOR" && (<NavbarAdministrador />)}
+      <div className="home-background">
+        <img src={logo} alt="Logo" />
+      </div>
     </>
   );
 }
