@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavbarAdministrador from "../components/NavbarAdministrador";
-import "../css/altausuario.css"
+import "../css/AltaUsuario.css"
 import Papa from 'papaparse';
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
