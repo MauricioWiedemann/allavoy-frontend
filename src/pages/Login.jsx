@@ -23,7 +23,7 @@ function Login() {
         if (email.trim() === "" || password.trim() === "") {
             mostrarAlertaError("Complete todos los campos.");
         } else {
-            fetch("http://localhost:8080/auth/login", {
+            fetch("https://allavoy-backend.onrender.com/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -32,7 +32,7 @@ function ListadoViaje() {
             return;
         }
 
-        fetch("http://localhost:8080/viaje/buscar", {
+        fetch("https://allavoy-backend.onrender.com/viaje/buscar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -71,7 +71,7 @@ function ListadoViaje() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("http://localhost:8080/localidad/obtener", {
+            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

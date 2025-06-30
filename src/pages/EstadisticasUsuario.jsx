@@ -16,18 +16,18 @@ function EstadisticasUsuario() {
     const [pasajesPorTipo, setPasajesPorTipo] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8080/usuario/total")
+        fetch("https://allavoy-backend.onrender.com/usuario/total")
             .then(res => res.json())
             .then(data => setTotalUsuarios(data));
 
-        fetch("http://localhost:8080/usuario/activos")
+        fetch("https://allavoy-backend.onrender.com/usuario/activos")
             .then(res => res.json())
             .then(data => {
                 setActivos(data.activos);
                 setInactivos(data.inactivos);
             });
 
-        fetch("http://localhost:8080/usuario/pasajestipousuario")
+        fetch("https://allavoy-backend.onrender.com/usuario/pasajestipousuario")
             .then(res => res.json())
             .then(data => setPasajesPorTipo(data))
             .catch(error => console.error("Error al obtener pasajes por tipo", error));

@@ -48,7 +48,7 @@ function AltaViaje() {
     const selectLocalidades = document.getElementById(componenteId);
     //get para obtener el array con las localidades
     const localidadesArray =
-      await fetch("http://localhost:8080/localidad/obtener", {
+      await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -63,9 +63,9 @@ function AltaViaje() {
     //generar los option que se insertara en el select con los datos de las localidades
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
-      option.value=JSON.stringify(element);
-      option.textContent= element.nombre.concat(", ", element.departamento.replace("_", " "));
-      selectLocalidades.appendChild(option); 
+      option.value = JSON.stringify(element);
+      option.textContent = element.nombre.concat(", ", element.departamento.replace("_", " "));
+      selectLocalidades.appendChild(option);
     });
   }
 
@@ -108,7 +108,7 @@ function AltaViaje() {
     } else if (validarFechas()) {
       //obtener omnibus validos
       let localidadAux = JSON.parse(localidadSalida).idLocalidad;
-      await fetch("http://localhost:8080/omnibus/obtener", {
+      await fetch("https://allavoy-backend.onrender.com/omnibus/obtener", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -148,10 +148,10 @@ function AltaViaje() {
 
   function registrarViaje() {
     let statusOk = false;
-    if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") { 
+    if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") {
       mostrarAlertaError("Complete todos los campos.");
     } else {
-      fetch("http://localhost:8080/viaje/alta", {
+      fetch("https://allavoy-backend.onrender.com/viaje/alta", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

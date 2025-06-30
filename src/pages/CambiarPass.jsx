@@ -39,7 +39,7 @@ function CambiarPass() {
         } else if (passNuevo.length < 8 || !/\d/.test(passNuevo)) {
             mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un numero.");
         } else {
-            fetch("http://localhost:8080/usuario/cambiarpassword", {
+            fetch("https://allavoy-backend.onrender.com/usuario/cambiarpassword", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

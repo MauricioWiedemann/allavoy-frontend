@@ -35,7 +35,7 @@ function EditarPerfil() {
 
   function obtenerDatosUsuario() {
     if (payload !== "") {
-      fetch("http://localhost:8080/usuario/buscarporid", {
+      fetch("https://allavoy-backend.onrender.com/usuario/buscarporid", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -69,7 +69,7 @@ function EditarPerfil() {
     } else if (new Date(fechaNacimiento) >= new Date()) {
       alert("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
-      fetch("http://localhost:8080/usuario/editar", {
+      fetch("https://allavoy-backend.onrender.com/usuario/editar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

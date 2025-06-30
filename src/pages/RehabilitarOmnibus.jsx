@@ -29,7 +29,7 @@ function RehabilitarOmnibus() {
     };
 
     function listar_omnibus() {
-        fetch("http://localhost:8080/omnibus/deshabilitados", {
+        fetch("https://allavoy-backend.onrender.com/omnibus/deshabilitados", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -53,7 +53,7 @@ function RehabilitarOmnibus() {
     }
 
     function validar_datos() {
-        fetch("http://localhost:8080/omnibus/buscar", {
+        fetch("https://allavoy-backend.onrender.com/omnibus/buscar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -86,7 +86,7 @@ function RehabilitarOmnibus() {
         const select_localidad_actual = document.getElementById("localidad_actual");
         select_localidad_actual.innerHTML = "<option value='' disabled selected>Localidad</option>";
         const localidadesArray =
-            await fetch("http://localhost:8080/localidad/obtener", {
+            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -107,7 +107,7 @@ function RehabilitarOmnibus() {
     }
 
     async function rehabilitar(o) {
-        await fetch("http://localhost:8080/omnibus/rehabilitar", {
+        await fetch("https://allavoy-backend.onrender.com/omnibus/rehabilitar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

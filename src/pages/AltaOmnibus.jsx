@@ -79,7 +79,7 @@ function AltaOmnibus() {
     } else if (capacidad > 40) {
       mostrarAlertaError("La capacidad no puede ser mayor a 40.");
     } else {
-      fetch("http://localhost:8080/omnibus/alta", {
+      fetch("https://allavoy-backend.onrender.com/omnibus/alta", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -116,7 +116,7 @@ function AltaOmnibus() {
     const selectLocalidades = document.getElementById("select-localidades");
     //get para obtener el array con las localidades
     const localidadesArray =
-      await fetch("http://localhost:8080/localidad/obtener", {
+      await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -139,7 +139,7 @@ function AltaOmnibus() {
 
   function altaOmnibusCsv() {
     if (data.length > 0) {
-      fetch("http://localhost:8080/omnibus/altacsv", {
+      fetch("https://allavoy-backend.onrender.com/omnibus/altacsv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

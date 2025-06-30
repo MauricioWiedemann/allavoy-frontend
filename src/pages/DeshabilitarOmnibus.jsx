@@ -33,7 +33,7 @@ function DeshabilitarOmnibus() {
     };
 
     function listar_omnibus() {
-        fetch("http://localhost:8080/omnibus/habilitados", {
+        fetch("https://allavoy-backend.onrender.com/omnibus/habilitados", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -57,7 +57,7 @@ function DeshabilitarOmnibus() {
     }
 
     function validar_datos() {
-        fetch("http://localhost:8080/omnibus/buscar", {
+        fetch("https://allavoy-backend.onrender.com/omnibus/buscar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -94,7 +94,7 @@ function DeshabilitarOmnibus() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("http://localhost:8080/localidad/obtener", {
+            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -134,7 +134,7 @@ function DeshabilitarOmnibus() {
         } else if (fecha.trim() !== "" && new Date(fecha.concat("T".concat(hora))) < new Date()) {
             alert("La fecha debe ser actual o futura.");
         } else {
-            await fetch("http://localhost:8080/omnibus/deshabilitar", {
+            await fetch("https://allavoy-backend.onrender.com/omnibus/deshabilitar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

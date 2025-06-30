@@ -35,7 +35,7 @@ function CierreVentaPasaje() {
 
     async function obtenerViajes() {
         //obtener viajes activos
-        await fetch("http://localhost:8080/viaje/obteneractivos", {
+        await fetch("https://allavoy-backend.onrender.com/viaje/obteneractivos", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -61,7 +61,7 @@ function CierreVentaPasaje() {
         if (JSON.stringify(viajeCerrarVenta).trim() === "[]") {
             mostrarAlerta("Seleccioane un viaje.");
         } else {
-            fetch("http://localhost:8080/viaje/cerrarventa", {
+            fetch("https://allavoy-backend.onrender.com/viaje/cerrarventa", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

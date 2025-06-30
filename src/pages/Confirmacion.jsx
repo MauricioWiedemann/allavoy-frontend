@@ -31,7 +31,7 @@ function Confirmacion() {
 
     for (const id of idPasajes) {
       try {
-        const response = await fetch(`http://localhost:8080/pasajes/descargar-pdf/${id}`, { method: "GET" });
+        const response = await fetch(`https://allavoy-backend.onrender.com/pasajes/descargar-pdf/${id}`, { method: "GET" });
 
         if (!response.ok) {
           throw new Error(`Error al descargar el pasaje con ID ${id}`);

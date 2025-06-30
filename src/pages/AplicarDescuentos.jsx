@@ -64,7 +64,7 @@ function AplicarDescuento() {
     } else if (!validate_ci(cedula)) {
       mostrarAlertaError("La cedula no es valida.");
     } else {
-      await fetch("http://localhost:8080/usuario/buscarporci", {
+      await fetch("https://allavoy-backend.onrender.com/usuario/buscarporci", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -95,7 +95,7 @@ function AplicarDescuento() {
     if (tipoDescuento.trim() === "") {
       alert("Tiene que ingreser un tipo de descuanto.");
     } else {
-      await fetch("http://localhost:8080/usuario/asignarDescuento", {
+      await fetch("https://allavoy-backend.onrender.com/usuario/asignarDescuento", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -28,7 +28,7 @@ function ListadoOmnibusAsignados() {
     };
 
     function listar_viajes() {
-        fetch("http://localhost:8080/viaje/obtenertodos", {
+        fetch("https://allavoy-backend.onrender.com/viaje/obtenertodos", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -58,7 +58,7 @@ function ListadoOmnibusAsignados() {
         if (estado === "ACTIVO")
             activo = false
 
-        fetch("http://localhost:8080/viaje/listaasignados", {
+        fetch("https://allavoy-backend.onrender.com/viaje/listaasignados", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -102,7 +102,7 @@ function ListadoOmnibusAsignados() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("http://localhost:8080/localidad/obtener", {
+            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

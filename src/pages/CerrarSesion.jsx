@@ -20,7 +20,7 @@ function CerrarSesion() {
 
   async function cerrarSesion() {
     try {
-      await fetch("http://localhost:8080/auth/logout", {
+      await fetch("https://allavoy-backend.onrender.com/auth/logout", {
         method: "DELETE",
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token")

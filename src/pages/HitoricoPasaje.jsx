@@ -20,7 +20,7 @@ function ListadoViaje() {
     };
 
     function validar_datos() {
-        fetch("http://localhost:8080/pasajes/historicocompra", {
+        fetch("https://allavoy-backend.onrender.com/pasajes/historicocompra", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
