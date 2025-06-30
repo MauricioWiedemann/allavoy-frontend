@@ -85,11 +85,10 @@ function EditarPerfil() {
           if (!response.ok) {
             throw new Error("Error al editar el usuario");
           }
-          return response.json();
+          return response.text();
         })
         .then(data => {
-          console.log("Usuario editado:", data);
-          mostrarAlerta("Usuario editado");
+          mostrarAlerta(data);
           setTimeout(() => {
             window.location.reload();
           }, 2000);
