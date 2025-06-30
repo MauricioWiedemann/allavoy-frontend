@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../css/DeshabilitarOmnibus.css"
 import { jwtDecode } from 'jwt-decode';
 import NavbarVendedor from "../components/NavbarVendedor";
+import Notificaion from "../components/Notificacion";
+
 
 function DeshabilitarOmnibus() {
     const [localidad_actual, setLocalidad] = useState("");
@@ -13,7 +15,22 @@ function DeshabilitarOmnibus() {
     const [open, setOpen] = useState(false);
     const [fecha, setFecha] = useState("");
     const [hora, setHora] = useState("");
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
 
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
+
+    function mostrarAlerta(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("mensaje")
+    };
 
     function listar_omnibus() {
         fetch("http://localhost:8080/omnibus/habilitados", {
@@ -34,7 +51,7 @@ function DeshabilitarOmnibus() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron omnibus.");
                 setOmnibus([]);
             });
     }
@@ -64,7 +81,7 @@ function DeshabilitarOmnibus() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron omnibus.");
                 setOmnibus([]);
             });
     }
@@ -98,23 +115,23 @@ function DeshabilitarOmnibus() {
         });
     }
 
-    function seleccionarOmnibus(o){
+    function seleccionarOmnibus(o) {
         setOmnibusSeleccionado(o);
         setOpen(true);
     }
 
-    function validarFecha(){
-        if ((fecha.trim() !== "" && hora.trim() === "") || (fecha.trim() === "" && hora.trim() !== "")){
+    function validarFecha() {
+        if ((fecha.trim() !== "" && hora.trim() === "") || (fecha.trim() === "" && hora.trim() !== "")) {
             return false;
         } else {
             return true;
         }
     }
 
-    async function deshabilitar(){
-        if (!validarFecha()){
+    async function deshabilitar() {
+        if (!validarFecha()) {
             alert("Complete ambos campos.");
-        } else if (fecha.trim() !== "" && new Date(fecha.concat("T".concat(hora))) < new Date()){
+        } else if (fecha.trim() !== "" && new Date(fecha.concat("T".concat(hora))) < new Date()) {
             alert("La fecha debe ser actual o futura.");
         } else {
             await fetch("http://localhost:8080/omnibus/deshabilitar", {
@@ -127,13 +144,16 @@ function DeshabilitarOmnibus() {
                     fecha: fecha,
                     hora: hora
                 })
-                }).then(response => {
-                    return response.text();
-                }).then(data => {
-                    alert(data);
+            }).then(response => {
+                return response.text();
+            }).then(data => {
+                mostrarAlerta(data);
+
+                setTimeout(() => {
                     window.location.reload();
-                })
-            
+                }, 2000);
+            })
+
         }
     }
 
@@ -156,31 +176,32 @@ function DeshabilitarOmnibus() {
         omnibusOrdenados.sort((a, b) => a.capacidad - b.capacidad);
     }
 
-    function cancelar(){
+    function cancelar() {
         setOpen(false);
         setFecha("");
         setHora("");
         setOmnibusSeleccionado();
     }
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
-          let payload = jwtDecode(localStorage.getItem("token"));
-          if (payload.rol !== "VENDEDOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR")
+                window.location.href = "/404";
         } catch (e) {
-          window.location.href = "/404";
+            window.location.href = "/404";
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
             <NavbarVendedor />
             <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="filtros">
                     <div className="buscador">
                         <select id="localidad_actual" value={localidad_actual} onChange={(e) => setLocalidad(e.target.value)}>
@@ -219,18 +240,18 @@ function DeshabilitarOmnibus() {
                 </div>
             </div>
             {open && (
-            <div id="selectFechaHora-container">
+                <div id="selectFechaHora-container">
                     <div id="selectFechaHora">
                         <div>
                             <h4>Seleccione una fecha y hora</h4>
-                            <input type="date" className="form-control rounded-pill mb-1 mt-3" value={fecha} onChange={(e) => setFecha(e.target.value)}/>
-                            <input type="time" className="form-control rounded-pill mb-1" value={hora} onChange={(e) => setHora(e.target.value)}/>
+                            <input type="date" className="form-control rounded-pill mb-1 mt-3" value={fecha} onChange={(e) => setFecha(e.target.value)} />
+                            <input type="time" className="form-control rounded-pill mb-1" value={hora} onChange={(e) => setHora(e.target.value)} />
                             <p>Si deja estos campos vacios el omnibus sera dado de baja inmediatamente.</p>
                             <button className="btn btn-danger rounded-pill mb-1 mt-3" onClick={() => deshabilitar()}>Confirmar</button>
                             <button className="btn btn-secondary rounded-pill mb-1" onClick={() => cancelar()}>Cancelar</button>
                         </div>
                     </div>
-            </div>
+                </div>
             )}
         </>
     );

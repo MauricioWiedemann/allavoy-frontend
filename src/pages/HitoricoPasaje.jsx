@@ -2,10 +2,22 @@ import React, { useState, useEffect } from "react";
 import "../css/ListadoOmnibus.css";
 import { jwtDecode } from 'jwt-decode';
 import NavbarCliente from "../components/NavbarCliente";
+import Notificaion from "../components/Notificacion";
+
 
 function ListadoViaje() {
     const [historico, setHistorico] = useState([]);
     const [payload, setPayload] = useState("");
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
+
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
 
     function validar_datos() {
         fetch("http://localhost:8080/pasajes/historicocompra", {
@@ -25,17 +37,19 @@ function ListadoViaje() {
                 return response.json();
             })
             .then(data => {
+                if (data.length < 1)
+                    mostrarAlertaError("No se encontraron omnibus.");
                 console.log(data);
                 setHistorico(data);
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron pasajes.");
+                mostrarAlertaError("No se encontraron pasajes.");
                 setHistorico([]);
             });
     }
-    
-    function validarTokenUsuario(){
+
+    function validarTokenUsuario() {
         try {
             setPayload(jwtDecode(localStorage.getItem("token")));
         } catch (e) {
@@ -46,7 +60,7 @@ function ListadoViaje() {
     useEffect(() => {
         validarTokenUsuario();
     }, []);
-    
+
     useEffect(() => {
         validar_datos();
     }, [payload]);
@@ -55,6 +69,7 @@ function ListadoViaje() {
         <>
             <NavbarCliente />
             <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 {<div className="viajes-list">
                     {historico.map((h, i) => (
                         <div key={i} className="card-viaje">

@@ -1,19 +1,30 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "../css/CierreVentaPasaje.css"
 import NavbarVendedor from "../components/NavbarVendedor";
 import ViajeCerrarVenta from "../components/ViajeCerrarVenta";
 import { useViajeContext } from "../context/ViajeContext";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function CierreVentaPasaje() {
 
     const { viajeCerrarVenta } = useViajeContext();
     const [listaViajes, setListaViajes] = useState([]);
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
 
-    function checkListaViaje(){
+    function mostrarAlerta(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("mensaje")
+    };
+
+    function checkListaViaje() {
         var btn = document.getElementById("btn-cerrar");
         var par = document.getElementById("p-container");
-        if(JSON.stringify(listaViajes) === "[]"){
+        if (JSON.stringify(listaViajes) === "[]") {
             btn.style.display = "none";
             par.style.display = "block";
         } else {
@@ -25,71 +36,74 @@ function CierreVentaPasaje() {
     async function obtenerViajes() {
         //obtener viajes activos
         await fetch("http://localhost:8080/viaje/obteneractivos", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
         }).then(response => {
-        return response.json();
+            return response.json();
         })
-        .then(data => {
-        setListaViajes(data);
-        })
-        ;
+            .then(data => {
+                setListaViajes(data);
+            })
+            ;
     }
 
     useEffect(() => {
         obtenerViajes();
-    },[]);
+    }, []);
 
     useEffect(() => {
         checkListaViaje();
-    },[listaViajes]);
+    }, [listaViajes]);
 
-    function cerrarVenta(){
+    function cerrarVenta() {
         if (JSON.stringify(viajeCerrarVenta).trim() === "[]") {
-            alert("Seleccioane un viaje.");
+            mostrarAlerta("Seleccioane un viaje.");
         } else {
             fetch("http://localhost:8080/viaje/cerrarventa", {
                 method: "POST",
                 headers: {
-                "Content-Type": "application/json"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                idViaje: viajeCerrarVenta.viaje.idViaje
+                    idViaje: viajeCerrarVenta.viaje.idViaje
                 })
             })
                 .then(response => {
-                return response.text();
+                    return response.text();
                 })
                 .then(data => {
-                alert(data);
-                window.location.reload();
+                    mostrarAlerta(data);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 });
         }
     }
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
-          let payload = jwtDecode(localStorage.getItem("token"));
-          if (payload.rol !== "VENDEDOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR")
+                window.location.href = "/404";
         } catch (e) {
-          window.location.href = "/404";
+            window.location.href = "/404";
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
-            <NavbarVendedor/>
+            <NavbarVendedor />
             <div className="cierreVenta-bg">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="cierreVenta-card card p-4 shadow-lg">
                     <div className="mb-3">
-                        { listaViajes.map((element) => ( <ViajeCerrarVenta viaje={element} /> )) }
+                        {listaViajes.map((element) => (<ViajeCerrarVenta viaje={element} />))}
                     </div>
                     <div id="p-container">
                         <p>No hay Viajes activos.</p>

@@ -2,12 +2,36 @@ import React, { useState, useEffect } from "react";
 import "../css/BajaUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function BajaUsuario() {
     const [email, setEmail] = useState("");
     const [tipo, setTipo] = useState("");
     const [usuario, setUsuarios] = useState([]);
     const [orden, setOrden] = useState("");
+
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipos, setTipos] = useState("");
+
+    function mostrarAlerta(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipos("mensaje")
+    };
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipos("error")
+    };
+
+    function mostrarAlertaAdvertencia(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipos("alert")
+    };
 
     useEffect(() => {
         listar_usuarios_activos();
@@ -42,7 +66,7 @@ function BajaUsuario() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron usuarios.");
+                mostrarAlertaError("No se encontraron usuarios.");
                 setUsuarios([]);
             });
     }
@@ -66,12 +90,12 @@ function BajaUsuario() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron usuarios.");
+                mostrarAlertaError("No se encontraron usuarios.");
                 setUsuarios([]);
             });
     }
 
-    function desactivar_usuario(usuario){
+    function desactivar_usuario(usuario) {
         // Se envía el ID del usuario en la URL y el token en el header.
         // El backend dará de baja al usuario y responderá con código HTTP 204 (sin contenido).
         fetch(`http://localhost:8080/usuario/baja/${usuario.idUsuario}`, {
@@ -81,21 +105,23 @@ function BajaUsuario() {
             }
         })
             .then(response => {
-            if (!response.ok) {
-              throw new Error("Error al dar de baja el usuario");
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log("Usuario dado de baja:", data);
-            alert("Usuario dado de baja");
-            window.location.reload();
-          })
-          .catch(error => {
-            console.error("Error:", error);
-            alert("Error al dar de baja el usuario.");
-          });
-      
+                if (!response.ok) {
+                    throw new Error("Error al dar de baja el usuario");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Usuario dado de baja:", data);
+                mostrarAlerta("Usuario dado de baja");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                mostrarAlerta("Error al dar de baja el usuario.");
+            });
+
     }
 
     function capitalizar(str) {
@@ -110,16 +136,16 @@ function BajaUsuario() {
     else if (orden === "estado")
         usuariosOrdenados.sort((a, b) => (b.activo === a.activo) ? 0 : a.activo ? -1 : 1);
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
-        let payload = jwtDecode(localStorage.getItem("token"));
-        if (payload.rol !== "ADMINISTRADOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "ADMINISTRADOR")
+                window.location.href = "/404";
         } catch (e) {
             window.location.href = "/404";
         }
     }
-    
+
     useEffect(() => {
         validarTokenUsuario();
     }, []);
@@ -128,6 +154,8 @@ function BajaUsuario() {
         <>
             <NavbarAdministrador />
             <div className="listadoViaje-container">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
+
                 <div className="buscador-card card p-4 mt-3 mb-3 shadow-lg">
                     <div className="campos-flex">
                         <input type="text" className="form-control rounded-pill" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />

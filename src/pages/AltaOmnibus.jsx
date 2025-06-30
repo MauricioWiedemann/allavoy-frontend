@@ -3,6 +3,8 @@ import "../css/AltaOmnibus.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Papa from 'papaparse';
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function AltaOmnibus() {
 
@@ -12,9 +14,32 @@ function AltaOmnibus() {
   const [matricula, setMatricula] = useState("");
   const [capacidad, setCapacidad] = useState("");
   const [localidad, setLocalidad] = useState("");
-  
+
   const [data, setData] = useState([]);
   const [isIndividual, setIsIndividual] = useState(true);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+  const [tipo, setTipo] = useState("");
+
+  function mostrarAlerta(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("mensaje")
+  };
+
+  function mostrarAlertaError(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("error")
+  };
+
+  function mostrarAlertaAdvertencia(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("alert")
+  };
+
+
 
   useEffect(() => {
     if (isIndividual) {
@@ -48,11 +73,11 @@ function AltaOmnibus() {
   function registrarOmnibus() {
     let statusOk = false;
     if (marca.trim() === "" || modelo.trim() === "" || nroMotor.trim() === "" || matricula.trim() === "" || capacidad.trim() === "" || localidad.trim() === "") {
-      alert("Complete todos los campos.");
+      mostrarAlertaError("Complete todos los campos.");
     } else if (!validar_matricula(matricula.toUpperCase())) {
-      alert("La matricula no es válida.");
+      mostrarAlertaError("La matricula no es válida.");
     } else if (capacidad > 40) {
-      alert("La capacidad no puede ser mayor a 40.");
+      mostrarAlertaError("La capacidad no puede ser mayor a 40.");
     } else {
       fetch("http://localhost:8080/omnibus/alta", {
         method: "POST",
@@ -73,13 +98,15 @@ function AltaOmnibus() {
           return response.text();
         })
         .then(data => {
-          alert(data);
-          if (statusOk){
+          console.log("Omnibus registrado:", data);
+          mostrarAlerta("omnibus registrado");
+          setTimeout(() => {
             window.location.reload();
-          }
+          }, 2000);
         })
-        .catch(e => {
-          alert("Error el registrar la localidad.");
+        .catch(error => {
+          console.error("Error:", error);
+          mostrarAlertaError("Error al registrar el omnibus.");
         });
     }
   }
@@ -110,7 +137,7 @@ function AltaOmnibus() {
     });
   }
 
-  function altaOmnibusCsv(){
+  function altaOmnibusCsv() {
     if (data.length > 0) {
       fetch("http://localhost:8080/omnibus/altacsv", {
         method: "POST",
@@ -120,13 +147,34 @@ function AltaOmnibus() {
         body: JSON.stringify(data)
       })
         .then(response => {
-            return response.text();
+          return response.text();
         }).then(data => {
-            alert(data);
+          const resultado = data.match(/Se completaron (\d+)\/(\d+)/);
+          const lineas = data.split("\n");
+          const errores = lineas.filter(lineas => lineas.startsWith("Error"));
+
+          if (resultado) {
+            const completadas = parseInt(resultado[1]);
+            const totales = parseInt(resultado[2]);
+
+            if (completadas === totales)
+              mostrarAlerta("Todas los ómnibus se cargaron correctamente.");
+            else if (completadas > 0) {
+              let mesnaje = `Se cargaron ${completadas} de ${totales}.\n`;
+              mesnaje += "\nErrores:\n" + errores.join("\n");
+              mostrarAlertaAdvertencia(mesnaje);
+            } else
+              mostrarAlertaError("No se pudo cargar ningún ómnibus.");
+          }
+          setTimeout(() => {
             window.location.reload();
+          }, 2000);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         })
     } else {
-      alert("Tiene que ingresar un archivo.")
+      mostrarAlertaError("Tiene que ingresar un archivo.")
     }
   };
 
@@ -135,7 +183,7 @@ function AltaOmnibus() {
     cargarLocalidades();
   }, []);
 
-  function validarTokenUsuario(){
+  function validarTokenUsuario() {
     try {
       let payload = jwtDecode(localStorage.getItem("token"));
       if (payload.rol !== "VENDEDOR")
@@ -153,13 +201,14 @@ function AltaOmnibus() {
     <>
       <NavbarVendedor />
       <div className="altaOmnibus-bg">
+        <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
         <div className="altaOmnibus-card card p-4 shadow-lg">
           <div class="row mb-4">
-          <button id="individual-select" class="select-tipo-alta-omnibus col-6 col-sm-3" onClick={() => setIsIndividual(true)}>Individual</button>
-          <button id="csv-select" class="select-tipo-alta-omnibus col-6 col-sm-3" onClick={() => setIsIndividual(false)}>CSV</button>
-        </div>
-          { isIndividual && (
-            <div id="alta-individual"> 
+            <button id="individual-select" class="select-tipo-alta-omnibus col-6 col-sm-3" onClick={() => setIsIndividual(true)}>Individual</button>
+            <button id="csv-select" class="select-tipo-alta-omnibus col-6 col-sm-3" onClick={() => setIsIndividual(false)}>CSV</button>
+          </div>
+          {isIndividual && (
+            <div id="alta-individual">
               <div className="mb-3">
                 <div class="alta-individual"></div>
                 <div className="mb-3">
@@ -189,23 +238,23 @@ function AltaOmnibus() {
               </div>
             </div>
           )}
-          { !isIndividual && (
-          <div id="alta-individual"> 
-            <div className="mb-3">
-              <p>Ingrese un archivo .CSV</p>
-              <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo}/>  
-            </div>
-            <p>Ejemplo del formato CSV</p>
-            <div id="csv-ejemplo" className="mb-3">
-              <p>Marca;Modelo;NroMotor;Matricula;Capacidad;Departamento;Localidad</p>
-              <p>Scania;F510;AAAA1111;STU1111;20;MONTEVIDEO;Montevideo</p>
-              <p>Volvo;V20;BBBBB2222;STU2222;20;CERRO LARGO;Melo</p>
-            </div>
-            <div class="d-grid gap-1">
+          {!isIndividual && (
+            <div id="alta-individual">
+              <div className="mb-3">
+                <p>Ingrese un archivo .CSV</p>
+                <input type="file" accept=".csv" className="form-control rounded-pill" onChange={manejarArchivo} />
+              </div>
+              <p>Ejemplo del formato CSV</p>
+              <div id="csv-ejemplo" className="mb-3">
+                <p>Marca;Modelo;NroMotor;Matricula;Capacidad;Departamento;Localidad</p>
+                <p>Scania;F510;AAAA1111;STU1111;20;MONTEVIDEO;Montevideo</p>
+                <p>Volvo;V20;BBBBB2222;STU2222;20;CERRO LARGO;Melo</p>
+              </div>
+              <div class="d-grid gap-1">
                 <button className="btn w50 btn-primary rounded-pill" onClick={altaOmnibusCsv} >Crear Omnibus</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
+              </div>
             </div>
-          </div>
           )}
         </div>
       </div>

@@ -49,7 +49,7 @@ function EstadisticasGenerales() {
 
     const exportarPDF = () => {
         const input = document.getElementById("graficasParaExportar");
-        html2canvas(input, { scale: 2 }).then((canvas) => {
+        html2canvas(input, { scale: 3 }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF({
                 orientation: "landscape",

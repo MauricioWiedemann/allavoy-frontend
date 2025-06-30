@@ -2,15 +2,26 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import "../css/Login.css";
+import Notificaion from "../components/Notificacion";
+
 
 function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
 
     function validar_usuario() {
         if (email.trim() === "" || password.trim() === "") {
-            alert("Complete todos los campos.");
+            mostrarAlertaError("Complete todos los campos.");
         } else {
             fetch("http://localhost:8080/auth/login", {
                 method: "POST",
@@ -39,13 +50,14 @@ function Login() {
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    alert("Email o contraseña incorrectos.");
+                    mostrarAlertaError("Email o contraseña incorrectos.");
                 });
         }
     }
 
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100 login-body">
+            <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
             <div className="login-card card p-4 shadow-lg">
                 <div className="text-center mb-4">
                     <img src="../sources/logo.png" alt="Logo" className="img-fluid login-logo" />

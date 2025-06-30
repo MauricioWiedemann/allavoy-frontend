@@ -3,6 +3,8 @@ import "../css/ListadoPasajes.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function ListadoPasajes() {
     const [listaViajes, setListaViajes] = useState([]);
@@ -16,6 +18,17 @@ function ListadoPasajes() {
     const [destino, setDestino] = useState("");
     const [fecha, setFecha] = useState("");
     const [orden, setOrden] = useState("");
+
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
+
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
 
     async function cargarLocalidades() {
         //obtengo el componente donde va la lista de localidades
@@ -64,6 +77,8 @@ function ListadoPasajes() {
         })
             .then(data => {
                 setListaViajes(data);
+                if (data.length() < 1)
+                    mostrarAlertaError("No se encontraron viajes.");
             })
             ;
     }
@@ -97,7 +112,7 @@ function ListadoPasajes() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron viajes.");
+                mostrarAlertaError("No se encontraron viajes.");
                 setListaViajes([]);
             });
     }
@@ -182,6 +197,7 @@ function ListadoPasajes() {
         <>
             <NavbarVendedor />
             <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="filtros">
                     <div className="buscador">
                         <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>

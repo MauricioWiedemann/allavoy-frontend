@@ -3,6 +3,8 @@ import "../css/ReasignarViaje.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function ListadoViajes() {
   const [viajeSeleccionado, setViajeSeleccionado] = useState(null);
@@ -13,20 +15,37 @@ function ListadoViajes() {
   const [listaViajes, setListaViajes] = useState([]);
   const [listaOmnibus, setListaOmnibus] = useState([]);
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+  const [tipo, setTipo] = useState("");
+
+
+  function mostrarAlertaError(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("error")
+  };
+
+  function mostrarAlerta(m) {
+    setAlertVisible(true);
+    setMensaje(m);
+    setTipo("mensaje")
+  };
+
   async function obtenerViajes() {
     //obtener viajes que no partieron
     await fetch("http://localhost:8080/viaje/obtenernopartidos", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
     }).then(response => {
       return response.json();
     })
-    .then(data => {
-      setListaViajes(data);
-    })
-    ;
+      .then(data => {
+        setListaViajes(data);
+      })
+      ;
   }
 
   async function obtenerOmnibus() {
@@ -34,65 +53,67 @@ function ListadoViajes() {
     const arrayAuxSlida = viajeSeleccionado.fechaSalida.split("T", 2);
     const arrayAuxLlegada = viajeSeleccionado.fechaLlegada.split("T", 2);
     await fetch("http://localhost:8080/omnibus/obtenerreasignar", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          localidadSalida: viajeSeleccionado.origen.idLocalidad,
-          fechaSalida: arrayAuxSlida[0],
-          horaSalida: arrayAuxSlida[1].substring(0, 5),
-          fechaLlegada: arrayAuxLlegada[0],
-          horaLlegada: arrayAuxLlegada[1].substring(0, 5),
-          ocupados: viajeSeleccionado.cantidadOcupados
-        })
-      }).then(response => {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        localidadSalida: viajeSeleccionado.origen.idLocalidad,
+        fechaSalida: arrayAuxSlida[0],
+        horaSalida: arrayAuxSlida[1].substring(0, 5),
+        fechaLlegada: arrayAuxLlegada[0],
+        horaLlegada: arrayAuxLlegada[1].substring(0, 5),
+        ocupados: viajeSeleccionado.cantidadOcupados
+      })
+    }).then(response => {
       return response.json();
     })
-    .then(data => {
-      setListaOmnibus(data);
-    })
-    ;
+      .then(data => {
+        setListaOmnibus(data);
+      })
+      ;
   }
 
   async function reasignarViaje() {
     //obtener viajes que no partieron
     await fetch("http://localhost:8080/viaje/reasignar", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      idViaje: viajeSeleccionado.idViaje,
-      idOmnibus: omnibusSeleccionado.omnibus.idOmnibus
-    })
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        idViaje: viajeSeleccionado.idViaje,
+        idOmnibus: omnibusSeleccionado.omnibus.idOmnibus
+      })
     }).then(response => {
-    if (!response.ok) {
+      if (!response.ok) {
         throw new Error("Error al reasignar");
-    }
-    return response;
+      }
+      return response;
     })
-    .then(data => {
-    console.log("Viaje reasignado:", data);
-    alert("Viaje reasignado");
-    window.location.reload();
-    })
-    .catch(error => {
-    console.error("Error:", error);
-    alert("Error al reasignar.");
-    });
+      .then(data => {
+        console.log("Viaje reasignado:", data);
+        mostrarAlerta("Viaje reasignado");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        mostrarAlertaError("Error al reasignar.");
+      });
   }
 
   function swapCharacters(inputString) {
     let charArray = inputString.split('');
-    charArray[10]= " ";
+    charArray[10] = " ";
     return charArray.join('');
   }
 
-  function omnSeleccionado(){
+  function omnSeleccionado() {
     var btns = document.getElementsByClassName("omnibus-dispo");
     Array.from(btns).forEach((b) => {
-      if (omnibusSeleccionado && b.id == omnibusSeleccionado.omnibus.idOmnibus){
+      if (omnibusSeleccionado && b.id == omnibusSeleccionado.omnibus.idOmnibus) {
         b.style.border = "2px solid #bbe4ff";
         b.style.backgroundColor = "rgb(240, 255, 255)"
       } else {
@@ -104,34 +125,35 @@ function ListadoViajes() {
 
   useEffect(() => {
     obtenerViajes();
-  },[]);
+  }, []);
 
   useEffect(() => {
     obtenerOmnibus();
-  },[viajeSeleccionado]);
+  }, [viajeSeleccionado]);
 
   useEffect(() => {
     omnSeleccionado();
-  },[omnibusSeleccionado]);
+  }, [omnibusSeleccionado]);
 
-  function validarTokenUsuario(){
-      try {
-        let payload = jwtDecode(localStorage.getItem("token"));
-        if (payload.rol !== "VENDEDOR")
-          window.location.href = "/404";
-      } catch (e) {
+  function validarTokenUsuario() {
+    try {
+      let payload = jwtDecode(localStorage.getItem("token"));
+      if (payload.rol !== "VENDEDOR")
         window.location.href = "/404";
-      }
+    } catch (e) {
+      window.location.href = "/404";
     }
-  
-    useEffect(() => {
-      validarTokenUsuario();
-    }, []);
+  }
+
+  useEffect(() => {
+    validarTokenUsuario();
+  }, []);
 
   return (
     <>
       <NavbarVendedor />
       <div className="reasignarViaje-bg">
+        <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
         <div className="reasignarViaje-card card p-4 shadow-lg">
 
           <div className="space-y-4">
@@ -167,11 +189,11 @@ function ListadoViajes() {
               <div className="mx-auto my-4 w-48 text-center">
                 <h3 className="text-lg font-black text-gray-800">Ómnibus disponibles</h3>
                 {listaOmnibus.map((omnibus) => (
-                <button id={omnibus.idOmnibus} className="omnibus-dispo col" onClick={() => setOmnibusSeleccionado({omnibus})}>
-                  <p>{omnibus.marca}, {omnibus.modelo}</p>
-                  <p>Matricula: {omnibus.matricula}</p>
-                  <p>Cantidad de asiento: {omnibus.capacidad}</p>
-                </button>
+                  <button id={omnibus.idOmnibus} className="omnibus-dispo col" onClick={() => setOmnibusSeleccionado({ omnibus })}>
+                    <p>{omnibus.marca}, {omnibus.modelo}</p>
+                    <p>Matricula: {omnibus.matricula}</p>
+                    <p>Cantidad de asiento: {omnibus.capacidad}</p>
+                  </button>
                 ))}
               </div>
             </div>

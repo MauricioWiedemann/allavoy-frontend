@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import NavbarVendedor from "../components/NavbarVendedor";
 import DevolucionPasaje from "./DevolucionPasaje.jsx";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
 
 
 function ListadoViaje() {
@@ -14,10 +15,20 @@ function ListadoViaje() {
     const [orden, setOrden] = useState("");
     const token = localStorage.getItem("token");
     const payload = token ? JSON.parse(atob(token.split(".")[1])) : {};
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
+
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
 
     function validar_datos() {
         if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "") {
-            alert("Complete todos los campos.");
+            mostrarAlertaError("Complete todos los campos.");
             return;
         }
 
@@ -45,7 +56,7 @@ function ListadoViaje() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron viajes.");
+                mostrarAlertaError("No se encontraron viajes.");
                 setViajes([]);
             });
     }
@@ -110,24 +121,25 @@ function ListadoViaje() {
         });
     }
 
-    function validarTokenUsuario(){
+    function validarTokenUsuario() {
         try {
-          let payload = jwtDecode(localStorage.getItem("token"));
-          if (payload.rol !== "VENDEDOR")
-            window.location.href = "/404";
+            let payload = jwtDecode(localStorage.getItem("token"));
+            if (payload.rol !== "VENDEDOR")
+                window.location.href = "/404";
         } catch (e) {
-          window.location.href = "/404";
+            window.location.href = "/404";
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         validarTokenUsuario();
-      }, []);
+    }, []);
 
     return (
         <>
-           <NavbarVendedor />
-              <div className="layout">
+            <NavbarVendedor />
+            <div className="layout">
+                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="filtros">
                     <div className="buscador">
                         <select id="select-origen" value={origen} onChange={(e) => setOrigen(e.target.value)}>

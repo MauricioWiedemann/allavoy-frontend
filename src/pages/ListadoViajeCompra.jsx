@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
+import Notificaion from "../components/Notificacion";
+
 
 function ListadoViajeCompra() {
     const [origen, setOrigen] = useState("");
@@ -15,14 +17,24 @@ function ListadoViajeCompra() {
     const token = localStorage.getItem("token");
     const payload = token ? JSON.parse(atob(token.split(".")[1])) : {};
     const [idaYVuelta, setIdaYVuelta] = useState(1);
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [mensaje, setMensaje] = useState("");
+    const [tipo, setTipo] = useState("");
+
+
+    function mostrarAlertaError(m) {
+        setAlertVisible(true);
+        setMensaje(m);
+        setTipo("error")
+    };
 
 
     function validar_datos() {
         if (origen.trim() === "" || destino.trim() === "" || fecha.trim() === "" || cantidad.trim() === "") {
-            alert("Complete todos los campos.");
+            mostrarAlertaError("Complete todos los campos.");
             return;
         } else if (cantidad.trim() < 1) {
-            alert("La cantidad no puede ser menor a 1.");
+            mostrarAlertaError("La cantidad no puede ser menor a 1.");
             return;
         }
         fetch("http://localhost:8080/viaje/buscar", {
@@ -49,7 +61,7 @@ function ListadoViajeCompra() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("No se encontraron viajes.");
+                mostrarAlertaError("No se encontraron viajes.");
                 setViajes([]);
             });
     }
@@ -90,8 +102,25 @@ function ListadoViajeCompra() {
         });
     }
 
+    async function viajesDisponibles() {
+        await fetch("http://localhost:8080/viaje/viajesdisponibles", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            return response.json();
+        })
+            .then(data => {
+                setViajes(data);
+            })
+            ;
+
+    }
+
     //cargar las localidades al cargar la pagina
     useEffect(() => {
+        viajesDisponibles()
         cargarLocalidades();
     }, []);
 
@@ -143,6 +172,7 @@ function ListadoViajeCompra() {
     return (
         <>
             {payload.rol === "VENDEDOR" ? <NavbarVendedor /> : <NavbarCliente />}
+            <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
             <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
