@@ -139,7 +139,7 @@ function CompraPasajes() {
       }
     }
 
-    return precioBase;
+    return precioBase/40; //pasar de pesos a dolares
   }
 
   async function obtenerDescuentoPorEmail(email) {
