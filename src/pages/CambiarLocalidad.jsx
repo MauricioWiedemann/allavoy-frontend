@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/AltaLocalidad.css";
 import NavbarVendedor from "../components/NavbarVendedor";
-import OmnibusAltaVaije from "../components/omnibsuAltaViaje";
+import OmnibusAltaVaije from "../components/OmnibsuAltaViaje";
 import { useViajeContext } from "../context/ViajeContext";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
