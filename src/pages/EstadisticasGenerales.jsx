@@ -22,27 +22,27 @@ function EstadisticasGenerales() {
     const labelFecha = anio.toLocaleDateString("es-UY")
 
     useEffect(() => {
-        fetch("http://localhost:8080/viaje/viajesdestino")
+        fetch("https://allavoy-backend.onrender.com/viaje/viajesdestino")
             .then(res => res.json())
             .then(data => setViajesDestino(data));
 
-        fetch("http://localhost:8080/viaje/viajesorigen")
+        fetch("https://allavoy-backend.onrender.com/viaje/viajesorigen")
             .then(res => res.json())
             .then(data => setViajesOrigen(data));
 
-        fetch("http://localhost:8080/pasajes/ventasfecha")
+        fetch("https://allavoy-backend.onrender.com/pasajes/ventasfecha")
             .then(res => res.json())
             .then(data => setPasajesFecha(data));
 
-        fetch("http://localhost:8080/pasajes/ventasdestino")
+        fetch("https://allavoy-backend.onrender.com/pasajes/ventasdestino")
             .then(res => res.json())
             .then(data => setPasajesDestino(data));
 
-        fetch("http://localhost:8080/pasajes/ocupacion")
+        fetch("https://allavoy-backend.onrender.com/pasajes/ocupacion")
             .then(res => res.json())
             .then(data => setOcupacionOmnibus(data));
 
-        fetch("http://localhost:8080/omnibus/fechadeshabilitado")
+        fetch("https://allavoy-backend.onrender.com/omnibus/fechadeshabilitado")
             .then(res => res.json())
             .then(data => setFechaDeshabilitado(data));
     }, []);

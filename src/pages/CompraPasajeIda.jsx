@@ -35,64 +35,64 @@ function Timer({ onExpire }) {
 }
 
 function CompraPasajes() {
-    const location = useLocation();
-    const cantidad = location.state?.cantidad;
-    const viaje = location.state?.viaje;
-    const idaYVuelta = location.state?.idaYVuelta;
-    const token = localStorage.getItem("token");
-    const payload = jwtDecode(token);
-    const navigate = useNavigate();
+  const location = useLocation();
+  const cantidad = location.state?.cantidad;
+  const viaje = location.state?.viaje;
+  const idaYVuelta = location.state?.idaYVuelta;
+  const token = localStorage.getItem("token");
+  const payload = jwtDecode(token);
+  const navigate = useNavigate();
 
 
-    if (!viaje || !cantidad || !viaje.omnibus || !viaje.omnibus.capacidad) {
-        return <p style={{ color: "red", textAlign: "center" }}>Error: No hay datos disponibles o incompletos.</p>;
+  if (!viaje || !cantidad || !viaje.omnibus || !viaje.omnibus.capacidad) {
+    return <p style={{ color: "red", textAlign: "center" }}>Error: No hay datos disponibles o incompletos.</p>;
+  }
+
+  const totalSeats = Array.from({ length: viaje.omnibus.capacidad }, (_, i) => i + 1);
+  const soldSeats = new Set(viaje.asientosOcupados || []);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+
+  const bloquearAsiento = async (seat) => {
+    try {
+      const response = await fetch(`https://allavoy-backend.onrender.com/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, { method: "POST" });
+      if (!response.ok) throw new Error("Error al bloquear el asiento");
+      console.log("Asiento bloqueado:", seat);
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    const totalSeats = Array.from({ length: viaje.omnibus.capacidad }, (_, i) => i + 1);
-    const soldSeats = new Set(viaje.asientosOcupados || []);
-    const [selectedSeats, setSelectedSeats] = useState([]);
-
-    const bloquearAsiento = async (seat) => {
-      try {
-        const response = await fetch(`http://localhost:8080/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, {method: "POST" });
-        if (!response.ok) throw new Error("Error al bloquear el asiento");
-        console.log("Asiento bloqueado:", seat);
-      } catch (error) {
-        console.error(error);
+  const handleSeatSelection = (seat) => {
+    if (!soldSeats.has(seat)) {
+      if (selectedSeats.includes(seat)) {
+        setSelectedSeats(selectedSeats.filter(s => s !== seat));
+      } else if (selectedSeats.length < cantidad) {
+        bloquearAsiento(seat);
+        setSelectedSeats([...selectedSeats, seat]);
       }
-    };
+    }
+  };
 
-    const handleSeatSelection = (seat) => {
-      if (!soldSeats.has(seat)) {
-        if (selectedSeats.includes(seat)) {
-          setSelectedSeats(selectedSeats.filter(s => s !== seat));
-        } else if (selectedSeats.length < cantidad) {
-          bloquearAsiento(seat);
-          setSelectedSeats([...selectedSeats, seat]);
-        }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      alert("Tiempo de compra expirado. Los asientos han sido liberados.");
+      window.location.href = "/home";
+    }, 10 * 60 * 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+
+  const vueltaContinuar = () => {
+    navigate("/buscarvuelta", {
+      state: {
+        viaje,
+        asientoIda: selectedSeats,
+        cantidad,
+        idaYVuelta
       }
-    };
-
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        alert("Tiempo de compra expirado. Los asientos han sido liberados.");
-        window.location.href = "/home";
-      }, 10 * 60 * 1000);
-
-      return () => clearTimeout(timer);
-    }, []);
-
-
-    const vueltaContinuar = () => {
-        navigate("/buscarvuelta", {
-            state: {
-                viaje,
-                asientoIda: selectedSeats,
-                cantidad,
-                idaYVuelta
-            }
-        });
-    };
+    });
+  };
 
 
   return (

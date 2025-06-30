@@ -34,7 +34,7 @@ function ListadoViajes() {
 
   async function obtenerViajes() {
     //obtener viajes que no partieron
-    await fetch("http://localhost:8080/viaje/obtenernopartidos", {
+    await fetch("https://allavoy-backend.onrender.com/viaje/obtenernopartidos", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -52,7 +52,7 @@ function ListadoViajes() {
     setOmnibusSeleccionado("");
     const arrayAuxSlida = viajeSeleccionado.fechaSalida.split("T", 2);
     const arrayAuxLlegada = viajeSeleccionado.fechaLlegada.split("T", 2);
-    await fetch("http://localhost:8080/omnibus/obtenerreasignar", {
+    await fetch("https://allavoy-backend.onrender.com/omnibus/obtenerreasignar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -76,7 +76,7 @@ function ListadoViajes() {
 
   async function reasignarViaje() {
     //obtener viajes que no partieron
-    await fetch("http://localhost:8080/viaje/reasignar", {
+    await fetch("https://allavoy-backend.onrender.com/viaje/reasignar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -40,7 +40,7 @@ function ListadoPasajes() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("http://localhost:8080/localidad/obtener", {
+            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -67,7 +67,7 @@ function ListadoPasajes() {
     }
 
     async function obtenerViajes() {
-        await fetch("http://localhost:8080/viaje/obtenertodos", {
+        await fetch("https://allavoy-backend.onrender.com/viaje/obtenertodos", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -88,7 +88,7 @@ function ListadoPasajes() {
             alert("Complete todos los campos.");
             return;
         }
-        fetch("http://localhost:8080/viaje/buscar", {
+        fetch("https://allavoy-backend.onrender.com/viaje/buscar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -122,7 +122,7 @@ function ListadoPasajes() {
     }
 
     async function obtenerPasajesVendidos() {
-        await fetch("http://localhost:8080/pasajes/obtenervendidos", {
+        await fetch("https://allavoy-backend.onrender.com/pasajes/obtenervendidos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -140,7 +140,7 @@ function ListadoPasajes() {
     }
 
     async function obtenerPasajesDevueltos() {
-        await fetch("http://localhost:8080/pasajes/obtenerdevueltos", {
+        await fetch("https://allavoy-backend.onrender.com/pasajes/obtenerdevueltos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

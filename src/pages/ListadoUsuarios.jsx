@@ -38,7 +38,7 @@ function ListadoUsuario() {
             tipoUsuario = null
 
 
-        fetch("http://localhost:8080/usuario/buscar", {
+        fetch("https://allavoy-backend.onrender.com/usuario/buscar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -71,7 +71,7 @@ function ListadoUsuario() {
     }
 
     function listar_usuarios() {
-        fetch("http://localhost:8080/usuario/listar", {
+        fetch("https://allavoy-backend.onrender.com/usuario/listar", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

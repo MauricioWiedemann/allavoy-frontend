@@ -26,7 +26,7 @@ function SolicitarRecuperarPass() {
         if (correo.trim() === "") {
             mostrarAlertaError("Ingrese un correo.")
         } else {
-            await fetch("http://localhost:8080/auth/recuperar-password", {
+            await fetch("https://allavoy-backend.onrender.com/auth/recuperar-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

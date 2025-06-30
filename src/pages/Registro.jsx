@@ -68,7 +68,7 @@ function Registro() {
     } else if (new Date(fechaNacimiento) >= new Date()) {
       mostrarAlertaError("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
-      fetch("http://localhost:8080/usuario/alta", {
+      fetch("https://allavoy-backend.onrender.com/usuario/alta", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -31,7 +31,7 @@ function RecuperarPass() {
         } else if (passwordNuevo.trim() !== passwordNuevoConf.trim()) {
             mostrarAlertaError("Las contraseñas no coinciden.");
         } else {
-            await fetch("http://localhost:8080/auth/reset-password", {
+            await fetch("https://allavoy-backend.onrender.com/auth/reset-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

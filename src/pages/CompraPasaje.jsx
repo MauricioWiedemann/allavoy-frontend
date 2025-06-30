@@ -35,16 +35,16 @@ function Timer({ onExpire }) {
 }
 
 async function obtenerTipoDescuento(idUsuario) {
-    try {
-        const response = await fetch(`http://localhost:8080/usuario/${idUsuario}/descuento`);
-        if (!response.ok) throw new Error("Error al obtener tipoDescuento");
+  try {
+    const response = await fetch(`https://allavoy-backend.onrender.com/usuario/${idUsuario}/descuento`);
+    if (!response.ok) throw new Error("Error al obtener tipoDescuento");
 
-        const data = await response.json();
-        return data.tipoDescuento;
-    } catch (error) {
-        console.error("Error en la consulta:", error);
-        return null;
-    }
+    const data = await response.json();
+    return data.tipoDescuento;
+  } catch (error) {
+    console.error("Error en la consulta:", error);
+    return null;
+  }
 }
 
 function CompraPasajes() {
@@ -69,68 +69,68 @@ function CompraPasajes() {
   const [emailIngresado, setEmailIngresado] = useState(false);
   const paypalRef = useRef();
 
-    const handleEmailChange = (e) => {
-      const email = e.target.value;
-      setEmailComprador(email);
-      setEmailIngresado(email.trim() !== "");
-    };
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    setEmailComprador(email);
+    setEmailIngresado(email.trim() !== "");
+  };
 
-    const bloquearAsiento = async (seat) => {
-      try {
-        const response = await fetch(`http://localhost:8080/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, {method: "POST" });
-        if (!response.ok) throw new Error("Error al bloquear el asiento");
-        console.log("Asiento bloqueado:", seat);
-      } catch (error) {
-        console.error(error);
+  const bloquearAsiento = async (seat) => {
+    try {
+      const response = await fetch(`https://allavoy-backend.onrender.com/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, { method: "POST" });
+      if (!response.ok) throw new Error("Error al bloquear el asiento");
+      console.log("Asiento bloqueado:", seat);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSeatSelection = (seat) => {
+    if (!soldSeats.has(seat)) {
+      if (selectedSeats.includes(seat)) {
+        setSelectedSeats(selectedSeats.filter(s => s !== seat));
+      } else if (selectedSeats.length < cantidad) {
+        bloquearAsiento(seat);
+        setSelectedSeats([...selectedSeats, seat]);
       }
-    };
+    }
+  };
 
-    const handleSeatSelection = (seat) => {
-      if (!soldSeats.has(seat)) {
-        if (selectedSeats.includes(seat)) {
-          setSelectedSeats(selectedSeats.filter(s => s !== seat));
-        } else if (selectedSeats.length < cantidad) {
-          bloquearAsiento(seat);
-          setSelectedSeats([...selectedSeats, seat]);
-        }
-      }
-    };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      alert("Tiempo de compra expirado. Los asientos han sido liberados.");
+      window.location.href = "/home";
+    }, 10 * 60 * 1000);
 
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        alert("Tiempo de compra expirado. Los asientos han sido liberados.");
-        window.location.href = "/home";
-      }, 10 * 60 * 1000);
-
-      return () => clearTimeout(timer);
-    }, []);
+    return () => clearTimeout(timer);
+  }, []);
 
 
   useEffect(() => {
     async function fetchTipoDescuento() {
-        const descuento = await obtenerTipoDescuento(payload.idUsuario);
-        setTipoDescuento(descuento);
+      const descuento = await obtenerTipoDescuento(payload.idUsuario);
+      setTipoDescuento(descuento);
     }
     fetchTipoDescuento();
   }, [payload.idUsuario]);
 
   function calcularTotal(viaje, cantidad, tipoUsuario, tipoDescuento) {
-      let precioBase = viaje.precio * cantidad;
-      //Si es ida y vuelta, le sumo el costo del viaje de ida
-      if(idaYVuelta == 2) {
-            const viajeIda = location.state?.viajeIda;
-            precioBase = precioBase + viajeIda.precio * cantidad;
-      }
+    let precioBase = viaje.precio * cantidad;
+    //Si es ida y vuelta, le sumo el costo del viaje de ida
+    if (idaYVuelta == 2) {
+      const viajeIda = location.state?.viajeIda;
+      precioBase = precioBase + viajeIda.precio * cantidad;
+    }
 
     if (tipoUsuario === "VENDEDOR") {
-        const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
+      const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
 
-        //Si el cliente tiene cuenta y descuento calculamos el total sino precio completo
-        if (aplicaDescuento) {
-            return precioBase * 0.8; // 20% de descuento
-        }else {
-            return precioBase;
-        }
+      //Si el cliente tiene cuenta y descuento calculamos el total sino precio completo
+      if (aplicaDescuento) {
+        return precioBase * 0.8; // 20% de descuento
+      } else {
+        return precioBase;
+      }
     }
     if (tipoUsuario === "CLIENTE") {
       const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
@@ -143,47 +143,47 @@ function CompraPasajes() {
   }
 
   async function obtenerDescuentoPorEmail(email) {
-      try {
-          const response = await fetch(`http://localhost:8080/usuario/descuento?email=${email}`);
-          if (!response.ok) throw new Error("Error al obtener descuento del comprador");
+    try {
+      const response = await fetch(`https://allavoy-backend.onrender.com/usuario/descuento?email=${email}`);
+      if (!response.ok) throw new Error("Error al obtener descuento del comprador");
 
-          const data = await response.json();
-          return data.tipoDescuento;
-      } catch (error) {
-          console.error("Error en la consulta de descuento por email:", error);
-          return null;
-      }
+      const data = await response.json();
+      return data.tipoDescuento;
+    } catch (error) {
+      console.error("Error en la consulta de descuento por email:", error);
+      return null;
+    }
   }
 
-    const validarEmail = async (email) => {
-      if (!email) {
-        return;
-      }
+  const validarEmail = async (email) => {
+    if (!email) {
+      return;
+    }
 
-      try {
-        const tipoDescuento = await obtenerDescuentoPorEmail(email); // Consulta el descuento
-        if (tipoDescuento) {
-          setEmailIngresado(true);
-          setTipoDescuento(tipoDescuento); // Actualiza el descuento si existe
-        } else {
-          setTipoDescuento(null); // No muestra alerta, simplemente no aplica descuento
-        }
-      } catch (error) {
-        console.error("Error al validar email:", error);
+    try {
+      const tipoDescuento = await obtenerDescuentoPorEmail(email); // Consulta el descuento
+      if (tipoDescuento) {
+        setEmailIngresado(true);
+        setTipoDescuento(tipoDescuento); // Actualiza el descuento si existe
+      } else {
+        setTipoDescuento(null); // No muestra alerta, simplemente no aplica descuento
       }
-    };
+    } catch (error) {
+      console.error("Error al validar email:", error);
+    }
+  };
 
   useEffect(() => {
-      const condicionesCumplidas = selectedSeats.length === cantidad && (payload.rol === "CLIENTE" || (payload.rol === "VENDEDOR" && emailIngresado));
+    const condicionesCumplidas = selectedSeats.length === cantidad && (payload.rol === "CLIENTE" || (payload.rol === "VENDEDOR" && emailIngresado));
     if (!condicionesCumplidas) {
-        if (paypalRef.current) {
-          paypalRef.current.innerHTML = "";
-        }
-        return;
+      if (paypalRef.current) {
+        paypalRef.current.innerHTML = "";
       }
-      if (paypalRef.current.hasChildNodes()) {
-          paypalRef.current.innerHTML = "";
-        }
+      return;
+    }
+    if (paypalRef.current.hasChildNodes()) {
+      paypalRef.current.innerHTML = "";
+    }
     window.paypal.Buttons({
       createOrder: (data, actions) => {
         const montoTotal = calcularTotal(viaje, cantidad, payload.rol, tipoDescuento).toFixed(2);
@@ -204,8 +204,8 @@ function CompraPasajes() {
           const idPago = details.purchase_units[0].payments.captures[0].id;
           for (const numeroAsiento of selectedSeats) {
             try {
-                console.log("Email del comprador antes de la solicitud:", emailComprador);
-              const response = await fetch("http://localhost:8080/pasajes/confirmar-compra", {
+              console.log("Email del comprador antes de la solicitud:", emailComprador);
+              const response = await fetch("https://allavoy-backend.onrender.com/pasajes/confirmar-compra", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -221,46 +221,46 @@ function CompraPasajes() {
 
               if (!response.ok) {
                 console.error("Error al registrar pasaje:", await response.text());
-              }else {
-                  const data = await response.json();
-                  idPasajes.push(data.idPasaje);
+              } else {
+                const data = await response.json();
+                idPasajes.push(data.idPasaje);
               }
             } catch (err) {
               console.error("Error al conectar con backend:", err);
             }
           }
-        if (idaYVuelta == 2){
+          if (idaYVuelta == 2) {
             const viajeIda = location.state?.viajeIda;
             const asientoIda = location.state?.asientoIda;
             for (const numeroAsientoIda of asientoIda) {
-                        try {
+              try {
 
-                            console.log("Email del comprador antes de la solicitud:", numeroAsientoIda);
-                          const response = await fetch("http://localhost:8080/pasajes/confirmar-compra", {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                              numeroAsiento: numeroAsientoIda,
-                              idUsuario: payload.idUsuario,
-                              idViaje: viajeIda.idViaje,
-                              emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null,
-                              idPago: idPago
-                            }),
-                          });
+                console.log("Email del comprador antes de la solicitud:", numeroAsientoIda);
+                const response = await fetch("https://allavoy-backend.onrender.com/pasajes/confirmar-compra", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    numeroAsiento: numeroAsientoIda,
+                    idUsuario: payload.idUsuario,
+                    idViaje: viajeIda.idViaje,
+                    emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null,
+                    idPago: idPago
+                  }),
+                });
 
-                          if (!response.ok) {
-                            console.error("Error al registrar pasaje:", await response.text());
-                          }else {
-                              const data = await response.json();
-                              idPasajes.push(data.idPasaje);
-                          }
-                        } catch (err) {
-                          console.error("Error al conectar con backend:", err);
-                        }
-                      }
+                if (!response.ok) {
+                  console.error("Error al registrar pasaje:", await response.text());
+                } else {
+                  const data = await response.json();
+                  idPasajes.push(data.idPasaje);
+                }
+              } catch (err) {
+                console.error("Error al conectar con backend:", err);
+              }
             }
+          }
 
           navigate("/confirmacion", { state: { viaje, selectedSeats, idPasajes } });
         });
@@ -272,16 +272,16 @@ function CompraPasajes() {
     }).render(paypalRef.current);
   }, [selectedSeats, cantidad, viaje, tipoDescuento]);
 
-    const vueltaContinuar = () => {
-        navigate("/listado", {
-            state: {
-                ida: viaje,
-                numeroAsientoIda: numeroAsiento,
-                cantidad,
-                idaYVuelta: idaYVuelta
-            }
-        });
-    };
+  const vueltaContinuar = () => {
+    navigate("/listado", {
+      state: {
+        ida: viaje,
+        numeroAsientoIda: numeroAsiento,
+        cantidad,
+        idaYVuelta: idaYVuelta
+      }
+    });
+  };
 
   return (
     <div className="compraPasaje-bg">
@@ -336,7 +336,7 @@ function CompraPasajes() {
           <hr />
           <div className="price-payment">
             <p><strong>Precio total:</strong> ${calcularTotal(viaje, cantidad, payload.rol, tipoDescuento).toFixed(2)}</p>
-              <div ref={paypalRef} />
+            <div ref={paypalRef} />
           </div>
         </div>
       </div>

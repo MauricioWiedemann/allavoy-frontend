@@ -39,7 +39,7 @@ function AltaLocalidad() {
     if (departamento.trim() === "" || nombre.trim() === "") {
       alert("Complete todos los campos.");
     } else {
-      fetch("http://localhost:8080/localidad/alta", {
+      fetch("https://allavoy-backend.onrender.com/localidad/alta", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -79,7 +79,7 @@ function AltaLocalidad() {
 
   function altaLocalidadesCsv() {
     if (data.length > 0) {
-      fetch("http://localhost:8080/localidad/altacsv", {
+      fetch("https://allavoy-backend.onrender.com/localidad/altacsv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -175,27 +175,27 @@ function AltaLocalidad() {
               <div className="mb-3">
                 <div class="alta-individual"></div>
                 <select className="form-select rounded-pill" value={departamento} onChange={(e) => setDepartamento(e.target.value)}>
-                    <option value="" disabled selected>Departamento</option>
-                    <option value="ARTIGAS">Artigas</option>
-                    <option value="CANELONES">Canelones</option>
-                    <option value="CERRO_LARGO">Cerro Largo</option>
-                    <option value="COLONIA">Colonia</option>
-                    <option value="DURAZNO">Durazno</option>
-                    <option value="FLORES">Flores</option>
-                    <option value="FLORIDA">Florida</option>
-                    <option value="LAVALLEJA">Lavalleja</option>
-                    <option value="MALDONADO">Maldonado</option>
-                    <option value="MONTEVIDEO">Montevideo</option>
-                    <option value="PAYSANDU">Paysandú</option>
-                    <option value="RIO_NEGRO">Río Negro</option>
-                    <option value="RIVERA">Rivera</option>
-                    <option value="ROCHA">Rocha</option>
-                    <option value="SALTO">Salto</option>
-                    <option value="SAN_JOSE">San José</option>
-                    <option value="SORIANO">Soriano</option>
-                    <option value="TACUAREMBO">Tacuarembó</option>
-                    <option value="TREINTA_Y_TRES">Treinta y Tres</option>
-</select>
+                  <option value="" disabled selected>Departamento</option>
+                  <option value="ARTIGAS">Artigas</option>
+                  <option value="CANELONES">Canelones</option>
+                  <option value="CERRO_LARGO">Cerro Largo</option>
+                  <option value="COLONIA">Colonia</option>
+                  <option value="DURAZNO">Durazno</option>
+                  <option value="FLORES">Flores</option>
+                  <option value="FLORIDA">Florida</option>
+                  <option value="LAVALLEJA">Lavalleja</option>
+                  <option value="MALDONADO">Maldonado</option>
+                  <option value="MONTEVIDEO">Montevideo</option>
+                  <option value="PAYSANDU">Paysandú</option>
+                  <option value="RIO_NEGRO">Río Negro</option>
+                  <option value="RIVERA">Rivera</option>
+                  <option value="ROCHA">Rocha</option>
+                  <option value="SALTO">Salto</option>
+                  <option value="SAN_JOSE">San José</option>
+                  <option value="SORIANO">Soriano</option>
+                  <option value="TACUAREMBO">Tacuarembó</option>
+                  <option value="TREINTA_Y_TRES">Treinta y Tres</option>
+                </select>
               </div>
               <div className="mb-3">
                 <input type="text" className="form-control rounded-pill" placeholder="Localidad" value={nombre} onChange={(e) => setNombre(e.target.value)} />

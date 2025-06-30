@@ -42,7 +42,7 @@ function CambiarLocalidad() {
     const selectLocalidades = document.getElementById(componenteId);
     //get para obtener el array con las localidades
     const localidadesArray =
-      await fetch("http://localhost:8080/localidad/obtener", {
+      await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -57,9 +57,9 @@ function CambiarLocalidad() {
     //generar los option que se insertara en el select con los datos de las localidades
     localidadesArray.forEach(element => {
       const option = document.createElement("option");
-      option.value=JSON.stringify(element);
-      option.textContent= element.nombre.concat(", ", element.departamento.replace("_", " "));
-      selectLocalidades.appendChild(option); 
+      option.value = JSON.stringify(element);
+      option.textContent = element.nombre.concat(", ", element.departamento.replace("_", " "));
+      selectLocalidades.appendChild(option);
     });
   }
 
@@ -102,7 +102,7 @@ function CambiarLocalidad() {
     } else if (validarFechas()) {
       //obtener omnibus validos
       let localidadAux = JSON.parse(localidadSalida).idLocalidad;
-      await fetch("http://localhost:8080/omnibus/obtener", {
+      await fetch("https://allavoy-backend.onrender.com/omnibus/obtener", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -142,7 +142,7 @@ function CambiarLocalidad() {
     if (JSON.stringify(omnibusViaje).trim() === "[]") {
       mostrarAlerta("Seleccione un omnibus.");
     } else {
-      fetch("http://localhost:8080/omnibus/cambiarlocalidad", {
+      fetch("https://allavoy-backend.onrender.com/omnibus/cambiarlocalidad", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

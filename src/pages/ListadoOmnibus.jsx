@@ -32,7 +32,7 @@ function ListadoOmnibus() {
 
 
     function listar_omnibus() {
-        fetch("http://localhost:8080/omnibus/obtenerall", {
+        fetch("https://allavoy-backend.onrender.com/omnibus/obtenerall", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -62,7 +62,7 @@ function ListadoOmnibus() {
         if (estado === "ACTIVO")
             activo = true
 
-        fetch("http://localhost:8080/omnibus/buscar", {
+        fetch("https://allavoy-backend.onrender.com/omnibus/buscar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -98,7 +98,7 @@ function ListadoOmnibus() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("http://localhost:8080/localidad/obtener", {
+            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

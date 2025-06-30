@@ -38,7 +38,7 @@ function ListadoViaje() {
         }
         console.log("Origen:", origen.idLocalidad);
         console.log("Destino:", destino.idLocalidad);
-        fetch("http://localhost:8080/viaje/buscar", {
+        fetch("https://allavoy-backend.onrender.com/viaje/buscar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
