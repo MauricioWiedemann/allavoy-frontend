@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import "../css/Login.css";
 import Notificaion from "../components/Notificacion";
-
+import logo from '../../sources/logo.png';
 
 function Login() {
 
@@ -60,7 +60,7 @@ function Login() {
             <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
             <div className="login-card card p-4 shadow-lg">
                 <div className="text-center mb-4">
-                    <img src="../sources/logo.png" alt="Logo" className="img-fluid login-logo" />
+                    <img src={logo} alt="Logo" className="img-fluid login-logo" />
                 </div>
                 <div className="mb-3">
                     <input type="email" className="form-control rounded-pill" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} />
