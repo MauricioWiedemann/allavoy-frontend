@@ -116,11 +116,11 @@ function CompraPasajes() {
   }, [payload.idUsuario]);
 
   function calcularTotal(viaje, cantidad, tipoUsuario, tipoDescuento) {
-    let precioBase = viaje.precio * cantidad;
+    let precioBase = (viaje.precio/40) * cantidad; //pasar de pesos a dolares
     //Si es ida y vuelta, le sumo el costo del viaje de ida
     if (idaYVuelta == 2) {
       const viajeIda = location.state?.viajeIda;
-      precioBase = precioBase + viajeIda.precio * cantidad;
+      precioBase = precioBase + (viajeIda.precio/40) * cantidad; //pasar de pesos a dolares
     }
 
     if (tipoUsuario === "VENDEDOR") {
@@ -140,7 +140,7 @@ function CompraPasajes() {
       }
     }
 
-    return precioBase/40; //pasar de pesos a dolares
+    return precioBase; 
   }
 
   async function obtenerDescuentoPorEmail(email) {
