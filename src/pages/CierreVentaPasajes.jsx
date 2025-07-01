@@ -5,6 +5,7 @@ import ViajeCerrarVenta from "../components/ViajeCerrarVenta";
 import { useViajeContext } from "../context/ViajeContext";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function CierreVentaPasaje() {
@@ -35,7 +36,7 @@ function CierreVentaPasaje() {
 
     async function obtenerViajes() {
         //obtener viajes activos
-        await fetch("https://allavoy-backend.onrender.com/viaje/obteneractivos", {
+        await fetch(`${BASE_URL}/viaje/obteneractivos`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -61,7 +62,7 @@ function CierreVentaPasaje() {
         if (JSON.stringify(viajeCerrarVenta).trim() === "[]") {
             mostrarAlerta("Seleccioane un viaje.");
         } else {
-            fetch("https://allavoy-backend.onrender.com/viaje/cerrarventa", {
+            fetch(`${BASE_URL}/viaje/cerrarventa`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

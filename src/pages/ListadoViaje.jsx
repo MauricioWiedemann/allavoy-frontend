@@ -5,6 +5,7 @@ import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 
@@ -44,7 +45,7 @@ function ListadoViaje() {
         }
         console.log("Origen:", origen);
         console.log("Destino:", destino);
-        fetch("https://allavoy-backend.onrender.com/viaje/buscar", {
+        fetch(`${BASE_URL}/viaje/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -83,7 +84,7 @@ function ListadoViaje() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+            await fetch(`${BASE_URL}/localidad/obtener`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

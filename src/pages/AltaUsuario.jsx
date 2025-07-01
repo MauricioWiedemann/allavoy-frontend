@@ -4,6 +4,7 @@ import "../css/AltaUsuario.css"
 import Papa from 'papaparse';
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function AltaUsuario() {
@@ -53,7 +54,7 @@ function AltaUsuario() {
 
   function altaUsuariosCsv() {
     if (data.length > 0) {
-      fetch("https://allavoy-backend.onrender.com/usuario/altacsv", {
+      fetch(`${BASE_URL}/usuario/altacsv`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -143,7 +144,7 @@ function AltaUsuario() {
     } else if (new Date(fechaNacimiento) >= new Date()) {
       mostrarAlertaError("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
-      fetch("https://allavoy-backend.onrender.com/usuario/alta", {
+      fetch(`${BASE_URL}/usuario/alta`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

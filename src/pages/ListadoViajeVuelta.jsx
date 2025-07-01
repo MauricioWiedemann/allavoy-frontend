@@ -4,7 +4,7 @@ import "../css/Listado.css";
 import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import Notificaion from "../components/Notificacion";
-
+import { BASE_URL } from "../config";
 
 
 function ListadoViaje() {
@@ -38,7 +38,7 @@ function ListadoViaje() {
         }
         console.log("Origen:", origen.idLocalidad);
         console.log("Destino:", destino.idLocalidad);
-        fetch("https://allavoy-backend.onrender.com/viaje/buscar", {
+        fetch(`${BASE_URL}/viaje/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

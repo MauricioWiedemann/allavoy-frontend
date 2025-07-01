@@ -3,6 +3,7 @@ import "../css/DeshabilitarOmnibus.css"
 import { jwtDecode } from 'jwt-decode';
 import NavbarVendedor from "../components/NavbarVendedor";
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function DeshabilitarOmnibus() {
@@ -33,7 +34,7 @@ function DeshabilitarOmnibus() {
     };
 
     function listar_omnibus() {
-        fetch("https://allavoy-backend.onrender.com/omnibus/habilitados", {
+        fetch(`${BASE_URL}/omnibus/habilitados`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -57,7 +58,7 @@ function DeshabilitarOmnibus() {
     }
 
     function validar_datos() {
-        fetch("https://allavoy-backend.onrender.com/omnibus/buscar", {
+        fetch(`${BASE_URL}/omnibus/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -94,7 +95,7 @@ function DeshabilitarOmnibus() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+            await fetch(`${BASE_URL}/localidad/obtener`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -134,7 +135,7 @@ function DeshabilitarOmnibus() {
         } else if (fecha.trim() !== "" && new Date(fecha.concat("T".concat(hora))) < new Date()) {
             alert("La fecha debe ser actual o futura.");
         } else {
-            await fetch("https://allavoy-backend.onrender.com/omnibus/deshabilitar", {
+            await fetch(`${BASE_URL}/omnibus/deshabilitar`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

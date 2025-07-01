@@ -3,6 +3,7 @@ import "../css/ListadoOmnibus.css";
 import { jwtDecode } from 'jwt-decode';
 import NavbarCliente from "../components/NavbarCliente";
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function ListadoViaje() {
@@ -20,7 +21,7 @@ function ListadoViaje() {
     };
 
     function validar_datos() {
-        fetch("https://allavoy-backend.onrender.com/pasajes/historicocompra", {
+        fetch(`${BASE_URL}/pasajes/historicocompra`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

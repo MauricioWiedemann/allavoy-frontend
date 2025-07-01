@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/Registro.css";
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function Registro() {
@@ -68,7 +69,7 @@ function Registro() {
     } else if (new Date(fechaNacimiento) >= new Date()) {
       mostrarAlertaError("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
-      fetch("https://allavoy-backend.onrender.com/usuario/alta", {
+      fetch(`${BASE_URL}/usuario/alta`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

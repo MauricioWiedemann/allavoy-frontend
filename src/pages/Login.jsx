@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import "../css/Login.css";
 import Notificaion from "../components/Notificacion";
 import logo from '../../sources/logo.png';
+import { BASE_URL } from "../config";
 
 function Login() {
 
@@ -23,7 +24,7 @@ function Login() {
         if (email.trim() === "" || password.trim() === "") {
             mostrarAlertaError("Complete todos los campos.");
         } else {
-            fetch("https://allavoy-backend.onrender.com/auth/login", {
+            fetch(`${BASE_URL}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

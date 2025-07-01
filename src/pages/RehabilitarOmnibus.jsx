@@ -3,6 +3,7 @@ import "../css/DeshabilitarOmnibus.css"
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function RehabilitarOmnibus() {
@@ -29,7 +30,7 @@ function RehabilitarOmnibus() {
     };
 
     function listar_omnibus() {
-        fetch("https://allavoy-backend.onrender.com/omnibus/deshabilitados", {
+        fetch(`${BASE_URL}/omnibus/deshabilitados`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -53,7 +54,7 @@ function RehabilitarOmnibus() {
     }
 
     function validar_datos() {
-        fetch("https://allavoy-backend.onrender.com/omnibus/buscar", {
+        fetch(`${BASE_URL}/omnibus/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -86,7 +87,7 @@ function RehabilitarOmnibus() {
         const select_localidad_actual = document.getElementById("localidad_actual");
         select_localidad_actual.innerHTML = "<option value='' disabled selected>Localidad</option>";
         const localidadesArray =
-            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+            await fetch(`${BASE_URL}/localidad/obtener`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -107,7 +108,7 @@ function RehabilitarOmnibus() {
     }
 
     async function rehabilitar(o) {
-        await fetch("https://allavoy-backend.onrender.com/omnibus/rehabilitar", {
+        await fetch(`${BASE_URL}/omnibus/rehabilitar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

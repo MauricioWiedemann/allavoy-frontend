@@ -5,6 +5,7 @@ import NavbarAdministrador from "../components/NavbarAdministrador";
 import NavbarCliente from "../components/NavbarCliente";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function CambiarPass() {
@@ -39,7 +40,7 @@ function CambiarPass() {
         } else if (passNuevo.length < 8 || !/\d/.test(passNuevo)) {
             mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un numero.");
         } else {
-            fetch("https://allavoy-backend.onrender.com/usuario/cambiarpassword", {
+            fetch(`${BASE_URL}/usuario/cambiarpassword`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

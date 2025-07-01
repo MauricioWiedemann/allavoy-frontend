@@ -4,6 +4,7 @@ import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/Confirmacion.css";
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function Confirmacion() {
@@ -31,7 +32,7 @@ function Confirmacion() {
 
     for (const id of idPasajes) {
       try {
-        const response = await fetch(`https://allavoy-backend.onrender.com/pasajes/descargar-pdf/${id}`, { method: "GET" });
+        const response = await fetch(`${BASE_URL}/pasajes/descargar-pdf/${id}`, { method: "GET" });
 
         if (!response.ok) {
           throw new Error(`Error al descargar el pasaje con ID ${id}`);

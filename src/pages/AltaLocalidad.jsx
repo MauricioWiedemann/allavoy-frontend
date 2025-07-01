@@ -4,7 +4,7 @@ import NavbarVendedor from "../components/NavbarVendedor";
 import Papa from 'papaparse';
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
-
+import { BASE_URL } from "../config";
 
 function AltaLocalidad() {
 
@@ -39,7 +39,7 @@ function AltaLocalidad() {
     if (departamento.trim() === "" || nombre.trim() === "") {
       alert("Complete todos los campos.");
     } else {
-      fetch("https://allavoy-backend.onrender.com/localidad/alta", {
+      fetch(`${BASE_URL}/localidad/alta`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

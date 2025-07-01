@@ -4,6 +4,7 @@ import NavbarVendedor from "../components/NavbarVendedor";
 import Papa from 'papaparse';
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function AltaOmnibus() {
@@ -79,7 +80,7 @@ function AltaOmnibus() {
     } else if (capacidad > 40) {
       mostrarAlertaError("La capacidad no puede ser mayor a 40.");
     } else {
-      fetch("https://allavoy-backend.onrender.com/omnibus/alta", {
+      fetch(`${BASE_URL}/omnibus/alta`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -116,7 +117,7 @@ function AltaOmnibus() {
     const selectLocalidades = document.getElementById("select-localidades");
     //get para obtener el array con las localidades
     const localidadesArray =
-      await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+      await fetch(`${BASE_URL}/localidad/obtener`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -139,7 +140,7 @@ function AltaOmnibus() {
 
   function altaOmnibusCsv() {
     if (data.length > 0) {
-      fetch("https://allavoy-backend.onrender.com/omnibus/altacsv", {
+      fetch(`${BASE_URL}/omnibus/altacsv`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -3,6 +3,7 @@ import "../css/AplicarDescuentos.css";
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function AplicarDescuento() {
@@ -64,7 +65,7 @@ function AplicarDescuento() {
     } else if (!validate_ci(cedula)) {
       mostrarAlertaError("La cedula no es valida.");
     } else {
-      await fetch("https://allavoy-backend.onrender.com/usuario/buscarporci", {
+      await fetch(`${BASE_URL}/usuario/buscarporci`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -95,7 +96,7 @@ function AplicarDescuento() {
     if (tipoDescuento.trim() === "") {
       alert("Tiene que ingreser un tipo de descuanto.");
     } else {
-      await fetch("https://allavoy-backend.onrender.com/usuario/asignarDescuento", {
+      await fetch(`${BASE_URL}/usuario/asignarDescuento`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

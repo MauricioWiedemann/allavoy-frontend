@@ -4,6 +4,7 @@ import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function ListadoPasajes() {
@@ -40,7 +41,7 @@ function ListadoPasajes() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+            await fetch(`${BASE_URL}/localidad/obtener`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -67,7 +68,7 @@ function ListadoPasajes() {
     }
 
     async function obtenerViajes() {
-        await fetch("https://allavoy-backend.onrender.com/viaje/obtenertodos", {
+        await fetch(`${BASE_URL}/viaje/obtenertodos`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -88,7 +89,7 @@ function ListadoPasajes() {
             alert("Complete todos los campos.");
             return;
         }
-        fetch("https://allavoy-backend.onrender.com/viaje/buscar", {
+        fetch(`${BASE_URL}/viaje/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -122,7 +123,7 @@ function ListadoPasajes() {
     }
 
     async function obtenerPasajesVendidos() {
-        await fetch("https://allavoy-backend.onrender.com/pasajes/obtenervendidos", {
+        await fetch(`${BASE_URL}/pasajes/obtenervendidos`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -140,7 +141,7 @@ function ListadoPasajes() {
     }
 
     async function obtenerPasajesDevueltos() {
-        await fetch("https://allavoy-backend.onrender.com/pasajes/obtenerdevueltos", {
+        await fetch(`${BASE_URL}/pasajes/obtenerdevueltos`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

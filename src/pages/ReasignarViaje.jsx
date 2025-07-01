@@ -4,6 +4,7 @@ import NavbarVendedor from "../components/NavbarVendedor";
 import Modal from "../components/Modal";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function ListadoViajes() {
@@ -34,7 +35,7 @@ function ListadoViajes() {
 
   async function obtenerViajes() {
     //obtener viajes que no partieron
-    await fetch("https://allavoy-backend.onrender.com/viaje/obtenernopartidos", {
+    await fetch(`${BASE_URL}/viaje/obtenernopartidos`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -52,7 +53,7 @@ function ListadoViajes() {
     setOmnibusSeleccionado("");
     const arrayAuxSlida = viajeSeleccionado.fechaSalida.split("T", 2);
     const arrayAuxLlegada = viajeSeleccionado.fechaLlegada.split("T", 2);
-    await fetch("https://allavoy-backend.onrender.com/omnibus/obtenerreasignar", {
+    await fetch(`${BASE_URL}/omnibus/obtenerreasignar`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -76,7 +77,7 @@ function ListadoViajes() {
 
   async function reasignarViaje() {
     //obtener viajes que no partieron
-    await fetch("https://allavoy-backend.onrender.com/viaje/reasignar", {
+    await fetch(`${BASE_URL}/viaje/reasignar`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

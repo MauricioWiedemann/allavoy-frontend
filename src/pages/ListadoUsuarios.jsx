@@ -3,6 +3,7 @@ import "../css/ListadoUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function ListadoUsuario() {
@@ -38,7 +39,7 @@ function ListadoUsuario() {
             tipoUsuario = null
 
 
-        fetch("https://allavoy-backend.onrender.com/usuario/buscar", {
+        fetch(`${BASE_URL}/usuario/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -71,7 +72,7 @@ function ListadoUsuario() {
     }
 
     function listar_usuarios() {
-        fetch("https://allavoy-backend.onrender.com/usuario/listar", {
+        fetch(`${BASE_URL}/usuario/listar`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

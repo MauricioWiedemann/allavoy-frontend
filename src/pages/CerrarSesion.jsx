@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import "../css/CerrarSesion.css";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function CerrarSesion() {
@@ -20,7 +21,7 @@ function CerrarSesion() {
 
   async function cerrarSesion() {
     try {
-      await fetch("https://allavoy-backend.onrender.com/auth/logout", {
+      await fetch(`${BASE_URL}/auth/logout`, {
         method: "DELETE",
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token")

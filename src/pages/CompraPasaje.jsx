@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/CompraPasaje.css";
+import { BASE_URL } from "../config";
 
 function Timer({ onExpire }) {
   const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 minutos en segundos
@@ -36,7 +37,7 @@ function Timer({ onExpire }) {
 
 async function obtenerTipoDescuento(idUsuario) {
   try {
-    const response = await fetch(`https://allavoy-backend.onrender.com/usuario/${idUsuario}/descuento`);
+    const response = await fetch(`${BASE_URL}/usuario/${idUsuario}/descuento`);
     if (!response.ok) throw new Error("Error al obtener tipoDescuento");
 
     const data = await response.json();
@@ -77,7 +78,7 @@ function CompraPasajes() {
 
   const bloquearAsiento = async (seat) => {
     try {
-      const response = await fetch(`https://allavoy-backend.onrender.com/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, { method: "POST" });
+      const response = await fetch(`${BASE_URL}/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, { method: "POST" });
       if (!response.ok) throw new Error("Error al bloquear el asiento");
       console.log("Asiento bloqueado:", seat);
     } catch (error) {
@@ -144,7 +145,7 @@ function CompraPasajes() {
 
   async function obtenerDescuentoPorEmail(email) {
     try {
-      const response = await fetch(`https://allavoy-backend.onrender.com/usuario/descuento?email=${email}`);
+      const response = await fetch(`${BASE_URL}/usuario/descuento?email=${email}`);
       if (!response.ok) throw new Error("Error al obtener descuento del comprador");
 
       const data = await response.json();
@@ -205,7 +206,7 @@ function CompraPasajes() {
           for (const numeroAsiento of selectedSeats) {
             try {
               console.log("Email del comprador antes de la solicitud:", emailComprador);
-              const response = await fetch("https://allavoy-backend.onrender.com/pasajes/confirmar-compra", {
+              const response = await fetch(`${BASE_URL}/pasajes/confirmar-compra`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -236,7 +237,7 @@ function CompraPasajes() {
               try {
 
                 console.log("Email del comprador antes de la solicitud:", numeroAsientoIda);
-                const response = await fetch("https://allavoy-backend.onrender.com/pasajes/confirmar-compra", {
+                const response = await fetch(`${BASE_URL}/pasajes/confirmar-compra`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",

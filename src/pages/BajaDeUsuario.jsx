@@ -3,6 +3,7 @@ import "../css/BajaUsuario.css";
 import NavbarAdministrador from "../components/NavbarAdministrador";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function BajaUsuario() {
@@ -44,7 +45,7 @@ function BajaUsuario() {
             tipoUsuario = null
 
 
-        fetch("https://allavoy-backend.onrender.com/usuario/buscar", {
+        fetch(`${BASE_URL}/usuario/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -72,7 +73,7 @@ function BajaUsuario() {
     }
 
     function listar_usuarios_activos() {
-        fetch("https://allavoy-backend.onrender.com/usuario/listaractivos", {
+        fetch(`${BASE_URL}/usuario/listaractivos`, {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
@@ -98,7 +99,7 @@ function BajaUsuario() {
     function desactivar_usuario(usuario) {
         // Se envía el ID del usuario en la URL y el token en el header.
         // El backend dará de baja al usuario y responderá con código HTTP 204 (sin contenido).
-        fetch(`https://allavoy-backend.onrender.com/usuario/baja/${usuario.idUsuario}`, {
+        fetch(`${BASE_URL}/usuario/baja/${usuario.idUsuario}`, {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")

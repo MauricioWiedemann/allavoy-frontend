@@ -5,6 +5,7 @@ import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function ListadoViajeCompra() {
@@ -37,7 +38,7 @@ function ListadoViajeCompra() {
             mostrarAlertaError("La cantidad no puede ser menor a 1.");
             return;
         }
-        fetch("https://allavoy-backend.onrender.com/viaje/buscar", {
+        fetch(`${BASE_URL}/viaje/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -76,7 +77,7 @@ function ListadoViajeCompra() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+            await fetch(`${BASE_URL}/localidad/obtener`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -103,7 +104,7 @@ function ListadoViajeCompra() {
     }
 
     async function viajesDisponibles() {
-        await fetch("https://allavoy-backend.onrender.com/viaje/viajesdisponibles", {
+        await fetch(`${BASE_URL}/viaje/viajesdisponibles`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

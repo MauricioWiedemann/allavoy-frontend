@@ -6,6 +6,7 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Lege
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { jwtDecode } from 'jwt-decode';
+import { BASE_URL } from "../config";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement, Title);
 
@@ -22,27 +23,27 @@ function EstadisticasGenerales() {
     const labelFecha = anio.toLocaleDateString("es-UY")
 
     useEffect(() => {
-        fetch("https://allavoy-backend.onrender.com/viaje/viajesdestino")
+        fetch(`${BASE_URL}/viaje/viajesdestino`)
             .then(res => res.json())
             .then(data => setViajesDestino(data));
 
-        fetch("https://allavoy-backend.onrender.com/viaje/viajesorigen")
+        fetch(`${BASE_URL}/viaje/viajesorigen`)
             .then(res => res.json())
             .then(data => setViajesOrigen(data));
 
-        fetch("https://allavoy-backend.onrender.com/pasajes/ventasfecha")
+        fetch(`${BASE_URL}/pasajes/ventasfecha`)
             .then(res => res.json())
             .then(data => setPasajesFecha(data));
 
-        fetch("https://allavoy-backend.onrender.com/pasajes/ventasdestino")
+        fetch(`${BASE_URL}/pasajes/ventasdestino`)
             .then(res => res.json())
             .then(data => setPasajesDestino(data));
 
-        fetch("https://allavoy-backend.onrender.com/pasajes/ocupacion")
+        fetch(`${BASE_URL}/pasajes/ocupacion`)
             .then(res => res.json())
             .then(data => setOcupacionOmnibus(data));
 
-        fetch("https://allavoy-backend.onrender.com/omnibus/fechadeshabilitado")
+        fetch(`${BASE_URL}/omnibus/fechadeshabilitado`)
             .then(res => res.json())
             .then(data => setFechaDeshabilitado(data));
     }, []);

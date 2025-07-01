@@ -5,6 +5,7 @@ import OmnibusAltaVaije from "../components/OmnibsuAltaViaje";
 import { useViajeContext } from "../context/ViajeContext";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function AltaViaje() {
@@ -48,7 +49,7 @@ function AltaViaje() {
     const selectLocalidades = document.getElementById(componenteId);
     //get para obtener el array con las localidades
     const localidadesArray =
-      await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+      await fetch(`${BASE_URL}/localidad/obtener`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -108,7 +109,7 @@ function AltaViaje() {
     } else if (validarFechas()) {
       //obtener omnibus validos
       let localidadAux = JSON.parse(localidadSalida).idLocalidad;
-      await fetch("https://allavoy-backend.onrender.com/omnibus/obtener", {
+      await fetch(`${BASE_URL}/omnibus/obtener`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -151,7 +152,7 @@ function AltaViaje() {
     if (precio.trim() === "" || JSON.stringify(omnibusViaje).trim() === "[]") {
       mostrarAlertaError("Complete todos los campos.");
     } else {
-      fetch("https://allavoy-backend.onrender.com/viaje/alta", {
+      fetch(`${BASE_URL}/viaje/alta`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

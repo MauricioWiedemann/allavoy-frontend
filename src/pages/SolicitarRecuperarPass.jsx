@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/SolicitarRecuperarPass.css"
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function SolicitarRecuperarPass() {
@@ -26,7 +27,7 @@ function SolicitarRecuperarPass() {
         if (correo.trim() === "") {
             mostrarAlertaError("Ingrese un correo.")
         } else {
-            await fetch("https://allavoy-backend.onrender.com/auth/recuperar-password", {
+            await fetch(`${BASE_URL}/auth/recuperar-password`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import NavbarCliente from "../components/NavbarCliente";
 import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/CompraPasaje.css";
+import { BASE_URL } from "../config";
 
 function Timer({ onExpire }) {
   const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 minutos en segundos
@@ -54,7 +55,7 @@ function CompraPasajes() {
 
   const bloquearAsiento = async (seat) => {
     try {
-      const response = await fetch(`https://allavoy-backend.onrender.com/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, { method: "POST" });
+      const response = await fetch(`${BASE_URL}/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, { method: "POST" });
       if (!response.ok) throw new Error("Error al bloquear el asiento");
       console.log("Asiento bloqueado:", seat);
     } catch (error) {

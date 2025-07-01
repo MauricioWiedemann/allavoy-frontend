@@ -6,6 +6,7 @@ import NavbarVendedor from "../components/NavbarVendedor";
 import "../css/DevolucionPasaje.css";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function DevolucionPasaje() {
@@ -36,7 +37,7 @@ function DevolucionPasaje() {
 
   const calcularMonto = async (seat) => {
     try {
-      const response = await fetch(`https://allavoy-backend.onrender.com/pasajes/monto-devolucion?idViaje=${viaje.idViaje}&numeroAsiento=${seat}`);
+      const response = await fetch(`${BASE_URL}/pasajes/monto-devolucion?idViaje=${viaje.idViaje}&numeroAsiento=${seat}`);
       if (!response.ok) throw new Error("Error al calcular el monto de devolución");
 
       const monto = await response.json();
@@ -67,7 +68,7 @@ function DevolucionPasaje() {
 
   const obtenerIdPago = async (idViaje, numeroAsiento) => {
     try {
-      const response = await fetch(`https://allavoy-backend.onrender.com/pasajes/id-pago?idViaje=${idViaje}&numeroAsiento=${numeroAsiento}`);
+      const response = await fetch(`${BASE_URL}/pasajes/id-pago?idViaje=${idViaje}&numeroAsiento=${numeroAsiento}`);
 
       if (!response.ok) throw new Error("Error al obtener el ID de pago");
 
@@ -94,7 +95,7 @@ function DevolucionPasaje() {
     }
 
     try {
-      const backendResponse = await fetch(`https://allavoy-backend.onrender.com/paypal/refund?captureId=${idPago}&monto=${montoDevolucion.toFixed(2)}&idViaje=${viaje.idViaje}&numeroAsiento=${selectedSeats[0]}`, {
+      const backendResponse = await fetch(`${BASE_URL}/paypal/refund?captureId=${idPago}&monto=${montoDevolucion.toFixed(2)}&idViaje=${viaje.idViaje}&numeroAsiento=${selectedSeats[0]}`, {
         method: "POST"
       });
 

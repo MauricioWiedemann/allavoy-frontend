@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function ListadoOmnibus() {
@@ -32,7 +33,7 @@ function ListadoOmnibus() {
 
 
     function listar_omnibus() {
-        fetch("https://allavoy-backend.onrender.com/omnibus/obtenerall", {
+        fetch(`${BASE_URL}/omnibus/obtenerall`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -62,7 +63,7 @@ function ListadoOmnibus() {
         if (estado === "ACTIVO")
             activo = true
 
-        fetch("https://allavoy-backend.onrender.com/omnibus/buscar", {
+        fetch(`${BASE_URL}/omnibus/buscar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -98,7 +99,7 @@ function ListadoOmnibus() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+            await fetch(`${BASE_URL}/localidad/obtener`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

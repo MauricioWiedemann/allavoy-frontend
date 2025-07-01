@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/SolicitarRecuperarPass.css"
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function RecuperarPass() {
@@ -31,7 +32,7 @@ function RecuperarPass() {
         } else if (passwordNuevo.trim() !== passwordNuevoConf.trim()) {
             mostrarAlertaError("Las contraseñas no coinciden.");
         } else {
-            await fetch("https://allavoy-backend.onrender.com/auth/reset-password", {
+            await fetch(`${BASE_URL}/auth/reset-password`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

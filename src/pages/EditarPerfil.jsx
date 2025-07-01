@@ -5,6 +5,7 @@ import NavbarCliente from "../components/NavbarCliente";
 import "../css/EditarUsuario.css"
 import Notificaion from "../components/Notificacion";
 import { jwtDecode } from 'jwt-decode';
+import { BASE_URL } from "../config";
 
 
 function EditarPerfil() {
@@ -35,7 +36,7 @@ function EditarPerfil() {
 
   function obtenerDatosUsuario() {
     if (payload !== "") {
-      fetch("https://allavoy-backend.onrender.com/usuario/buscarporid", {
+      fetch(`${BASE_URL}/usuario/buscarporid`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -69,7 +70,7 @@ function EditarPerfil() {
     } else if (new Date(fechaNacimiento) >= new Date()) {
       alert("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
-      fetch("https://allavoy-backend.onrender.com/usuario/editar", {
+      fetch(`${BASE_URL}/usuario/editar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

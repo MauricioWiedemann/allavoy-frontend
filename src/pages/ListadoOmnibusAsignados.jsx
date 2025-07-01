@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import NavbarVendedor from "../components/NavbarVendedor";
 import { jwtDecode } from 'jwt-decode';
 import Notificaion from "../components/Notificacion";
+import { BASE_URL } from "../config";
 
 
 function ListadoOmnibusAsignados() {
@@ -28,7 +29,7 @@ function ListadoOmnibusAsignados() {
     };
 
     function listar_viajes() {
-        fetch("https://allavoy-backend.onrender.com/viaje/obtenertodos", {
+        fetch(`${BASE_URL}/viaje/obtenertodos`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -58,7 +59,7 @@ function ListadoOmnibusAsignados() {
         if (estado === "ACTIVO")
             activo = false
 
-        fetch("https://allavoy-backend.onrender.com/viaje/listaasignados", {
+        fetch(`${BASE_URL}/viaje/listaasignados`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -102,7 +103,7 @@ function ListadoOmnibusAsignados() {
 
         //get para obtener el array con las localidades
         const localidadesArray =
-            await fetch("https://allavoy-backend.onrender.com/localidad/obtener", {
+            await fetch(`${BASE_URL}/localidad/obtener`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

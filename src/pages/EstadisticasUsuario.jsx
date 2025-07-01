@@ -6,6 +6,7 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Lege
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { jwtDecode } from 'jwt-decode';
+import { BASE_URL } from "../config";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement);
 
@@ -16,18 +17,18 @@ function EstadisticasUsuario() {
     const [pasajesPorTipo, setPasajesPorTipo] = useState({});
 
     useEffect(() => {
-        fetch("https://allavoy-backend.onrender.com/usuario/total")
+        fetch(`${BASE_URL}/usuario/total`)
             .then(res => res.json())
             .then(data => setTotalUsuarios(data));
 
-        fetch("https://allavoy-backend.onrender.com/usuario/activos")
+        fetch(`${BASE_URL}/usuario/activos`)
             .then(res => res.json())
             .then(data => {
                 setActivos(data.activos);
                 setInactivos(data.inactivos);
             });
 
-        fetch("https://allavoy-backend.onrender.com/usuario/pasajestipousuario")
+        fetch(`${BASE_URL}/usuario/pasajestipousuario`)
             .then(res => res.json())
             .then(data => setPasajesPorTipo(data))
             .catch(error => console.error("Error al obtener pasajes por tipo", error));
