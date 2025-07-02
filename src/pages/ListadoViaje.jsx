@@ -110,8 +110,24 @@ function ListadoViaje() {
         });
     }
 
+    async function viajesDisponibles() {
+        await fetch(`${BASE_URL}/viaje/viajesdisponibles`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            return response.json();
+        })
+            .then(data => {
+                setViajes(data);
+            })
+            ;
+    }
+
     //cargar las localidades al cargar la pagina
     useEffect(() => {
+        viajesDisponibles();
         cargarLocalidades();
     }, []);
 
