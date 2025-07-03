@@ -90,16 +90,16 @@ function Registro() {
           return response.text();
         })
         .then(data => {
-          console.log("Usuario registrado:", data);
-          mostrarAlerta("Usuario registrado");
-
+          if(!statusOk){
+            throw new Error(data);
+          }
+          mostrarAlerta(data.toString());
           setTimeout(() => {
             window.location.href = "/login";
           }, 2000);
         })
         .catch(error => {
-          console.error("Error:", error);
-          mostrarAlertaError("Error al registrar el usuario.");
+          mostrarAlertaError(error.toString());
         });
     }
   }

@@ -134,7 +134,7 @@ function AltaUsuario() {
   }
 
   function registrarUsuario() {
-
+    let statusOk = false;
     if (email.trim() === "" || nombre.trim() === "" || apellido.trim() === "" || cedula.trim() === "" || fechaNacimiento.trim() === "" || password.trim() === "" || tipoUsuario.trim() === "") {
       mostrarAlertaError("Complete todos los campos.");
     } else if (!validate_ci(cedula)) {
@@ -161,21 +161,20 @@ function AltaUsuario() {
         })
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error("Error al registrar usuario");
-          }
-          return response.json();
+          statusOk = response.ok;
+          return response.text();
         })
         .then(data => {
-          console.log("Usuario registrado:", data);
-          mostrarAlerta("Usuario registrado");
+          if(!statusOk){
+            throw new Error(data);
+          }
+          mostrarAlerta(data.toString());
           setTimeout(() => {
             window.location.reload();
           }, 2000);
         })
         .catch(error => {
-          console.error("Error:", error);
-          mostrarAlertaError("Error al registrar el usuario.");
+          mostrarAlertaError(error.toString());
         });
 
     }

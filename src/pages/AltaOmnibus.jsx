@@ -99,15 +99,16 @@ function AltaOmnibus() {
           return response.text();
         })
         .then(data => {
-          console.log("Omnibus registrado:", data);
-          mostrarAlerta("omnibus registrado");
+          if(!statusOk){
+            throw new Error(data);
+          }
+          mostrarAlerta(data.toString());
           setTimeout(() => {
             window.location.reload();
           }, 2000);
         })
         .catch(error => {
-          console.error("Error:", error);
-          mostrarAlertaError("Error al registrar el omnibus.");
+          mostrarAlertaError(error.toString());
         });
     }
   }

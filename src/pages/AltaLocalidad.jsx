@@ -54,15 +54,16 @@ function AltaLocalidad() {
           return response.text();
         })
         .then(data => {
-          console.log("Localidad registrada:", data);
-          mostrarAlerta("Localidad registrada");
+          if(!statusOk){
+            throw new Error(data);
+          }
+          mostrarAlerta(data.toString());
           setTimeout(() => {
             window.location.reload();
           }, 2000);
         })
         .catch(error => {
-          console.error("Error:", error);
-          mostrarAlertaError("Error al registrar la localidad.");
+          mostrarAlertaError(error.toString());
         });
     }
   }
