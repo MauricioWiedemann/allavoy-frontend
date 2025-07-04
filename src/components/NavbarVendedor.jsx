@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import logo from '../../sources/logo.png';
 import "../css/Navbar.css";
@@ -11,13 +11,11 @@ function NavbarVendedor() {
   const [showPasajes, setShowPasajes] = useState(false);
   const [showUsuario, setShowUsuario] = useState(false);
   const [showClientes, setShowClientes] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-header">
-        <img src={logo} alt="Logo" />
-        <h2>AllaVoy</h2>
-      </div>
+      <div className="sidebar-header" onClick={() => navigate('/home')}><img src={logo} alt="Logo" /><h2>AllaVoy</h2></div>
       <div className='navbar-scroll'>
         <ul className="navbar-nav ms-auto">
         <li>
