@@ -210,7 +210,7 @@ function AltaViaje() {
         <div className="altaViaje-card card p-4 mt-3 mb-3 shadow-lg">
 
           <div className="mb-3">
-            <h2 className="text-center mb-3">Salida</h2>
+            <h2 className="text-center mb-3">Origen</h2>
             <select id="select-localidades-salida" className="form-select rounded-pill mb-3" value={localidadSalida} onChange={(e) => setLocalidadSalida(e.target.value)}>
               <option value="" disabled selected>Localidad</option>
             </select>
@@ -221,7 +221,7 @@ function AltaViaje() {
               <input type="time" className="form-control rounded-pill" value={horaSalida} onChange={(e) => setHoraSalida(e.target.value)} />
             </div>
 
-            <h2 className="text-center mb-3">Llegada</h2>
+            <h2 className="text-center mb-3">Destino</h2>
             <select id="select-localidades-llegada" className="form-select rounded-pill mb-3" value={localidadLlegada} onChange={(e) => setLocalidadLlegada(e.target.value)}>
               <option value="" disabled selected>Localidad</option>
             </select>

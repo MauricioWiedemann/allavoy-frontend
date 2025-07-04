@@ -162,7 +162,7 @@ function AplicarDescuento() {
                 <option value="ESTUDIANTE">Estudiante</option>
                 <option value="JUBILADO">Jubilado</option>
                 <option value="FUNCIONARIO">Funcionario</option>
-                <option value="NA">Sin descuantos</option>
+                <option value="NA">Sin descuentos</option>
               </select>
               <button className="btn btn-primary mt-3" onClick={validarDescuanto}>Confirmar</button>
               <button className="btn btn-secondary mt-2 mb-2" onClick={() => window.location.reload()}>Cancelar</button>

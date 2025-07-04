@@ -80,7 +80,7 @@ function AltaLocalidad() {
 
   function altaLocalidadesCsv() {
     if (data.length > 0) {
-      fetch("https://allavoy-backend.onrender.com/localidad/altacsv", {
+      fetch(`${BASE_URL}/localidad/altacsv`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -140,7 +140,14 @@ function EstadisticasUsuario() {
                 </div>
                 <div id="graficasParaExportar" className="graficas-contenedor">
                     <div className="grafica-item">
+                        <Pie data={datosActivosInactivos} />
+                    </div>
+                    <div className="grafica-item">
+                        <Pie data={datosPasajesPie} />
+                    </div>
+                    <div className="grafica-item">
                         <Bar data={datosTotalUsuarios} options={{
+                            maintainAspectRatio: false,
                             scales: {
                                 y: {
                                     beginAtZero: true,
@@ -151,9 +158,6 @@ function EstadisticasUsuario() {
                             },
                             plugins: { legend: { display: false } }
                         }} />
-                    </div>
-                    <div className="grafica-item">
-                        <Pie data={datosActivosInactivos} />
                     </div>
                     <div className="grafica-item">
                         <Bar data={datosPasajesBar} options={{
@@ -167,10 +171,6 @@ function EstadisticasUsuario() {
                             },
                             plugins: { legend: { display: false } }
                         }} />
-                    </div>
-
-                    <div className="grafica-item">
-                        <Pie data={datosPasajesPie} />
                     </div>
                 </div>
             </div>

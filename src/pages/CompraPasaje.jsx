@@ -116,11 +116,11 @@ function CompraPasajes() {
   }, [payload.idUsuario]);
 
   function calcularTotal(viaje, cantidad, tipoUsuario, tipoDescuento) {
-    let precioBase = (viaje.precio/40) * cantidad; //pasar de pesos a dolares
+    let precioBase = (viaje.precio) * cantidad; //pasar de pesos a dolares
     //Si es ida y vuelta, le sumo el costo del viaje de ida
     if (idaYVuelta == 2) {
       const viajeIda = location.state?.viajeIda;
-      precioBase = precioBase + (viajeIda.precio/40) * cantidad; //pasar de pesos a dolares
+      precioBase = precioBase + (viajeIda.precio) * cantidad; //pasar de pesos a dolares
     }
 
     if (tipoUsuario === "VENDEDOR") {
@@ -193,7 +193,7 @@ function CompraPasajes() {
           purchase_units: [
             {
               amount: {
-                value: montoTotal,
+                value: montoTotal/40,
               },
             },
           ],
@@ -311,8 +311,8 @@ function CompraPasajes() {
           <p><strong>Origen:</strong> {viaje.origen.nombre}, {viaje.origen.departamento}</p>
           <p><strong>Destino:</strong> {viaje.destino.nombre}, {viaje.destino.departamento}</p>
           <hr />
-          <p><strong>Salida:</strong> {viaje.fechaSalida}</p>
-          <p><strong>Llegada:</strong> {viaje.fechaLlegada}</p>
+          <p><strong>Salida:</strong> {viaje.fechaSalida.replace("T", " ")}</p>
+          <p><strong>Llegada:</strong> {viaje.fechaLlegada.replace("T", " ")}</p>
           <p><strong>Ómnibus:</strong> {viaje.omnibus.marca} {viaje.omnibus.modelo} ({viaje.omnibus.matricula})</p>
           <p><strong>Asiento(s):</strong> {selectedSeats.join(", ")}</p>
           {payload.rol === "VENDEDOR" && (

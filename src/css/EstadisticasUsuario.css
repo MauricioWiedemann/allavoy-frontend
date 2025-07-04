@@ -41,12 +41,13 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
-    margin: 20px 0;
+    margin-top: 5%;
     justify-items: center;
 }
 
 .grafica-item {
     width: 300px;
+    margin: auto;
 }
 
 @media (max-width: 768px) {
