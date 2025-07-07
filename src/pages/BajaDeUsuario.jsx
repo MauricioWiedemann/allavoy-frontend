@@ -48,6 +48,7 @@ function BajaUsuario() {
         fetch(`${BASE_URL}/usuario/buscar`, {
             method: "POST",
             headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token"),
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({

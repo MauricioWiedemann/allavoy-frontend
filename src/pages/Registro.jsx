@@ -69,7 +69,7 @@ function Registro() {
     } else if (new Date(fechaNacimiento) >= new Date()) {
       mostrarAlertaError("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
-      fetch(`${BASE_URL}/usuario/alta`, {
+      fetch(`${BASE_URL}/usuario/registro`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -80,9 +80,7 @@ function Registro() {
           apellido: apellido,
           email: email,
           password: password,
-          fechaNacimiento: fechaNacimiento,
-          tipoDescuento: "NA",
-          tipoUsuario: "CLIENTE"
+          fechaNacimiento: fechaNacimiento
         })
       })
         .then(response => {

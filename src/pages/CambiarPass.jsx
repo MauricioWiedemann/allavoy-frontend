@@ -43,10 +43,11 @@ function CambiarPass() {
             fetch(`${BASE_URL}/usuario/cambiarpassword`, {
                 method: "POST",
                 headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token"),
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    idUsuario: payload.idUsuario,
+                    //idUsuario: payload.idUsuario, -> Se envia en el token!
                     actual: passActual,
                     nueva: passNuevo
                 })
