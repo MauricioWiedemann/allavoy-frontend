@@ -68,6 +68,7 @@ function AplicarDescuento() {
       await fetch(`${BASE_URL}/usuario/buscarporci`, {
         method: "POST",
         headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -99,12 +100,13 @@ function AplicarDescuento() {
       await fetch(`${BASE_URL}/usuario/asignarDescuento`, {
         method: "POST",
         headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           idUsuario: usuario.idUsuario,
-          nombre: usuario.nombre,
-          apellido: usuario.apellido,
+          //nombre: usuario.nombre, // NO es necesario enviar esto al backend solo necesita el tipoDescuento y el idUsuario
+          //apellido: usuario.apellido,
           tipoDescuento: tipoDescuento
         })
       }).then(response => {

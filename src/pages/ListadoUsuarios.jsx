@@ -42,7 +42,8 @@ function ListadoUsuario() {
         fetch(`${BASE_URL}/usuario/buscar`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 email: email,
@@ -75,7 +76,7 @@ function ListadoUsuario() {
         fetch(`${BASE_URL}/usuario/listar`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+              "Authorization": "Bearer " + localStorage.getItem("token")
             },
         })
             .then(response => {

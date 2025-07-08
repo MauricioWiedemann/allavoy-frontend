@@ -57,6 +57,7 @@ function AltaUsuario() {
       fetch(`${BASE_URL}/usuario/altacsv`, {
         method: "POST",
         headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
@@ -147,7 +148,8 @@ function AltaUsuario() {
       fetch(`${BASE_URL}/usuario/alta`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
           cedula: cedula,
@@ -156,7 +158,7 @@ function AltaUsuario() {
           email: email,
           password: password,
           fechaNacimiento: fechaNacimiento,
-          tipoDescuento: "NA",
+          //tipoDescuento: "NA",
           tipoUsuario: tipoUsuario
         })
       })

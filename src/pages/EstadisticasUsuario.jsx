@@ -17,18 +17,33 @@ function EstadisticasUsuario() {
     const [pasajesPorTipo, setPasajesPorTipo] = useState({});
 
     useEffect(() => {
-        fetch(`${BASE_URL}/usuario/total`)
+        fetch(`${BASE_URL}/usuario/total`, {
+            method: "GET",
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token")
+              }
+            })
             .then(res => res.json())
             .then(data => setTotalUsuarios(data));
 
-        fetch(`${BASE_URL}/usuario/activos`)
+        fetch(`${BASE_URL}/usuario/activos`, {
+            method: "GET",
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token")
+              }
+            })
             .then(res => res.json())
             .then(data => {
                 setActivos(data.activos);
                 setInactivos(data.inactivos);
             });
 
-        fetch(`${BASE_URL}/usuario/pasajestipousuario`)
+        fetch(`${BASE_URL}/usuario/pasajestipousuario`, {
+            method: "GET",
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token")
+              }
+            })
             .then(res => res.json())
             .then(data => setPasajesPorTipo(data))
             .catch(error => console.error("Error al obtener pasajes por tipo", error));

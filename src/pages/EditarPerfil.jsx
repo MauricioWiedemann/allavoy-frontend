@@ -37,13 +37,10 @@ function EditarPerfil() {
   function obtenerDatosUsuario() {
     if (payload !== "") {
       fetch(`${BASE_URL}/usuario/buscarporid`, {
-        method: "POST",
+        method: "GET",
         headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          idUsuario: payload.idUsuario
-        })
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
       })
         .then(response => {
           if (!response.ok) {
@@ -73,10 +70,11 @@ function EditarPerfil() {
       fetch(`${BASE_URL}/usuario/editar`, {
         method: "POST",
         headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          idUsuario: payload.idUsuario,
+          //idUsuario: payload.idUsuario, // -> lo mandamos por el token
           nombre: nombre,
           apellido: apellido,
           fechaNacimiento: fechaNacimiento,
