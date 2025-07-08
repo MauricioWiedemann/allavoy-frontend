@@ -17,6 +17,10 @@ export const ViajeProvider = ({children}) => {
         setOmnibusViaje(omnibus);
     }
 
+    const limpiarOmnibus = () => {
+        setOmnibusViaje([]);
+    }
+
     //VIAJE PARA CERRAR SU VENTA
     const [viajeCerrarVenta, setViajeCerrarVenta] = useState([]);
 
@@ -28,11 +32,17 @@ export const ViajeProvider = ({children}) => {
         setViajeCerrarVenta(viaje);
     }
 
+    const limpiarViajeCerraVenta = (viaje) => {
+        setViajeCerrarVenta([]);
+    }
+
     //LAS FUNCIONES Y VARIABLES QUE SE PUEDEN UTLIIZAR
     const value = {
         guardarOmnibus,
+        limpiarOmnibus,
         omnibusViaje,
         guardarViajeCerraVenta,
+        limpiarViajeCerraVenta,
         viajeCerrarVenta
     }
 

@@ -10,7 +10,7 @@ import { BASE_URL } from "../config";
 
 function CierreVentaPasaje() {
 
-    const { viajeCerrarVenta } = useViajeContext();
+    const { viajeCerrarVenta, limpiarViajeCerraVenta } = useViajeContext();
     const [listaViajes, setListaViajes] = useState([]);
     const [alertVisible, setAlertVisible] = useState(false);
     const [mensaje, setMensaje] = useState("");
@@ -19,7 +19,7 @@ function CierreVentaPasaje() {
     function mostrarAlerta(m) {
         setAlertVisible(true);
         setMensaje(m);
-        setTipo("mensaje")
+        setTipo("mensaje");
     };
 
     function checkListaViaje() {
@@ -51,6 +51,7 @@ function CierreVentaPasaje() {
     }
 
     useEffect(() => {
+        limpiarViajeCerraVenta();
         obtenerViajes();
     }, []);
 
@@ -75,6 +76,7 @@ function CierreVentaPasaje() {
                     return response.text();
                 })
                 .then(data => {
+                    limpiarViajeCerraVenta();
                     mostrarAlerta(data);
                     setTimeout(() => {
                         window.location.reload();

@@ -238,6 +238,9 @@ function ListadoPasajes() {
                     <div style={{ padding: "1rem", overflowY: "auto" }}>
                         <div className="mb-4">
                             <h2>Vendidos</h2>
+                            {listaPasajesVendidos.length === 0 && (
+                                <p>No hay pasajes vendidos</p>
+                            )}
                             {listaPasajesVendidos.map((p, i) => (
                                 <div key={i} className="card-pasaje">
                                     <p>Usuario: {p.emailCliente}</p>
@@ -250,6 +253,9 @@ function ListadoPasajes() {
                         </div>
                         <div className="mt-4">
                             <h2>Devueltos</h2>
+                            {listaPasajesDevuletos.length === 0 && (
+                                <p>No hay pasajes devueltos</p>
+                            )}
                             {listaPasajesDevuletos.map((p, i) => (
                                 <div key={i} className="card-pasaje">
                                     <p>Usuario: {p.emailCliente}</p>
