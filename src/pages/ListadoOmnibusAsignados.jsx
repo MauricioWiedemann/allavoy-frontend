@@ -131,7 +131,6 @@ function ListadoOmnibusAsignados() {
 
     //cargar las localidades al cargar la pagina
     useEffect(() => {
-        listar_viajes()
         cargarLocalidades();
     }, []);
 
@@ -200,7 +199,7 @@ function ListadoOmnibusAsignados() {
                         <div key={i} className="card-viaje">
                             <h5>{capitalizar(v.origen.nombre)}, {capitalizar(v.origen.departamento)} → {capitalizar(v.destino.nombre)}, {capitalizar(v.destino.departamento)}</h5>
                             <p>Fecha: {v.fechaSalida.split("T")[0]} Hora: {v.fechaSalida.split("T")[1]}</p>
-                            <p>Asientos Disponibles: {v.cantidad}</p>
+                            <p>Asientos Disponibles: {v.asientos.length}</p>
                             <p>Precio: {v.precio}</p>
                             <p>Omnibus: {v.omnibus.matricula}</p>
                         </div>

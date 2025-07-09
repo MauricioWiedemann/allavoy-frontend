@@ -9,7 +9,7 @@ import { BASE_URL } from "../config";
 
 
 function AltaViaje() {
-  const { omnibusViaje } = useViajeContext();
+  const { omnibusViaje, limpiarOmnibus } = useViajeContext();
 
   const [localidadSalida, setLocalidadSalida] = useState("");
   const [fechaSalida, setFechaSalida] = useState("");
@@ -134,6 +134,7 @@ function AltaViaje() {
   }
 
   useEffect(() => {
+    limpiarOmnibus();
     var fin = document.getElementById("finalizar-alta-id");
     var par = document.getElementById("p-container");
     if (listaOmnibus.length === 0) {
@@ -176,6 +177,7 @@ function AltaViaje() {
           if(!statusOk){
             throw new Error(data);
           }
+          limpiarOmnibus();
           mostrarAlerta(data.toString());
           setTimeout(() => {
             window.location.reload();
@@ -201,6 +203,12 @@ function AltaViaje() {
   useEffect(() => {
     validarTokenUsuario();
   }, []);
+
+  useEffect(() => {
+    limpiarOmnibus();
+    document.getElementById("finalizar-alta-id").style.display = "none";
+    document.getElementById("p-container").style.display = "none";
+  }, [localidadLlegada, localidadSalida]);
 
   return (
     <>

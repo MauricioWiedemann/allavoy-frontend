@@ -53,11 +53,13 @@ function ListadoViajeCompra() {
             .then(response => {
                 if (!response.ok) {
                     throw new Error("No se encontraron viajes.");
-
                 }
                 return response.json();
             })
             .then(data => {
+                if (data.length<=0) {
+                    throw new Error("No se encontraron viajes.");
+                }
                 setViajes(data);
             })
             .catch(error => {

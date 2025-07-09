@@ -7,7 +7,7 @@ export default function Modal({ open, onClose, children }) {
       <div
         onClick={(e) => e.stopPropagation()}
         className="modal-content"
-        style={{ overflowY: 'scroll' }}
+        style={{ overflowY: 'scroll', overflow: 'hidden' }}
       >
         {children}
       </div>
