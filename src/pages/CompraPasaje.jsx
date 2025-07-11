@@ -193,7 +193,7 @@ function CompraPasajes() {
           purchase_units: [
             {
               amount: {
-                value: montoTotal/40,
+                value: (montoTotal/40).toFixed(2),
               },
             },
           ],
