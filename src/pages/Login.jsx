@@ -31,7 +31,8 @@ function Login() {
                 },
                 body: JSON.stringify({
                     email: email,
-                    password: password
+                    password: password,
+                    tipoToken: "SESION_WEB"
                 })
             })
                 .then(response => {
