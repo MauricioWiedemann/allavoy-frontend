@@ -11,7 +11,7 @@ function NavbarCliente() {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-header" onClick={() => navigate('/home')}><img src={logo} alt="Logo" /><h2>AllaVoy</h2></div>
+      <div className="sidebar-header" onClick={() => navigate('/home')}><img src={logo} alt="Logo" /><h2>AlláVoy</h2></div>
       <ul className="navbar-nav ms-auto">
         <li>
           <div className="menu-title" onClick={() => setShowViajes(!setViajes)}>
@@ -22,7 +22,7 @@ function NavbarCliente() {
         {setViajes && (
           <>
             <li className="nav-item"><Link className="nav-link" to="/buscar">Buscar</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/buscarcomprar">Comprar Pasajes</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/buscarcomprar">Comprar pasajes</Link></li>
           </>
         )}
         <li>
@@ -33,11 +33,11 @@ function NavbarCliente() {
         </li>
         {showUsuario && (
           <>
-            <li className="nav-item"><Link className="nav-link" to="/editarusuario">Editar Perfil</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/editarusuario">Editar perfil</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/cambiarpass">Cambiar contraseña</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/historicocompra">Histórico de Pasajes</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/historicocompra">Histórico de pasajes</Link></li>
             <li className="nav-item"><a href="https://wa.me/59896179316" target="_blank" className='nav-link'>Soporte</a></li>
-            <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar Sesión</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/cerrarsesion">Cerrar sesión</Link></li>
           </>
         )}
       </ul>

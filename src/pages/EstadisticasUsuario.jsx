@@ -20,18 +20,18 @@ function EstadisticasUsuario() {
         fetch(`${BASE_URL}/usuario/total`, {
             method: "GET",
             headers: {
-              "Authorization": "Bearer " + localStorage.getItem("token")
-              }
-            })
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
             .then(res => res.json())
             .then(data => setTotalUsuarios(data));
 
         fetch(`${BASE_URL}/usuario/activos`, {
             method: "GET",
             headers: {
-              "Authorization": "Bearer " + localStorage.getItem("token")
-              }
-            })
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 setActivos(data.activos);
@@ -41,9 +41,9 @@ function EstadisticasUsuario() {
         fetch(`${BASE_URL}/usuario/pasajestipousuario`, {
             method: "GET",
             headers: {
-              "Authorization": "Bearer " + localStorage.getItem("token")
-              }
-            })
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
             .then(res => res.json())
             .then(data => setPasajesPorTipo(data))
             .catch(error => console.error("Error al obtener pasajes por tipo", error));
@@ -72,14 +72,14 @@ function EstadisticasUsuario() {
     const exportarCSV = () => {
         let csvContent = "data:text/csv;charset=utf-8,";
 
-        csvContent += "Total Usuarios\n";
+        csvContent += "Total de Usuarios\n";
         csvContent += `Usuarios Registrados,${totalUsuarios}\n\n`;
 
-        csvContent += "Estado,Total\n";
+        csvContent += "Estado del Usuario,Total\n";
         csvContent += `Activos,${activos}\n`;
         csvContent += `Inactivos,${inactivos}\n\n`;
 
-        csvContent += "Tipo de Pasaje,Pasajes Vendidos\n";
+        csvContent += "Tipo de Pasaje, Pasajes Vendidos\n";
         Object.entries(pasajesPorTipo).forEach(([tipo, cantidad]) => {
             csvContent += `${tipo},${cantidad}\n`;
         });
@@ -116,7 +116,7 @@ function EstadisticasUsuario() {
     const datosPasajesBar = {
         labels: labelsPasajes,
         datasets: [{
-            label: "Pasajes vendidos",
+            label: "Pasajes Vendidos",
             data: valoresPasajes,
             backgroundColor: ["#f7dc6f", "#af7ac5"]
         }]
@@ -149,8 +149,8 @@ function EstadisticasUsuario() {
             <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
-                        <button onClick={exportarPDF}>Exportar PDF</button>
-                        <button onClick={exportarCSV}>Exportar CSV</button>
+                        <button onClick={exportarPDF}>Descargar PDF</button>
+                        <button onClick={exportarCSV}>Descargar CSV</button>
                     </div>
                 </div>
                 <div id="graficasParaExportar" className="graficas-contenedor">

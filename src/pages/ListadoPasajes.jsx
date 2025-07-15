@@ -254,7 +254,7 @@ function ListadoPasajes() {
                         <div className="mt-4">
                             <h2>Devueltos</h2>
                             {listaPasajesDevuletos.length === 0 && (
-                                <p>No hay pasajes devueltos</p>
+                                <p>No hay pasajes devueltos.</p>
                             )}
                             {listaPasajesDevuletos.map((p, i) => (
                                 <div key={i} className="card-pasaje">
@@ -262,7 +262,7 @@ function ListadoPasajes() {
                                     <p>Monto: {p.monto}</p>
                                     <p>Descuento: {p.porcentajeDescuento}%</p>
                                     <p>Fecha compra: {p.fechaCompra.replace(/T/g, ' ')}</p>
-                                    <p>Fecha Devolucion: {p.fechaDevolucion.replace(/T/g, ' ')}</p>
+                                    <p>Fecha Devolución: {p.fechaDevolucion.replace(/T/g, ' ')}</p>
                                 </div>
                             ))}
                         </div>

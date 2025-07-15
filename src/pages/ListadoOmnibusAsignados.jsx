@@ -76,7 +76,7 @@ function ListadoOmnibusAsignados() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron omnibus.");
+                    throw new Error("No se encontraron ómnibus.");
 
                 }
                 return response.json();
@@ -87,7 +87,7 @@ function ListadoOmnibusAsignados() {
                 setViajes(data);
             })
             .catch(error => {
-                mostrarAlertaError("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron ómnibus.");
                 setViajes([]);
             });
     }
@@ -176,7 +176,7 @@ function ListadoOmnibusAsignados() {
                         </select>
                         <input type="date" value={fechaInicio} onChange={(e) => setfechaInicio(e.target.value)} />
                         <input type="date" value={fechaDestino} onChange={(e) => setfechaDestino(e.target.value)} />
-                        <input type="text" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
+                        <input type="text" placeholder="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
                         <select value={estado} onChange={(e) => setEstadoViaje(e.target.value)}>
                             <option value="ACTIVO">Habilitado</option>
                             <option value="BLOQUEADO">Deshabilitado</option>

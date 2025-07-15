@@ -48,7 +48,7 @@ function SolicitarRecuperarPass() {
                 }, 2000);
             })
                 .catch(error => {
-                    mostrarAlertaError("Usuario no encontrado");
+                    mostrarAlertaError("Usuario no encontrado.");
                 });
         }
     }
@@ -59,7 +59,7 @@ function SolicitarRecuperarPass() {
                 <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
                 <div className="cambiar-pass-card card p-4 shadow-lg">
                     <div className="mb-3">
-                        <p>Ingrese su correo electronico:</p>
+                        <p>Ingrese su correo electrónico:</p>
                         <input type="email" className="form-control rounded-pill" placeholder="Correo" value={correo} onChange={(e) => setCorreo(e.target.value)} />
                     </div>
                     <div className="d-grid gap-1">

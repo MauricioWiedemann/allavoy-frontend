@@ -86,9 +86,9 @@ function CambiarLocalidad() {
     const today = new Date(Date.now());
 
     if (salida < today) {
-      mostrarAlertaError("La fecha de salida no puede ser menor a la actual");
+      mostrarAlertaError("La fecha de salida no puede ser menor a la actual.");
     } else if (salida >= llegada) {
-      mostrarAlertaError("La fecha de llegada tiene que ser mayor a la de salida");
+      mostrarAlertaError("La fecha de llegada tiene que ser mayor a la de salida.");
     } else {
       return true;
     }
@@ -141,7 +141,7 @@ function CambiarLocalidad() {
 
   function cambiarLocalidadOmnibus() {
     if (JSON.stringify(omnibusViaje).trim() === "[]") {
-      mostrarAlerta("Seleccione un omnibus.");
+      mostrarAlerta("Seleccione un ómnibus.");
     } else {
       fetch(`${BASE_URL}/omnibus/cambiarlocalidad`, {
         method: "POST",
@@ -214,11 +214,11 @@ function CambiarLocalidad() {
               <input type="time" className="form-control rounded-pill" value={horaLlegada} onChange={(e) => setHoraLlegada(e.target.value)} />
             </div>
           </div>
-          <div class="d-grid mb-3">
-            <button className="btn w50 btn-primary rounded-pill" onClick={() => obtenerOmnibus()}>Buscar Omnibus</button>
+          <div className="d-grid mb-3">
+            <button className="btn w50 btn-primary rounded-pill" onClick={() => obtenerOmnibus()}>Buscar ómnibus</button>
           </div>
           <div id="p-container">
-            <p>No hay omnibus disponibles.</p>
+            <p>No hay ómnibus disponibles.</p>
           </div>
           <div id="finalizar-alta-id" className="omnibus-container mb-3">
             <div id="omnibus-container-id" className="row row-cols-2 mb-3">

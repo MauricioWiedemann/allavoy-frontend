@@ -74,7 +74,7 @@ function RecuperarPass() {
                         <input type="password" className="form-control rounded-pill" placeholder="Contraseña" value={passwordNuevo} onChange={(e) => setPasswordNuevo(e.target.value)} />
                     </div>
                     <div className="mb-3">
-                        <p>Ingrese la contraseña nuevamente:</p>
+                        <p>Confirme su nueva contraseña:</p>
                         <input type="password" className="form-control rounded-pill" placeholder="Contraseña" value={passwordNuevoConf} onChange={(e) => setPasswordNuevoConf(e.target.value)} />
                     </div>
                     <div class="d-grid gap-1">

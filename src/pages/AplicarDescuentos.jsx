@@ -61,9 +61,9 @@ function AplicarDescuento() {
 
   async function validarCedula() {
     if (cedula.trim() === "") {
-      mostrarAlertaError("Ingrese una cedula.")
+      mostrarAlertaError("Ingrese una cédula.")
     } else if (!validate_ci(cedula)) {
-      mostrarAlertaError("La cedula no es valida.");
+      mostrarAlertaError("La cédula no es valida.");
     } else {
       await fetch(`${BASE_URL}/usuario/buscarporci`, {
         method: "POST",
@@ -95,7 +95,7 @@ function AplicarDescuento() {
   async function validarDescuanto() {
     console.log(usuario);
     if (tipoDescuento.trim() === "") {
-      alert("Tiene que ingreser un tipo de descuanto.");
+      mostrarAlertaError("Tiene que ingreser un tipo de descuento.");
     } else {
       await fetch(`${BASE_URL}/usuario/asignarDescuento`, {
         method: "POST",
@@ -105,8 +105,6 @@ function AplicarDescuento() {
         },
         body: JSON.stringify({
           idUsuario: usuario.idUsuario,
-          //nombre: usuario.nombre, // NO es necesario enviar esto al backend solo necesita el tipoDescuento y el idUsuario
-          //apellido: usuario.apellido,
           tipoDescuento: tipoDescuento
         })
       }).then(response => {
@@ -158,7 +156,7 @@ function AplicarDescuento() {
               <div id="aviso">
                 <p>Solicite documentos al cliente que avalen el descuento solicitado, estos pueden ser: certificado de estudiante, recibo de jubilación, recibo de sueldo que indique puesto laboral como funcionario del estado.</p>
               </div>
-              <p className="mt-3">Seleccionae el tipo de descuento: </p>
+              <p className="mt-3">Seleccione el tipo de descuento: </p>
               <select className="form-select rounded-pill mb-1" value={tipoDescuento} onChange={(e) => setTipoDescuento(e.target.value)}>
                 <option value="" disabled selected>Tipo de Descuento</option>
                 <option value="ESTUDIANTE">Estudiante</option>

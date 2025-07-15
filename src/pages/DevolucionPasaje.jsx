@@ -41,7 +41,7 @@ function DevolucionPasaje() {
       if (!response.ok) throw new Error("Error al calcular el monto de devolución");
 
       const monto = await response.json();
-      setMontoDevolucion(monto/40); //pasar de pesos a dolares
+      setMontoDevolucion(monto / 40); //pasar de pesos a dolares
     } catch (error) {
       console.error("Error al obtener monto de devolución:", error);
     }

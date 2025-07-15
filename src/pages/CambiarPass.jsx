@@ -38,7 +38,7 @@ function CambiarPass() {
         } else if (passNuevo !== passNuevoCheck) {
             mostrarAlertaError("Las nuevas contraseñas no coinciden");
         } else if (passNuevo.length < 8 || !/\d/.test(passNuevo)) {
-            mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un numero.");
+            mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un número.");
         } else {
             fetch(`${BASE_URL}/usuario/cambiarpassword`, {
                 method: "POST",
@@ -104,7 +104,7 @@ function CambiarPass() {
                         <p>Ingrese nuevamente la nueva contraseña:</p>
                         <input type="password" className="form-control rounded-pill" placeholder="Contraseña nueva" value={passNuevoCheck} onChange={(e) => setPassNuevoCheck(e.target.value)} />
                     </div>
-                    <div class="d-grid gap-2">
+                    <div className="d-grid gap-2">
                         <button className="btn w50 btn-primary rounded-pill" onClick={cambiar} >Cambiar contraseña</button>
                         <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
                     </div>
