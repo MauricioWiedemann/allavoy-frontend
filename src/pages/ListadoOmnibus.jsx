@@ -41,19 +41,19 @@ function ListadoOmnibus() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron omnibus.");
+                    throw new Error("No se encontraron ómnibus.");
 
                 }
                 return response.json();
             })
             .then(data => {
                 if (data.length < 1)
-                    mostrarAlertaError("No se encontraron omnibus.");
+                    mostrarAlertaError("No se encontraron ómnibus.");
                 setOmnibus(data);
             })
             .catch(error => {
                 console.error("Error:", error);
-                mostrarAlertaError("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron ómnibus.");
                 setOmnibus([]);
             });
     }
@@ -77,7 +77,7 @@ function ListadoOmnibus() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron omnibus.");
+                    throw new Error("No se encontraron ómnibus.");
 
                 }
                 return response.json();
@@ -86,7 +86,7 @@ function ListadoOmnibus() {
                 setOmnibus(data);
             })
             .catch(error => {
-                mostrarAlertaError("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron ómnibus.");
                 setOmnibus([]);
             });
     }
@@ -167,7 +167,7 @@ function ListadoOmnibus() {
                             <option value="ACTIVO">Habilitado</option>
                             <option value="BLOQUEADO">Deshabilitado</option>
                         </select>
-                        <input type="text" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
+                        <input type="text" placeholder="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
                         <input type="number" min="1" placeholder="Asientos" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
                         <button onClick={validar_datos}>Buscar</button>
                     </div>
@@ -176,7 +176,7 @@ function ListadoOmnibus() {
                         <select value={orden} onChange={(e) => setOrden(e.target.value)}>
                             <option value="" disabled>Ordenar por</option>
                             <option value="orden_localidad">Localidad</option>
-                            <option value="mas_asientos">Mas asientos</option>
+                            <option value="mas_asientos">Más asientos</option>
                             <option value="menos_asientos">Menos asientos</option>
                         </select>
                     </div>
@@ -185,7 +185,7 @@ function ListadoOmnibus() {
                 <div className="viajes-list">
                     {omnibusOrdenados.map((o, i) => (
                         <div key={i} className="card-viaje">
-                            <h5>Matricula: {o.matricula}, Serie: {capitalizar(o.numeroSerie)}</h5>
+                            <h5>Matrícula: {o.matricula}, Serie: {capitalizar(o.numeroSerie)}</h5>
                             <div className="linea">
                                 <p>Marca: {o.marca}</p>
                                 <p>Modelo: {o.modelo}</p>

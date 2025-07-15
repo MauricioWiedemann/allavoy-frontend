@@ -61,7 +61,7 @@ function CierreVentaPasaje() {
 
     function cerrarVenta() {
         if (JSON.stringify(viajeCerrarVenta).trim() === "[]") {
-            mostrarAlerta("Seleccioane un viaje.");
+            mostrarAlerta("Seleccione un viaje.");
         } else {
             fetch(`${BASE_URL}/viaje/cerrarventa`, {
                 method: "POST",
@@ -109,9 +109,9 @@ function CierreVentaPasaje() {
                         {listaViajes.map((element) => (<ViajeCerrarVenta viaje={element} />))}
                     </div>
                     <div id="p-container">
-                        <p>No hay Viajes activos.</p>
+                        <p>No hay viajes activos.</p>
                     </div>
-                    <div class="d-grid gap-2">
+                    <div className="d-grid gap-2">
                         <button id="btn-cerrar" className="btn w50 btn-primary rounded-pill" onClick={cerrarVenta}>Cerrar Venta</button>
                         <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
                     </div>

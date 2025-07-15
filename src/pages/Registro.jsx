@@ -63,11 +63,11 @@ function Registro() {
     if (email.trim() === "" || nombre.trim() === "" || apellido.trim() === "" || cedula.trim() === "" || fechaNacimiento.trim() === "" || password.trim() === "") {
       mostrarAlertaError("Complete todos los campos.");
     } else if (!validate_ci(cedula)) {
-      mostrarAlertaError("La cedula no es valida.");
+      mostrarAlertaError("La cédula no es valida.");
     } else if (password.length < 8 || !/\d/.test(password)) {
-      mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un numero.");
+      mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un número.");
     } else if (new Date(fechaNacimiento) >= new Date()) {
-      mostrarAlertaError("La fecha de nacimiento no puede ser mayor a hoy.");
+      mostrarAlertaError("La fecha de nacimiento no puede ser posterior a hoy.");
     } else {
       fetch(`${BASE_URL}/usuario/registro`, {
         method: "POST",
@@ -88,7 +88,7 @@ function Registro() {
           return response.text();
         })
         .then(data => {
-          if(!statusOk){
+          if (!statusOk) {
             throw new Error(data);
           }
           mostrarAlerta(data.toString());

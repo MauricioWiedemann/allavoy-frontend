@@ -35,7 +35,7 @@ function Confirmacion() {
         const response = await fetch(`${BASE_URL}/pasajes/descargar-pdf/${id}`, { method: "GET" });
 
         if (!response.ok) {
-          throw new Error(`Error al descargar el pasaje con ID ${id}`);
+          throw new Error(`Error al descargar el pasaje con ID ${id}.`);
         }
 
         const blob = await response.blob();

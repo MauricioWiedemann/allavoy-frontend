@@ -76,7 +76,7 @@ function AltaOmnibus() {
     if (marca.trim() === "" || modelo.trim() === "" || nroMotor.trim() === "" || matricula.trim() === "" || capacidad.trim() === "" || localidad.trim() === "") {
       mostrarAlertaError("Complete todos los campos.");
     } else if (!validar_matricula(matricula.toUpperCase())) {
-      mostrarAlertaError("La matricula no es válida.");
+      mostrarAlertaError("La matrícula no es válida.");
     } else if (capacidad > 40) {
       mostrarAlertaError("La capacidad no puede ser mayor a 40.");
     } else {
@@ -99,7 +99,7 @@ function AltaOmnibus() {
           return response.text();
         })
         .then(data => {
-          if(!statusOk){
+          if (!statusOk) {
             throw new Error(data);
           }
           mostrarAlerta(data.toString());
@@ -160,7 +160,7 @@ function AltaOmnibus() {
             const totales = parseInt(resultado[2]);
 
             if (completadas === totales)
-              mostrarAlerta("Todas los ómnibus se cargaron correctamente.");
+              mostrarAlerta("Todos los ómnibus se cargaron correctamente.");
             else if (completadas > 0) {
               let mesnaje = `Se cargaron ${completadas} de ${totales}.\n`;
               mesnaje += "\nErrores:\n" + errores.join("\n");
@@ -223,7 +223,7 @@ function AltaOmnibus() {
                   <input type="text" className="form-control rounded-pill" placeholder="Nro de Motor" value={nroMotor} onChange={(e) => setNroMotor(e.target.value)} />
                 </div>
                 <div className="mb-3">
-                  <input type="text" className="form-control rounded-pill" placeholder="Matricula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
+                  <input type="text" className="form-control rounded-pill" placeholder="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} />
                 </div>
                 <div className="mb-3">
                   <input type="number" className="form-control rounded-pill" placeholder="Capacidad" max="40" value={capacidad} onChange={(e) => setCapacidad(e.target.value)} />
@@ -235,7 +235,7 @@ function AltaOmnibus() {
                 </div>
               </div>
               <div class="d-grid gap-1">
-                <button className="btn w50 btn-primary rounded-pill" onClick={registrarOmnibus}>Crear Omnibus</button>
+                <button className="btn w50 btn-primary rounded-pill" onClick={registrarOmnibus}>Crear ómnibus</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
               </div>
             </div>
@@ -248,12 +248,12 @@ function AltaOmnibus() {
               </div>
               <p>Ejemplo del formato CSV</p>
               <div id="csv-ejemplo" className="mb-3">
-                <p>Marca;Modelo;NroMotor;Matricula;Capacidad;Departamento;Localidad</p>
+                <p>Marca;Modelo;NroMotor;Matrícula;Capacidad;Departamento;Localidad</p>
                 <p>Scania;F510;AAAA1111;STU1111;20;MONTEVIDEO;Montevideo</p>
                 <p>Volvo;V20;BBBBB2222;STU2222;20;CERRO LARGO;Melo</p>
               </div>
               <div class="d-grid gap-1">
-                <button className="btn w50 btn-primary rounded-pill" onClick={altaOmnibusCsv} >Crear Omnibus</button>
+                <button className="btn w50 btn-primary rounded-pill" onClick={altaOmnibusCsv} >Crear ómnibus</button>
                 <button className="btn w50 btn-secondary rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
               </div>
             </div>

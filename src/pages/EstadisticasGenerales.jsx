@@ -99,14 +99,14 @@ function EstadisticasGenerales() {
         csvContent += "\n";
 
         // Ocupación de Omnibus
-        csvContent += "Omnibus,Cantidad de Pasajes\n";
+        csvContent += "Ómnibus,Cantidad de Pasajes\n";
         ocupacionOmnibus.forEach(([omnibus, cantidad]) => {
             csvContent += `${omnibus}, ${cantidad}\n`;
         });
         csvContent += "\n";
 
         // Deshabilitados por Fecha
-        csvContent += "Fecha de Deshabilitación,Cantidad de Omnibus\n";
+        csvContent += "Fecha de Deshabilitación,Cantidad de Ómnibus\n";
         csvContent += labelFecha + "-" + new Date().toLocaleDateString("es-UY") + ", " + fechaDeshabilitado + `\n`;
         csvContent += "\n";
 
@@ -230,8 +230,8 @@ function EstadisticasGenerales() {
             <div className="layout">
                 <div className="filtros">
                     <div className="buscador">
-                        <button onClick={exportarPDF}>Exportar PDF</button>
-                        <button onClick={exportarCSV}>Exportar CSV</button>
+                        <button onClick={exportarPDF}>Descargar PDF</button>
+                        <button onClick={exportarCSV}>Descargar CSV</button>
                     </div>
                 </div>
                 <div id="graficasParaExportar" className="graficas-contenedor">
@@ -300,7 +300,7 @@ function EstadisticasGenerales() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Ventas por fecha',
+                                    text: 'Ventas por Fecha',
                                     font: {
                                         size: 15
                                     },
@@ -326,7 +326,7 @@ function EstadisticasGenerales() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Ventas por destino',
+                                    text: 'Ventas por Destino',
                                     font: {
                                         size: 15
                                     },
@@ -352,7 +352,7 @@ function EstadisticasGenerales() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Asientos ocupados',
+                                    text: 'Asientos Ocupados',
                                     font: {
                                         size: 15
                                     },
@@ -378,7 +378,7 @@ function EstadisticasGenerales() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Omnibus deshabilitados por fehca',
+                                    text: 'Ómnibus deshabilitados por fehca',
                                     font: {
                                         size: 15
                                     },

@@ -39,7 +39,7 @@ function ListadoViaje() {
             })
             .then(data => {
                 if (data.length < 1)
-                    mostrarAlertaError("No se encontraron omnibus.");
+                    mostrarAlertaError("No se encontraron ómnibus.");
                 console.log(data);
                 setHistorico(data);
             })
@@ -83,8 +83,8 @@ function ListadoViaje() {
                             <p>Precio: ${h.precio}</p>
                             <p>Monto pagado: ${h.monto}</p>
                             <p>Descuento: {h.descuento}%</p>
-                            <p>Devuelto: {h.devuelto ? "Sí" : "No"}</p>
-                            {h.fechaDevolucion && <p>Fecha de Devolución: {new Date(h.fechaDevolucion).toLocaleString()}</p>}
+                            <p>Fue devuelto: {h.devuelto ? "Sí" : "No"}</p>
+                            {h.fechaDevolucion && <p>Fecha de devolución: {new Date(h.fechaDevolucion).toLocaleString()}</p>}
                         </div>
                     ))}
                 </div>}

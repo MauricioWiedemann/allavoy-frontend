@@ -94,7 +94,7 @@ function ListadoViajes() {
     })
       .then(data => {
         console.log("Viaje reasignado:", data);
-        mostrarAlerta("Viaje reasignado");
+        mostrarAlerta("Viaje reasignado.");
         setTimeout(() => {
           window.location.reload();
         }, 2000);
@@ -192,7 +192,7 @@ function ListadoViajes() {
                 {listaOmnibus.map((omnibus) => (
                   <button id={omnibus.idOmnibus} className="omnibus-dispo col" onClick={() => setOmnibusSeleccionado({ omnibus })}>
                     <p>{omnibus.marca}, {omnibus.modelo}</p>
-                    <p>Matricula: {omnibus.matricula}</p>
+                    <p>Matrícula: {omnibus.matricula}</p>
                     <p>Cantidad de asiento: {omnibus.capacidad}</p>
                   </button>
                 ))}

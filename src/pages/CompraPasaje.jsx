@@ -140,7 +140,7 @@ function CompraPasajes() {
       }
     }
 
-    return precioBase; 
+    return precioBase;
   }
 
   async function obtenerDescuentoPorEmail(email) {
@@ -193,7 +193,7 @@ function CompraPasajes() {
           purchase_units: [
             {
               amount: {
-                value: (montoTotal/40).toFixed(2),
+                value: (montoTotal / 40).toFixed(2),
               },
             },
           ],

@@ -74,7 +74,7 @@ function AltaUsuario() {
             const totales = parseInt(resultado[2]);
 
             if (completadas === totales)
-              mostrarAlerta("Todas los usuarios se cargaron correctamente.");
+              mostrarAlerta("Todos los usuarios se cargaron correctamente.");
             else if (completadas > 0) {
               let mesnaje = `Se cargaron ${completadas} de ${totales}.\n`;
               mesnaje += "\nErrores:\n" + errores.join("\n");
@@ -139,17 +139,17 @@ function AltaUsuario() {
     if (email.trim() === "" || nombre.trim() === "" || apellido.trim() === "" || cedula.trim() === "" || fechaNacimiento.trim() === "" || password.trim() === "" || tipoUsuario.trim() === "") {
       mostrarAlertaError("Complete todos los campos.");
     } else if (!validate_ci(cedula)) {
-      mostrarAlertaError("La cedula no es valida.");
+      mostrarAlertaError("La cédula no es valida.");
     } else if (password.length < 8 || !/\d/.test(password)) {
-      mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un numero.");
+      mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un número.");
     } else if (new Date(fechaNacimiento) >= new Date()) {
       mostrarAlertaError("La fecha de nacimiento no puede ser mayor a hoy.");
     } else {
       fetch(`${BASE_URL}/usuario/alta`, {
         method: "POST",
         headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "application/json"
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           cedula: cedula,
@@ -158,7 +158,6 @@ function AltaUsuario() {
           email: email,
           password: password,
           fechaNacimiento: fechaNacimiento,
-          //tipoDescuento: "NA",
           tipoUsuario: tipoUsuario
         })
       })
@@ -167,7 +166,7 @@ function AltaUsuario() {
           return response.text();
         })
         .then(data => {
-          if(!statusOk){
+          if (!statusOk) {
             throw new Error(data);
           }
           mostrarAlerta(data.toString());

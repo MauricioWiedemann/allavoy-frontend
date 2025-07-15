@@ -56,7 +56,7 @@ function CompraPasajes() {
   const bloquearAsiento = async (seat) => {
     try {
       const response = await fetch(`${BASE_URL}/asientos/bloquear?numeroAsiento=${seat}&idViaje=${viaje.idViaje}`, { method: "POST" });
-      if (!response.ok) throw new Error("Error al bloquear el asiento");
+      if (!response.ok) throw new Error("Error al bloquear el asiento.");
       console.log("Asiento bloqueado:", seat);
     } catch (error) {
       console.error(error);
@@ -76,7 +76,7 @@ function CompraPasajes() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      alert("Tiempo de compra expirado. Los asientos han sido liberados.");
+      alert("Tiempo de compra expirado, los asientos han sido liberados.");
       window.location.href = "/home";
     }, 10 * 60 * 1000);
 

@@ -42,7 +42,7 @@ function DeshabilitarOmnibus() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron omnibus.");
+                    throw new Error("No se encontraron ómnibus.");
 
                 }
                 return response.json();
@@ -52,7 +52,7 @@ function DeshabilitarOmnibus() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                mostrarAlertaError("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron ómnibus.");
                 setOmnibus([]);
             });
     }
@@ -72,7 +72,7 @@ function DeshabilitarOmnibus() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron omnibus.");
+                    throw new Error("No se encontraron ómnibus.");
 
                 }
                 return response.json();
@@ -82,7 +82,7 @@ function DeshabilitarOmnibus() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                mostrarAlertaError("No se encontraron omnibus.");
+                mostrarAlertaError("No se encontraron ómnibus.");
                 setOmnibus([]);
             });
     }
@@ -131,9 +131,9 @@ function DeshabilitarOmnibus() {
 
     async function deshabilitar() {
         if (!validarFecha()) {
-            alert("Complete ambos campos.");
+            mostrarAlertaError("Complete ambos campos.");
         } else if (fecha.trim() !== "" && new Date(fecha.concat("T".concat(hora))) < new Date()) {
-            alert("La fecha debe ser actual o futura.");
+            mostrarAlertaError("La fecha debe ser actual o futura.");
         } else {
             await fetch(`${BASE_URL}/omnibus/deshabilitar`, {
                 method: "POST",
@@ -217,7 +217,7 @@ function DeshabilitarOmnibus() {
                         <select value={orden} onChange={(e) => setOrden(e.target.value)}>
                             <option value="" disabled>Ordenar por</option>
                             <option value="orden_localidad">Localidad</option>
-                            <option value="mas_asientos">Mas asientos</option>
+                            <option value="mas_asientos">Más asientos</option>
                             <option value="menos_asientos">Menos asientos</option>
                         </select>
                     </div>
@@ -226,7 +226,7 @@ function DeshabilitarOmnibus() {
                 <div className="deshabilitar-list">
                     {omnibusOrdenados.map((o, i) => (
                         <div key={i} className="deshabilitar-card">
-                            <h5>Matricula: {o.matricula}, Serie: {o.numeroSerie}</h5>
+                            <h5>Matrícula: {o.matricula}, Serie: {o.numeroSerie}</h5>
                             <div className="linea">
                                 <p>Marca: {o.marca}</p>
                                 <p>Modelo: {o.modelo}</p>
@@ -247,7 +247,7 @@ function DeshabilitarOmnibus() {
                             <h4>Seleccione una fecha y hora</h4>
                             <input type="date" className="form-control rounded-pill mb-1 mt-3" value={fecha} onChange={(e) => setFecha(e.target.value)} />
                             <input type="time" className="form-control rounded-pill mb-1" value={hora} onChange={(e) => setHora(e.target.value)} />
-                            <p>Si deja estos campos vacios el omnibus sera dado de baja inmediatamente.</p>
+                            <p>Si deja estos campos vaciós el ómnibus será dado de baja inmediatamente.</p>
                             <button className="btn btn-danger rounded-pill mb-1 mt-3" onClick={() => deshabilitar()}>Confirmar</button>
                             <button className="btn btn-secondary rounded-pill mb-1" onClick={() => cancelar()}>Cancelar</button>
                         </div>

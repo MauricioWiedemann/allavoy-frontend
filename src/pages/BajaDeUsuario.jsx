@@ -28,12 +28,6 @@ function BajaUsuario() {
         setTipos("error")
     };
 
-    function mostrarAlertaAdvertencia(m) {
-        setAlertVisible(true);
-        setMensaje(m);
-        setTipos("alert")
-    };
-
     useEffect(() => {
         listar_usuarios_activos();
     }, []);
@@ -82,7 +76,7 @@ function BajaUsuario() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("No se encontraron usuarios.");
+                    throw new Error("No se encontraron usuarios activos.");
 
                 }
                 return response.json();
@@ -92,7 +86,7 @@ function BajaUsuario() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                mostrarAlertaError("No se encontraron usuarios.");
+                mostrarAlertaError("No se encontraron usuarios activos.");
                 setUsuarios([]);
             });
     }
@@ -108,7 +102,7 @@ function BajaUsuario() {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("Error al dar de baja el usuario");
+                    throw new Error("Error al dar de baja el usuario.");
                 }
                 return response.json();
             })
@@ -187,7 +181,7 @@ function BajaUsuario() {
                         <div key={index} className="viaje-card card p-4 shadow-lg">
                             <h5>{capitalizar(usuario.tipoUsuario)}: {capitalizar(usuario.nombre)} {capitalizar(usuario.apellido)}</h5>
                             <div className="d-flex mb-0">
-                                <p className="me-3 mb-0">Cedula: {usuario.cedula}</p>
+                                <p className="me-3 mb-0">Cédula: {usuario.cedula}</p>
                                 <p className="mb-0">Fecha nacimiento: {usuario.fechaNacimiento}</p>
                             </div>
                             <p className="mb-0">Correo: {usuario.email}</p>

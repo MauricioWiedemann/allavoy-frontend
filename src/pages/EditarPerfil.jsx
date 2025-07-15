@@ -63,9 +63,9 @@ function EditarPerfil() {
 
   function editarUsuario() {
     if (nombre.trim() === "" || apellido.trim() === "" || fechaNacimiento.trim() === "") {
-      alert("Complete todos los campos.");
+      mostrarAlertaError("Complete todos los campos.");
     } else if (new Date(fechaNacimiento) >= new Date()) {
-      alert("La fecha de nacimiento no puede ser mayor a hoy.");
+      mostrarAlertaError("La fecha de nacimiento no puede ser posterior a hoy.");
     } else {
       fetch(`${BASE_URL}/usuario/editar`, {
         method: "POST",
@@ -140,7 +140,7 @@ function EditarPerfil() {
             <input type="date" className="form-control rounded-pill" placeholder="Fecha de Nacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
           </div>
 
-          <button className="btn btn-primary w-100 rounded-pill mb-1" onClick={editarUsuario} >Editar Usuario</button>
+          <button className="btn btn-primary w-100 rounded-pill mb-1" onClick={editarUsuario} >Guardar cambios</button>
           <button className="btn btn-secondary w-100 rounded-pill" onClick={() => window.location.href = "/home"} >Cancelar</button>
         </div>
       </div>

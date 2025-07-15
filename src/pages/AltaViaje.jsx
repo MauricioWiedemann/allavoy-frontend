@@ -92,9 +92,9 @@ function AltaViaje() {
     const today = new Date(Date.now());
 
     if (salida < today) {
-      mostrarAlertaError("La fecha de salida no puede ser menor a la actual");
+      mostrarAlertaError("La fecha de salida no puede ser menor a la actual.");
     } else if (salida >= llegada) {
-      mostrarAlertaError("La fecha de llegada tiene que ser mayor a la de salida");
+      mostrarAlertaError("La fecha de llegada tiene que ser mayor a la de salida.");
     } else {
       return true;
     }
@@ -126,7 +126,7 @@ function AltaViaje() {
       })
         .then(data => {
           if (data.length < 1)
-            mostrarAlertaAdvertencia("No hay ómnibus disponibles")
+            mostrarAlertaAdvertencia("No hay ómnibus disponibles.")
           setListaOmnibus(data);
         })
         ;
@@ -174,7 +174,7 @@ function AltaViaje() {
           return response.text();
         })
         .then(data => {
-          if(!statusOk){
+          if (!statusOk) {
             throw new Error(data);
           }
           limpiarOmnibus();
@@ -241,10 +241,10 @@ function AltaViaje() {
             </div>
           </div>
           <div class="d-grid mb-3">
-            <button className="btn w50 btn-primary rounded-pill" onClick={() => obtenerOmnibus()}>Buscar Omnibus</button>
+            <button className="btn w50 btn-primary rounded-pill" onClick={() => obtenerOmnibus()}>Buscar ómnibus</button>
           </div>
           <div id="p-container">
-            <p>No hay omnibus disponibles.</p>
+            <p>No hay ómnibus disponibles.</p>
           </div>
           <div id="finalizar-alta-id" className="omnibus-container mb-3">
             <div id="omnibus-container-id" className="row row-cols-2 mb-3">
