@@ -52,7 +52,7 @@ function Login() {
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    mostrarAlertaError("Email o contraseña incorrectos.");
+                    mostrarAlertaError("Correo o contraseña incorrectos.");
                 });
         }
     }

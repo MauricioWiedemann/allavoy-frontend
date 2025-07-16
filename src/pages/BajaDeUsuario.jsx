@@ -115,7 +115,7 @@ function BajaUsuario() {
             })
             .catch(error => {
                 console.error("Error:", error);
-                mostrarAlerta("Error al dar de baja el usuario.");
+                mostrarAlertaError("Error al dar de baja el usuario.");
             });
 
     }
@@ -150,7 +150,7 @@ function BajaUsuario() {
         <>
             <NavbarAdministrador />
             <div className="listadoViaje-container">
-                <Notificaion mensaje={mensaje} tipo={tipo} visible={alertVisible} onClose={() => setAlertVisible(false)} />
+                <Notificaion mensaje={mensaje} tipo={tipos} visible={alertVisible} onClose={() => setAlertVisible(false)} />
 
                 <div className="buscador-card card p-4 mt-3 mb-3 shadow-lg">
                     <div className="campos-flex">
