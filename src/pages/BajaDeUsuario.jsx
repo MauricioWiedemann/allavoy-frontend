@@ -94,28 +94,29 @@ function BajaUsuario() {
     function desactivar_usuario(usuario) {
         // Se envía el ID del usuario en la URL y el token en el header.
         // El backend dará de baja al usuario y responderá con código HTTP 204 (sin contenido).
-        fetch(`${BASE_URL}/usuario/baja/${usuario.idUsuario}`, {
+        let statusOk = false;
+        fetch(`${BASE_URL}/usuario/baja/${usuario.id}`, {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error al dar de baja el usuario.");
-                }
-                return response.json();
+                statusOk = response.ok;
+                return response.text();
             })
             .then(data => {
-                console.log("Usuario dado de baja:", data);
-                mostrarAlerta("Usuario dado de baja");
+                if(!statusOk){
+                    throw new Error(data);
+                }
+                mostrarAlerta(data.toString());
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
             })
             .catch(error => {
                 console.error("Error:", error);
-                mostrarAlertaError("Error al dar de baja el usuario.");
+                mostrarAlerta(error.toString());
             });
 
     }

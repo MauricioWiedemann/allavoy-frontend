@@ -37,7 +37,7 @@
     flex-direction: column;
     gap: 15px;
     margin-top: 20px;
-    margin-bottom: 200px;
+    padding-bottom: 20px;
 }
 
 .viaje-card {
