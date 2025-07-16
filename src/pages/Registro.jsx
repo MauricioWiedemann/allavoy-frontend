@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../css/Registro.css";
 import Notificaion from "../components/Notificacion";
 import { BASE_URL } from "../config";
-
+import logo from '../../sources/logo.png';
 
 function Registro() {
 
@@ -108,7 +108,7 @@ function Registro() {
 
       <div className="registro-card card p-4 shadow-lg">
         <div className="text-center mb-4">
-          <img src="../sources/logo.png" alt="Registro Illustration" className="registro-img img-fluid" />
+          <img src={logo} alt="Logo" className="registro-img img-fluid" />
         </div>
         <div className="mb-3">
           <input type="email" className="form-control rounded-pill" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} />
