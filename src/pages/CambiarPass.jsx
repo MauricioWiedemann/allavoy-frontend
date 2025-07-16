@@ -40,6 +40,7 @@ function CambiarPass() {
         } else if (passNuevo.length < 8 || !/\d/.test(passNuevo)) {
             mostrarAlertaError("La contraseña debe tener al menos 8 caracteres e incluir al menos un número.");
         } else {
+            let statusOk = false;
             fetch(`${BASE_URL}/usuario/cambiarpassword`, {
                 method: "POST",
                 headers: {
@@ -53,21 +54,21 @@ function CambiarPass() {
                 })
             })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Error al cambiar la contraseña.");
-                    }
-                    return response.body;
+                    statusOk = response.ok;
+                    return response.text();
                 })
                 .then(data => {
-                    console.log("Contraseña actualizada:", data);
-                    mostrarAlerta("Contraseña actualizada.");
+                    if(!statusOk){
+                        throw new Error(data);
+                    }
+                    mostrarAlerta(data.toString());
                     setTimeout(() => {
                         window.location.href = "/home";
                     }, 2000);
                 })
                 .catch(error => {
-                    console.error("Error:", error);
-                    mostrarAlertaError("Error al cambiar la contraseña.");
+                    console.error("Error:", error.toString());
+                    mostrarAlertaError(error.toString());
                 });
         }
     }
