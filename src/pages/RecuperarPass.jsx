@@ -32,6 +32,7 @@ function RecuperarPass() {
         } else if (passwordNuevo.trim() !== passwordNuevoConf.trim()) {
             mostrarAlertaError("Las contraseñas no coinciden.");
         } else {
+            let statusOk = false;
             await fetch(`${BASE_URL}/auth/reset-password`, {
                 method: "POST",
                 headers: {
@@ -42,18 +43,19 @@ function RecuperarPass() {
                     nuevaPass: passwordNuevo
                 })
             }).then(response => {
-                if (!response.ok) {
-                    throw new Error(response.text());
-                }
+                statusOk = response.ok;
                 return response.text();
             }).then(data => {
-                mostrarAlerta(data);
+                if(!statusOk){
+                    throw new Error(data);
+                }
+                mostrarAlerta(data.toString());
                 setTimeout(() => {
                     window.location.href = "/login";
                 }, 2000);
             })
                 .catch(error => {
-                    mostrarAlertaError(error);
+                    mostrarAlertaError(error.toString());
                 });
         }
     }
