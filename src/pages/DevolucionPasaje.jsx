@@ -107,6 +107,7 @@ function DevolucionPasaje() {
       setTimeout(() => {
         window.location.reload();
       }, 2000);
+      navigate("/listadoviajeconpasaje");
     } catch (error) {
       console.error("Error en la devolución:", error);
       alert("Hubo un problema al procesar la devolución.");
