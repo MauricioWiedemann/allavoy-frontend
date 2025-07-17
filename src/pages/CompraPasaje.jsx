@@ -57,7 +57,6 @@ function CompraPasajes() {
   const payload = jwtDecode(token);
   const navigate = useNavigate();
 
-
   if (!viaje || !cantidad || !viaje.omnibus || !viaje.omnibus.capacidad) {
     return <p style={{ color: "red", textAlign: "center" }}>Error: No hay datos disponibles o incompletos.</p>;
   }
@@ -68,12 +67,14 @@ function CompraPasajes() {
   const [tipoDescuento, setTipoDescuento] = useState(null);
   const [emailComprador, setEmailComprador] = useState("");
   const [emailIngresado, setEmailIngresado] = useState(false);
+  const [emailValidado, setEmailValidado] = useState(false);
   const paypalRef = useRef();
 
   const handleEmailChange = (e) => {
     const email = e.target.value;
     setEmailComprador(email);
     setEmailIngresado(email.trim() !== "");
+    setEmailValidado(false);
   };
 
   const bloquearAsiento = async (seat) => {
@@ -106,7 +107,6 @@ function CompraPasajes() {
     return () => clearTimeout(timer);
   }, []);
 
-
   useEffect(() => {
     async function fetchTipoDescuento() {
       const descuento = await obtenerTipoDescuento(payload.idUsuario);
@@ -116,27 +116,16 @@ function CompraPasajes() {
   }, [payload.idUsuario]);
 
   function calcularTotal(viaje, cantidad, tipoUsuario, tipoDescuento) {
-    let precioBase = (viaje.precio) * cantidad; //pasar de pesos a dolares
-    //Si es ida y vuelta, le sumo el costo del viaje de ida
+    let precioBase = viaje.precio * cantidad;
     if (idaYVuelta == 2) {
       const viajeIda = location.state?.viajeIda;
-      precioBase = precioBase + (viajeIda.precio) * cantidad; //pasar de pesos a dolares
+      precioBase += viajeIda.precio * cantidad;
     }
 
-    if (tipoUsuario === "VENDEDOR") {
-      const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
-
-      //Si el cliente tiene cuenta y descuento calculamos el total sino precio completo
-      if (aplicaDescuento) {
-        return precioBase * 0.8; // 20% de descuento
-      } else {
-        return precioBase;
-      }
-    }
-    if (tipoUsuario === "CLIENTE") {
+    if (tipoUsuario === "VENDEDOR" || tipoUsuario === "CLIENTE") {
       const aplicaDescuento = ["ESTUDIANTE", "JUBILADO", "FUNCIONARIO"].includes(tipoDescuento);
       if (aplicaDescuento) {
-        return precioBase * 0.8; // 20% de descuento
+        return precioBase * 0.8;
       }
     }
 
@@ -158,24 +147,31 @@ function CompraPasajes() {
 
   const validarEmail = async (email) => {
     if (!email) {
+      setEmailValidado(false);
       return;
     }
 
     try {
-      const tipoDescuento = await obtenerDescuentoPorEmail(email); // Consulta el descuento
+      const tipoDescuento = await obtenerDescuentoPorEmail(email);
       if (tipoDescuento) {
         setEmailIngresado(true);
-        setTipoDescuento(tipoDescuento); // Actualiza el descuento si existe
+        setTipoDescuento(tipoDescuento);
+        setEmailValidado(true);
       } else {
-        setTipoDescuento(null); // No muestra alerta, simplemente no aplica descuento
+        setTipoDescuento(null);
+        setEmailValidado(true);
       }
     } catch (error) {
       console.error("Error al validar email:", error);
+      setEmailValidado(false);
     }
   };
 
   useEffect(() => {
-    const condicionesCumplidas = selectedSeats.length === cantidad && (payload.rol === "CLIENTE" || (payload.rol === "VENDEDOR" && emailIngresado));
+    const condicionesCumplidas =
+      selectedSeats.length === cantidad &&
+      (payload.rol === "CLIENTE" || (payload.rol === "VENDEDOR" && emailValidado));
+
     if (!condicionesCumplidas) {
       if (paypalRef.current) {
         paypalRef.current.innerHTML = "";
@@ -216,7 +212,7 @@ function CompraPasajes() {
                   idUsuario: payload.idUsuario,
                   idViaje: viaje.idViaje,
                   emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null,
-                  idPago: idPago
+                  idPago: idPago,
                 }),
               });
 
@@ -230,13 +226,12 @@ function CompraPasajes() {
               console.error("Error al conectar con backend:", err);
             }
           }
+
           if (idaYVuelta == 2) {
             const viajeIda = location.state?.viajeIda;
             const asientoIda = location.state?.asientoIda;
             for (const numeroAsientoIda of asientoIda) {
               try {
-
-                console.log("Email del comprador antes de la solicitud:", numeroAsientoIda);
                 const response = await fetch(`${BASE_URL}/pasajes/confirmar-compra`, {
                   method: "POST",
                   headers: {
@@ -247,7 +242,7 @@ function CompraPasajes() {
                     idUsuario: payload.idUsuario,
                     idViaje: viajeIda.idViaje,
                     emailComprador: payload.rol === "VENDEDOR" ? emailComprador : null,
-                    idPago: idPago
+                    idPago: idPago,
                   }),
                 });
 
@@ -271,18 +266,7 @@ function CompraPasajes() {
         alert("Hubo un error al procesar el pago.");
       },
     }).render(paypalRef.current);
-  }, [selectedSeats, cantidad, viaje, tipoDescuento]);
-
-  const vueltaContinuar = () => {
-    navigate("/listado", {
-      state: {
-        ida: viaje,
-        numeroAsientoIda: numeroAsiento,
-        cantidad,
-        idaYVuelta: idaYVuelta
-      }
-    });
-  };
+  }, [selectedSeats, cantidad, viaje, tipoDescuento, emailValidado]);
 
   return (
     <div className="compraPasaje-bg">
@@ -308,16 +292,33 @@ function CompraPasajes() {
         </div>
 
         <div className="purchase-info-container">
-          <p><strong>Origen:</strong> {viaje.origen.nombre}, {viaje.origen.departamento}</p>
-          <p><strong>Destino:</strong> {viaje.destino.nombre}, {viaje.destino.departamento}</p>
+          <p>
+            <strong>Origen:</strong> {viaje.origen.nombre},{" "}
+            {viaje.origen.departamento}
+          </p>
+          <p>
+            <strong>Destino:</strong> {viaje.destino.nombre},{" "}
+            {viaje.destino.departamento}
+          </p>
           <hr />
-          <p><strong>Salida:</strong> {viaje.fechaSalida.replace("T", " ")}</p>
-          <p><strong>Llegada:</strong> {viaje.fechaLlegada.replace("T", " ")}</p>
-          <p><strong>Ómnibus:</strong> {viaje.omnibus.marca} {viaje.omnibus.modelo} ({viaje.omnibus.matricula})</p>
-          <p><strong>Asiento(s):</strong> {selectedSeats.join(", ")}</p>
+          <p>
+            <strong>Salida:</strong> {viaje.fechaSalida.replace("T", " ")}
+          </p>
+          <p>
+            <strong>Llegada:</strong> {viaje.fechaLlegada.replace("T", " ")}
+          </p>
+          <p>
+            <strong>Ómnibus:</strong> {viaje.omnibus.marca} {viaje.omnibus.modelo}{" "}
+            ({viaje.omnibus.matricula})
+          </p>
+          <p>
+            <strong>Asiento(s):</strong> {selectedSeats.join(", ")}
+          </p>
           {payload.rol === "VENDEDOR" && (
             <div className="mb-3">
-              <label><strong>Email del comprador:</strong></label>
+              <label>
+                <strong>Email del comprador:</strong>
+              </label>
               <input
                 type="email"
                 className="form-control rounded-pill"
@@ -336,7 +337,10 @@ function CompraPasajes() {
           )}
           <hr />
           <div className="price-payment">
-            <p><strong>Precio total:</strong> ${calcularTotal(viaje, cantidad, payload.rol, tipoDescuento).toFixed(2)}</p>
+            <p>
+              <strong>Precio total:</strong> $
+              {calcularTotal(viaje, cantidad, payload.rol, tipoDescuento).toFixed(2)}
+            </p>
             <div ref={paypalRef} />
           </div>
         </div>
